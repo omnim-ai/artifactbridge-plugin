@@ -1,0 +1,9 @@
+{
+  "//": "ArtifactBridge MCP for Claude Code — bundled with the plugin and auto-loaded on install. Primary path = browser OAuth (no token in this file): Claude Code discovers the server requires authorization from its 401 + WWW-Authenticate challenge and drives the browser login via `/mcp`. The CI/headless afb_ bearer fallback is NOT configured here — see .mcp.example.json. Public packages use the production host; replace the URL only for an explicit self-hosted or staging development profile. Never commit a real token.",
+  "mcpServers": {
+    "artifact-bridge": {
+      "type": "http",
+      "url": "https://app.artifactbridge.com/mcp"
+    }
+  }
+}

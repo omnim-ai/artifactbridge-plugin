@@ -1,0 +1,19 @@
+{
+  "name": "artifactbridge",
+  "version": "0.1.0",
+  "description": "Connect Claude Code to your ArtifactBridge workspace over MCP using browser OAuth (no token paste), with a headless afb_ bearer fallback. Bundles the artifactbridge skill (logbook, managed-document, human-feedback, and safety recipes) and wires the /mcp connection on install.",
+  "author": {
+    "name": "Omnim",
+    "url": "https://github.com/omnim-ai/artifactbridge-plugin"
+  },
+  "homepage": "https://github.com/omnim-ai/artifactbridge-plugin",
+  "repository": "https://github.com/omnim-ai/artifactbridge-plugin",
+  "license": "MIT",
+  "keywords": [
+    "artifactbridge",
+    "mcp",
+    "documents",
+    "oauth",
+    "logbook"
+  ]
+}

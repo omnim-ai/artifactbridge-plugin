@@ -1,0 +1,19 @@
+{
+  "name": "artifactbridge",
+  "owner": {
+    "name": "Omnim",
+    "url": "https://github.com/omnim-ai/artifactbridge-plugin"
+  },
+  "plugins": [
+    {
+      "name": "artifactbridge",
+      "source": "./claude-code/",
+      "description": "Connect Claude Code to your ArtifactBridge workspace over MCP (browser OAuth, no token paste) and load the artifactbridge skill: logbook, managed-document, human-feedback, and safety recipes. Installing the plugin also wires the /mcp connection."
+    },
+    {
+      "name": "artifactbridge-codex",
+      "source": "./codex-plugin/",
+      "description": "Connect Codex to your ArtifactBridge workspace over MCP (browser OAuth, no token paste) and load the artifactbridge skill pack. Installing the plugin wires the MCP server configuration."
+    }
+  ]
+}

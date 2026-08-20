@@ -1,0 +1,19 @@
+# ArtifactBridge MCP — CI / headless fallback for Codex (`~/.codex/config.toml`).
+#
+# OAuth is the primary path (see .mcp.json + README). Use this manual entry ONLY
+# where no browser is available (CI, containers). Inject the token from a secret
+# store — never commit or hard-code a real `afb_` token. Public packages use
+# production; set a self-hosted or staging URL only as an explicit override.
+#
+# Preferred (token from a secret-store-populated env var):
+[mcp_servers.artifact-bridge]
+url = "https://app.artifactbridge.com/mcp"
+bearer_token_env_var = "ARTIFACTBRIDGE_TOKEN"   # holds afb_<token> at use time
+
+# Equivalent explicit-header form (placeholder only — inject at use time):
+#   [mcp_servers.artifact-bridge]
+#   url = "https://app.artifactbridge.com/mcp"
+#   http_headers = { "Authorization" = "Bearer afb_<token>" }
+#
+# Create the afb_ token in the ArtifactBridge web app:
+#   Settings -> Connected credentials -> API tokens.

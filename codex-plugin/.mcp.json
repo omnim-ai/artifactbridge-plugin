@@ -1,0 +1,8 @@
+{
+  "//": "ArtifactBridge MCP for Codex. Primary path = browser OAuth (no token in this file): Codex discovers the server requires authorization from its 401 + WWW-Authenticate challenge and drives the browser login via `codex mcp login artifact-bridge`. The CI/headless afb_ bearer fallback is NOT configured here — see config.toml.example. Public packages use the production host; replace the URL only for an explicit self-hosted or staging development profile. Never commit a real token.",
+  "mcp_servers": {
+    "artifact-bridge": {
+      "url": "https://app.artifactbridge.com/mcp"
+    }
+  }
+}

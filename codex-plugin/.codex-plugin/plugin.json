@@ -1,0 +1,22 @@
+{
+  "name": "artifactbridge",
+  "version": "0.1.0",
+  "description": "Connect Codex to your ArtifactBridge workspace over MCP using browser OAuth (no token paste), with a headless afb_ bearer fallback.",
+  "homepage": "https://github.com/omnim-ai/artifactbridge-plugin",
+  "repository": "https://github.com/omnim-ai/artifactbridge-plugin",
+  "license": "MIT",
+  "keywords": [
+    "artifactbridge",
+    "mcp",
+    "documents",
+    "oauth"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "ArtifactBridge",
+    "shortDescription": "Document primitives over MCP, with browser OAuth.",
+    "longDescription": "Installs the ArtifactBridge MCP server and the artifactbridge skill. The primary path is a browser OAuth login (no manual token paste); a manual afb_ bearer entry is the CI/headless fallback.",
+    "category": "productivity"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "//": "ArtifactBridge MCP — copy into your project's .mcp.json. The primary path uses browser OAuth (no token in this file). The commented afb_ header is the CI/headless fallback ONLY; never commit a real token.",
+  "mcpServers": {
+    "artifact-bridge": {
+      "type": "http",
+      "url": "https://<your-artifactbridge-host>/mcp"
+    },
+    "artifact-bridge-ci": {
+      "//": "Fallback for CI/headless where no browser is available. Inject the token from a secret, do not hard-code it.",
+      "type": "http",
+      "url": "https://<your-artifactbridge-host>/mcp",
+      "headers": {
+        "Authorization": "Bearer ${ARTIFACTBRIDGE_TOKEN}"
+      }
+    }
+  }
+}
