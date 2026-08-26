@@ -138,6 +138,7 @@ your safety rules. Record the `version`/`content_hash` you loaded.
 - `artifactbridge_reject_proposal` — reject a proposal (close it, no change). **Human decision: OAuth session only** — an `afb_` agent token is refused. `decision_reason` is required and must be non-empty for a protected working-document update; it is optional for other proposals. `decision_tags` is optional.
 - `artifactbridge_apply_proposal_to_current` — apply a STALE proposal onto the current head (server-side three-way merge; publishes the merged content). **Human decision: OAuth session only** — an `afb_` agent token is refused. Only valid when `artifactbridge_read_proposal` shows `stale_apply.status` `"clean"`; a same-line conflict is refused with no writes, and an up-to-date proposal must use accept.
 - `artifactbridge_publish_document` — publish an approved managed document.
+- `artifactbridge_start_import_scan` — record a scan-start signal immediately before reading import sources. `source_label` may name the source, such as a folder, but never an agent harness or client.
 - `artifactbridge_register_import_source` — register a local-directory import source and return its server-issued id.
 - `artifactbridge_plan_document_import` — stage a source inventory and create a body-free import plan. This does not change documents.
 - `artifactbridge_get_document_import_plan` — read the action list and framed staged text for an import plan.

@@ -23,6 +23,10 @@ this skill enforces on itself.
 
 Call these MCP tools in order. Skip a step only where noted.
 
+- `artifactbridge_start_import_scan` — signal that this scan has started. Call
+  it once, immediately before you start reading sources. If you set
+  `source_label`, use a source name such as the folder name. Never use an agent
+  harness or client name.
 - `artifactbridge_register_import_source` — register the local directory and
   get its server-issued stable `source_id`. Always call this for the local
   crawl; the plan step needs a stable id.
@@ -43,20 +47,23 @@ skill does not take.
 
 ## Workflow
 
-Follow these 8 steps in order.
+Follow these 9 steps in order.
 
 1. **Ask what to crawl.** Ask the human which local directory to crawl, and
    which connected provider accounts (if any) to include. Zero connected
    accounts is a valid, complete crawl — the bundle still gets created and
    still returns one URL.
-2. **Crawl local structure first.** List the local directory's files and
+2. **Signal scan start.** Call `artifactbridge_start_import_scan` once, immediately before you start reading sources.
+   If you set `source_label`, use the local folder name or another source name.
+   Never use an agent harness or client name.
+3. **Crawl local structure first.** List the local directory's files and
    folders — path, inferred title, modified time, and count — without reading
    file bodies yet. Stay inside the local scan budget in
    [`./budgets.md`](./budgets.md). Rank candidates by title, path, modified
    time, and folder count; drop anything below this section's reserved share
    of the proposed-item budget before reading a single file body.
-3. **Read only the files you will propose.** Read full content only for the
-   files the ranking in step 2 selected, up to the local content-read budget.
+4. **Read only the files you will propose.** Read full content only for the
+   files the ranking in step 3 selected, up to the local content-read budget.
    Register the source with `artifactbridge_register_import_source` and use
    its returned `source_id`. Then call `artifactbridge_plan_document_import`
    with `source: { kind: "local_directory", source_id, source_revision,
@@ -91,28 +98,28 @@ Follow these 8 steps in order.
        to record every skip so the skip rules in
        [`./untrusted-content.md`](./untrusted-content.md) are visible in the
        plan, not silently dropped.
-4. **Browse each connected account, metadata only.** The browse-call budget in
+5. **Browse each connected account, metadata only.** The browse-call budget in
    [`./budgets.md`](./budgets.md) is one pool shared across every connected
    account in this crawl, not 20 calls per account. Before you browse the
    first account, split the pool across the accounts the human named. Call
    `artifactbridge_browse_connected_source` up to each account's share. Never
    read document content through this tool — it returns metadata only. Rank
-   and select candidates the same way as step 2: title, path or folder,
+   and select candidates the same way as step 3: title, path or folder,
    updated time, and count.
-5. **Plan one connected proposal per provider account.** Call
+6. **Plan one connected proposal per provider account.** Call
    `artifactbridge_plan_document_import` with `source: { kind:
    "connected_source" }` once per browsed account, passing the selected
    candidates as `items`. This stages provider metadata only; it never reads
    provider content and needs no additional account authorization.
-6. **Bundle every plan into one unit.** Call
+7. **Bundle every plan into one unit.** Call
    `artifactbridge_create_import_proposal_bundle` with the local plan id and
    every connected plan id. This tool never writes a document and never
    decides anything; it links the plans so one review URL covers all of them.
-7. **Report one bundle review URL.** Tell the human the bundle contains one
+8. **Report one bundle review URL.** Tell the human the bundle contains one
    local section and N connected sections (N may be zero), how many items each
-   section proposes, and the one review URL from step 6. State that nothing
+   section proposes, and the one review URL from step 7. State that nothing
    was written yet.
-8. **Stop.** Do not accept, apply, sync, or re-run the crawl. The human reviews
+9. **Stop.** Do not accept, apply, sync, or re-run the crawl. The human reviews
    and decides every section at the bundle review URL, in their own separate
    session.
 
