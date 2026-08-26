@@ -23,10 +23,12 @@ this skill enforces on itself.
 
 Call these MCP tools in order. Skip a step only where noted.
 
-- `artifactbridge_start_import_scan` — signal that this scan has started. Call
-  it once, immediately before you start reading sources. If you set
-  `source_label`, use a source name such as the folder name. Never use an agent
-  harness or client name.
+- `artifactbridge_start_import_scan` — signal that this scan has started and
+  get the scan run's stable `run_id`. Call
+  it once, immediately before you start reading sources. Keep the returned
+  `run_id`: the completion call at the end of this workflow requires it. If you
+  set `source_label`, use a source name such as the folder name. Never use an
+  agent harness or client name.
 - `artifactbridge_register_import_source` — register the local directory and
   get its server-issued stable `source_id`. Always call this for the local
   crawl; the plan step needs a stable id.
@@ -39,6 +41,12 @@ Call these MCP tools in order. Skip a step only where noted.
 - `artifactbridge_create_import_proposal_bundle` — bundle the local plan and
   every connected plan into one review unit and get the bundle id and review
   URL.
+- `artifactbridge_complete_import_scan` — record the scan run's one terminal
+  outcome. Call it with the `run_id` the scan-start call returned: pass
+  `outcome: "proposal_created"` plus the `bundle_id` from the bundle step when
+  the crawl created a proposal bundle, or `outcome: "empty"` with no
+  `bundle_id` when the crawl found nothing to propose. An identical retry is
+  safe; a different second outcome is refused.
 
 Never call `artifactbridge_accept_document_import_plan` or
 `artifactbridge_apply_document_import_plan`. This skill does not decide
@@ -47,13 +55,14 @@ skill does not take.
 
 ## Workflow
 
-Follow these 9 steps in order.
+Follow these 10 steps in order.
 
 1. **Ask what to crawl.** Ask the human which local directory to crawl, and
    which connected provider accounts (if any) to include. Zero connected
    accounts is a valid, complete crawl — the bundle still gets created and
    still returns one URL.
 2. **Signal scan start.** Call `artifactbridge_start_import_scan` once, immediately before you start reading sources.
+   Keep the `run_id` it returns; step 8 completes the same run with it.
    If you set `source_label`, use the local folder name or another source name.
    Never use an agent harness or client name.
 3. **Crawl local structure first.** List the local directory's files and
@@ -115,13 +124,20 @@ Follow these 9 steps in order.
    `artifactbridge_create_import_proposal_bundle` with the local plan id and
    every connected plan id. This tool never writes a document and never
    decides anything; it links the plans so one review URL covers all of them.
-8. **Report one bundle review URL.** Tell the human the bundle contains one
+8. **Record the scan outcome.** Call `artifactbridge_complete_import_scan`
+   exactly once for this run, with the `run_id` from step 2. When step 7
+   created a bundle, pass `outcome: "proposal_created"` and the bundle id from
+   step 7. When the crawl selected nothing to propose — no local file passed
+   the rules in steps 3-4 and no connected candidate passed step 5 — skip the
+   plan and bundle steps, and pass `outcome: "empty"` with no bundle id.
+9. **Report one bundle review URL.** Tell the human the bundle contains one
    local section and N connected sections (N may be zero), how many items each
    section proposes, and the one review URL from step 7. State that nothing
-   was written yet.
-9. **Stop.** Do not accept, apply, sync, or re-run the crawl. The human reviews
-   and decides every section at the bundle review URL, in their own separate
-   session.
+   was written yet. When the run completed `outcome: "empty"`, there is no
+   bundle and no URL: report that the scan found nothing to import instead.
+10. **Stop.** Do not accept, apply, sync, or re-run the crawl. The human
+   reviews and decides every section at the bundle review URL, in their own
+   separate session.
 
 ## Local content stays a snapshot, never a sync
 

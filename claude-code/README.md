@@ -221,6 +221,7 @@ ArtifactBridge exposes these tools (from `src/mcp-documents.ts`):
 - `artifactbridge_apply_proposal_to_current` — apply a stale proposal onto the current head (server-side three-way merge; publishes the merged content). Human decision: an OAuth session only; an `afb_` agent token is refused. Only valid when the proposal read shows `stale_apply.status` "clean".
 - `artifactbridge_publish_document` — publish an approved managed document.
 - `artifactbridge_start_import_scan` — record a scan-start signal immediately before reading import sources. `source_label` may name the source, such as a folder, but never an agent harness or client.
+- `artifactbridge_complete_import_scan` — record the one terminal outcome of a scan run, with the `run_id` the scan-start call returned: `"proposal_created"` plus the bundle id, or `"empty"` with no bundle id. An identical retry succeeds; a different second outcome is refused.
 - `artifactbridge_register_import_source` — register a local-directory import source and return its server-issued id.
 - `artifactbridge_plan_document_import` — stage a source inventory and create a body-free import plan. This does not change documents.
 - `artifactbridge_get_document_import_plan` — read the action list and framed staged text for an import plan.
