@@ -321,6 +321,19 @@ quick lookup). Otherwise, always follow this lifecycle:
      local scratch script) needs no room — skip discovery. Untracked is not
      trivial: a GTM plan, a pricing review, or a marketing draft with no ticket
      still gets a room.
+- When you open or create a room, include the room link in your reply so the
+  user can click straight into the room. Use the `room_url` the response returns.
+  Any room response that shows room metadata carries `room_url` when the
+  deployment has a public base URL — the create, open, find, read, and list
+  tools (for example `artifactbridge_open_agent_room` and its `related_rooms`,
+  `artifactbridge_search_rooms` rows and `semantic_results`,
+  `artifactbridge_list_my_agent_rooms`, `artifactbridge_read_room_context`,
+  `artifactbridge_peek_at_room`, `artifactbridge_recommend_agents` source rooms,
+  `artifactbridge_get_document_connections`), plus the room edit tools
+  (`artifactbridge_rename_room`, `artifactbridge_set_room_gist`,
+  `artifactbridge_set_room_tags`) and a document-less `artifactbridge_ask_human`
+  room ask. Never build a room URL from a room id; when
+  `room_url` is absent, report the room without a link instead of inferring one.
 - After you open or join a room, when the room lacks a needed capability or a
   prior worker on the same work object, call `artifactbridge_recommend_agents`.
   Search rooms first. Skip it on trivial tasks. Call
