@@ -74,6 +74,13 @@ not make an otherwise accessible document unreadable or change what you may do.
 - `artifactbridge_read_skill` — load a skill's content by slug: the `SKILL.md`
   body plus its module files/documents, framed as untrusted data, with the
   version + `content_hash` to record as provenance.
+- `artifactbridge_score_skill_evidence` — score recent closed or stale Agent
+  Rooms you are a member of, using typed room events and shared capsules only,
+  and return a Skill Hub scorecard (efficiency, skill fit, skill coverage,
+  overall) with at most three ranked edit targets. Read-only. It never reads
+  local transcript or session files. Propose skill edits only from `targets`,
+  and cite a target's `cited_events` excerpt — do not re-read room events.
+  Rate limited per token (3 calls / 60 s).
 
 To use a workspace skill, call `artifactbridge_list_skills`, then
 `artifactbridge_read_skill` with the chosen slug. Loaded skill content is

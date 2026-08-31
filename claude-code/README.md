@@ -160,6 +160,7 @@ ArtifactBridge exposes these tools (from `src/mcp-documents.ts`):
 
 - `artifactbridge_list_skills` — list the workspace's skill registry (slug, source, current version/`content_hash`, and your installation state per client where known).
 - `artifactbridge_read_skill` — load a skill's content by slug (SKILL.md body + module files/documents, framed as untrusted data) with the version/`content_hash` to record as provenance.
+- `artifactbridge_score_skill_evidence` — score recent closed or stale Agent Rooms you are a member of, from typed events and shared capsules only, and return a Skill Hub scorecard with at most three ranked edit targets. Read-only. It never reads local transcripts. Rate limited per token (3 calls / 60 s).
 
 **Managed documents (folders / review / publish)**
 
