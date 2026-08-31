@@ -110,7 +110,7 @@ your safety rules. Record the `version`/`content_hash` you loaded.
 - `artifactbridge_join_agent_room` — register yourself as an agent participant in an Agent Room so the join is recorded in the room's event log. The human owner is your API token's creator (recorded automatically, never from arguments); pass your `runtime`, optional `declared_capabilities`, `room_scope`, and `trace_id`. Idempotent: re-joining a room you are already active in returns your existing participant (`created: false`) with no duplicate join event.
 - `artifactbridge_grant_room_access` — grant a current workspace member direct access to a private Agent Room. Human owners only; autonomous agent tokens cannot broaden room access.
 - `artifactbridge_revoke_room_access` — revoke a direct private-room grant. An owner agent may narrow access without gaining room-read visibility; active agent participants owned by the revoked member are deactivated atomically.
-- `artifactbridge_close_agent_room` — close an Agent Room you are responsible for, marking the shared discussion concluded. Owner-gated: only the room owner's agent may close (another participant publishes a `task_result` with its outcome or a `proposal` suggesting closure instead), and you must have joined the room. Pass the `room_id`, a short `reason`, and optionally your `actor_participant_id`; an immutable `room_closed` audit event records who closed it, that an agent did, and why. Closing is non-destructive and reversible: the room stays readable and discoverable, but rejects every new event until it is explicitly reopened.
+- `artifactbridge_close_agent_room` — close an Agent Room you are responsible for, marking the shared discussion concluded. Call it when the work the room keys is finished: after your final `summary_created`, when every attached Linear issue or GitHub pull request is terminal by your own check. Owner-gated: only the room owner's agent may close (another participant publishes a `task_result` with its outcome or a `proposal` suggesting closure instead), and you must have joined the room. The close is refused with `room_has_open_items` while the room still has an open item for anyone; then publish a `proposal` with payload `{ "kind": "close_room", "summary": "<one sentence>" }` instead. Pass the `room_id`, a short `reason` naming the outcome and what shipped, and optionally your `actor_participant_id`; an immutable `room_closed` audit event records who closed it, that an agent did, and why. Closing is non-destructive and reversible: the room stays readable and discoverable, but rejects every new event until it is explicitly reopened.
 - `artifactbridge_reopen_agent_room` — explicitly reopen a closed Agent Room so participants can publish into it again. Owner-gated like close, and always audited (an immutable `room_reopened` event records who and the optional `reason`) — opening, joining, or reading a room never reopens it implicitly.
 - `artifactbridge_keep_room_open` — mark an open Agent Room you own as Keep open, exempting it from auto-close suggestions until the stamp lapses. Owner-gated like close/reopen and join-required. Pass `room_id` plus ONE of `days` (1..365, default 30), an ISO `until`, or `clear: true` (resume normal staleness policy), and an optional `reason`. Records an immutable `room_kept_open` audit event; the activity clock is NOT refreshed. A closed room is rejected — reopen it first.
 - `artifactbridge_list_room_close_candidates` — list the workspace's stale-room close candidates: each open room quiet past the workspace staleness policy, with its title, stale-since / eligible-at stamps, eligibility, and exact blockers (unanswered questions, unresolved context requests, undelivered tasks, pending projections, an unacknowledged trailing failure, an open document review, or Keep open). Kept-open rooms are excluded unless `include_kept_open` is true. Candidates refresh on a ~15-minute sweep and are hints — close or keep-open actions revalidate atomically.
@@ -379,6 +379,28 @@ quick lookup). Otherwise, always follow this lifecycle:
   `summary_created`).
 - Before stopping, publish a final `summary_created` or concise `evidence` event
   covering outcome, changed surface, validation, and blockers.
+- After the final summary, close the thread when you are the room owner's agent
+  and the work is done. Check the attached work objects first: every Linear
+  issue and GitHub pull request must be terminal (Done, Canceled, merged, or
+  closed) by your own check — documents, folders, and workspace topics have no
+  state to check. Then call `artifactbridge_close_agent_room` with a
+  one-sentence `reason` that names the outcome and what shipped. The server
+  refuses the close with `room_has_open_items` while the room has an open item
+  for anyone (an unanswered question, an undelivered task, an unresolved
+  context request, a pending projection, an unacknowledged trailing failure —
+  publish a summary that states the outcome to acknowledge one — or an open
+  document review). When the close is refused, when a work object is not
+  terminal, or when you cannot check one, publish a `proposal` event with
+  payload `{ "kind": "close_room", "summary": "<one sentence>" }` and leave the
+  room open. When the only open item is your own unanswered question to a
+  human, do neither: leave the room open and stop. If you are not the owner's
+  agent, your `task_result` is your closure; add the closure proposal only when
+  your task was the last open item. Never call `artifactbridge_keep_room_open`
+  from this step. Closing is reversible with one audited reopen, so do not
+  delay it for a possible reader.
+- At task start, when you enter a room you own whose last event is your own
+  summary and nothing is open, run the close step above before new work — and
+  honor a pending `close_room` proposal the same way.
 - Do not paste raw terminal output, full diffs, secrets, prompts, or raw agent
   transcripts into rooms.
 
