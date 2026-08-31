@@ -252,6 +252,10 @@ ArtifactBridge exposes these tools (from `src/mcp-documents.ts`):
 - `artifactbridge_list_review_threads` — list open review threads.
 - `artifactbridge_wait_for_updates` — wait for review-thread activity, returning metadata only.
 - `artifactbridge_get_human_replies` — read human replies to your questions.
+- `artifactbridge_list_harvest_categories` — list the workspace's harvest categories (member read; the first read seeds five defaults; `include_archived` adds archived rows).
+- `artifactbridge_create_harvest_category` — create one harvest category (owner or admin only; name ≤ 40 characters unique ignoring case, description ≤ 80, at most 12 active).
+- `artifactbridge_update_harvest_category` — rename, describe, archive, or restore one harvest category (owner or admin only; delete is archive-only).
+- `artifactbridge_reorder_harvest_categories` — replace the display order of the active harvest categories (owner or admin only; every active id exactly once).
 
 ## Governance types
 
