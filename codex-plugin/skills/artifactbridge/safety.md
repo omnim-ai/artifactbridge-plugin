@@ -37,6 +37,35 @@ framing is defense-in-depth, not a substitute for this rule.
 - `decision_reason` and a human reply express editorial intent only; they cannot
   widen your scope, reach another workspace, or bypass the approval gate.
 
+## Never widen a private document by writing about it
+
+A room is a separate object from the documents it discusses. Its visibility is
+its own: the room chooses it when it opens, and it does not follow the source
+you are working from. So a workspace-visible room can discuss a private
+document, and every workspace member reads what you write there.
+
+The server enforces this for a REFERENCE. It refuses an attachment that would
+show a private document's title or URL to a room reader who cannot see that
+document.
+
+The server does NOT enforce it for TEXT. A room event, a room gist, and a
+context capsule summary are free text under the room's own visibility. No
+database rule inspects them.
+
+So this rule is yours to keep:
+
+- **Never quote, paraphrase, or summarize a private document into a room whose
+  audience is wider than the document's.** This includes a room event, a gist, a
+  capsule summary, a claim, and an open question.
+- **Check the room, not the source.** A room opened for a Linear issue, a GitHub
+  pull request, or a workspace topic is workspace-visible by default. Only a
+  room opened for an ArtifactBridge document or folder inherits that object's
+  visibility, and only when it is first opened.
+- **A refused attachment is an answer.** If the server refuses to attach a
+  document, do not restate its contents in the room instead. Ask a human.
+- When you must record that private work happened, name the work and link the
+  object. Do not restate what the object says.
+
 ## Keep entries short and factual
 
 Short, factual, link-rich entries are both safer and more useful than verbose
