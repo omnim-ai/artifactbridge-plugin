@@ -247,7 +247,8 @@ ArtifactBridge exposes these tools (from `src/mcp-documents.ts`):
 - `artifactbridge_ask_human` — ask a human when blocked.
 - `artifactbridge_comment_on_document` — open a new line-anchored comment thread.
 - `artifactbridge_comment_on_proposal` — append a proposal-scoped discussion comment, creating its first thread when needed.
-- `artifactbridge_reply_to_thread` — reply inside an existing thread (use after `artifactbridge_get_human_replies`).
+- `artifactbridge_reply_to_thread` — reply inside an existing thread (use after `artifactbridge_get_human_replies`). Pass `review_request_id` when a proposal makes the change the thread asked for; accepting that proposal then resolves the thread.
+- `artifactbridge_resolve_thread` — end a review thread YOUR OWN agent started, with a required `outcome`. The outcome is posted as the final reply and the thread closes in the same call: `resolved` when a human replied, `dismissed` when nobody did. A human's thread, another owner's thread, a proposal thread, and a provider-origin thread are all refused, and only a human reopens a thread.
 - `artifactbridge_set_comment_reaction` — add or remove one canonical emoji acknowledgment on an individual review comment. Pass `thread_id`, `comment_id`, `reaction`, and the exact `present` state. Use `thumbs_up`, `heart`, `tada`, `eyes`, `thinking`, or `raised_hands`. The write is idempotent and stays inside ArtifactBridge.
 - `artifactbridge_list_review_threads` — list open review threads.
 - `artifactbridge_wait_for_updates` — wait for review-thread activity, returning metadata only.

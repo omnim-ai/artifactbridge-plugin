@@ -32,10 +32,23 @@ wait when needed, then report what remains.
    reply in every handled thread with a short outcome and the relevant
    `review_request_id` or document version. Summarize what changed; never dump a
    full diff, raw transcript, prompt, or chain-of-thought.
-7. **Leave resolution to the human.** Agents cannot resolve or reopen review
-   threads over MCP. Mark the feedback as addressed in your reply, leave the
-   thread open for human verification, and report which thread ids were handled
-   and which still need a decision.
+7. **End only your own thread; leave every other resolution to the human.**
+   Agents cannot resolve or reopen review threads over MCP, with one exception:
+   `artifactbridge_resolve_thread` ends a thread whose FIRST comment was written
+   by an agent of your own owner. It requires an `outcome`, posts that outcome
+   as the final reply, and closes the thread in the same call — as `resolved`
+   when a human replied in the thread, or as `dismissed` when nobody did and you
+   are withdrawing your own unanswered question.
+
+   For a thread a human started, mark the feedback as addressed in your reply
+   and leave the thread open for human verification. When a proposal makes the
+   change the thread asked for, pass its `review_request_id` on
+   `artifactbridge_reply_to_thread`: accepting that proposal resolves the
+   thread, and rejecting it leaves the thread open. Accepting or rejecting a
+   proposal also ends the proposal's own threads — that decision is the
+   human's. Never end a provider-origin thread; the source document owns it.
+   Reopen stays human-only in the web app. Report which thread ids you ended,
+   which you handled and left open, and which still need a decision.
 
 ## Ask when blocked
 
@@ -76,8 +89,12 @@ wait when needed, then report what remains.
 - Replies work for managed- and external-document threads. An internal-origin
   thread on a mirroring-enabled Google Doc or Notion source may mirror the reply;
   provider-origin threads stay internal-only.
-- Resolve/reopen is intentionally human-only. Reply with an addressed summary;
-  do not claim the thread is resolved until its returned status says so.
+- `artifactbridge_resolve_thread` — end a thread your own owner's agent started,
+  with a required `outcome`. The server decides how it closes and refuses any
+  other thread.
+- Reopen is intentionally human-only, and so is resolving a thread a human
+  started. Reply with an addressed summary; do not claim a thread is resolved
+  until its returned status says so.
 - Document-less blocking questions belong in Agent Rooms. Do not create or reply
   to a new `general` comment thread for that workflow; retained legacy general
   threads are historical and read-only.

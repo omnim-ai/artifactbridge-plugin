@@ -181,14 +181,30 @@ your safety rules. Record the `version`/`content_hash` you loaded.
 - `artifactbridge_ask_human` — ask a human when blocked. For a document-less room ask, pass `addressee` (member email or user id) so the question stays pending for that member. Resolve a name or email fragment with `artifactbridge_search_workspace_members` first.
 - `artifactbridge_comment_on_document` — open a new line-anchored comment thread.
 - `artifactbridge_comment_on_proposal` — append a proposal-scoped discussion comment, creating its first thread when needed.
-- `artifactbridge_reply_to_thread` — reply inside an existing thread (use after `artifactbridge_get_human_replies`).
+- `artifactbridge_reply_to_thread` — reply inside an existing thread (use after `artifactbridge_get_human_replies`). Pass `review_request_id` when a proposal makes the change the thread asked for; accepting that proposal then resolves the thread.
+- `artifactbridge_resolve_thread` — end a thread YOUR OWN agent started, with a required `outcome`. The outcome is posted as the final reply and the thread closes in the same call.
 - `artifactbridge_list_review_threads` — list open review threads.
 - `artifactbridge_wait_for_updates` — wait for review-thread activity, returning metadata only.
 - `artifactbridge_get_human_replies` — read human replies to your questions.
 
-Agents can read and reply to managed- and external-document threads, but cannot
-resolve or reopen them over MCP. After incorporating feedback, reply with a short
-addressed summary and leave the final resolve/reopen action to a human.
+Agents read and reply to managed- and external-document threads. An agent may
+end ONE kind of thread: a thread its own owner's agent started, through
+`artifactbridge_resolve_thread`. Every other thread stays with a human. Humans
+decide; reopen is human-only; provider threads follow the source.
+
+- End your own thread when the work it asked for is finished. The server checks
+  the thread's first comment was written by an agent of your owner, then closes
+  it as `resolved` when a human replied, or as `dismissed` when nobody did (you
+  withdraw your own unanswered question).
+- For a human's thread, reply with a short addressed summary and leave it open.
+  When a proposal makes the change, pass its `review_request_id` on the reply:
+  accepting the proposal resolves the thread, rejecting it leaves the thread
+  open.
+- Accepting or rejecting a proposal ends the proposal's own threads. That is a
+  human decision.
+- Never end a provider-origin thread. Its source document owns it.
+- Reopening is always a human action in the web app, so end a thread only when
+  you have finished the work.
 
 ### Inline revision feedback (AI-973)
 
@@ -459,7 +475,10 @@ focused on the work the human asked for.
   and wait instead of guessing.
 - After applying or proposing the change, reply in each handled thread with a
   concise outcome and the relevant `review_request_id` or document version.
-  Report handled threads and unresolved decisions; humans resolve/reopen them.
+  Report handled threads and unresolved decisions; humans resolve/reopen them,
+  except that you may end a thread your own agent started with
+  `artifactbridge_resolve_thread`, and an accepted proposal resolves the threads
+  that name it.
 - Before reusing cached context, call `artifactbridge_get_document_changes` to
   confirm nothing changed.
 - When a latest read reports `freshness` as `stale` or `never_synced`, inspect
