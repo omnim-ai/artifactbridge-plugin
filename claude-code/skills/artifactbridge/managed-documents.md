@@ -37,9 +37,11 @@ Folder structure guidance is optional, member-authored advisory data. The neares
 - `artifactbridge_list_folders` — list folders (recent set, or resolve a typed
   name) before creating a document.
 - `artifactbridge_create_folder` — create a context folder (name-idempotent).
-- `artifactbridge_add_document_to_folder` / `artifactbridge_remove_document_from_folder`
-  — file or unfile a document (membership only; never copies). To move, add to
-  the destination then remove from the source.
+- `artifactbridge_add_document_to_folder` — set a document's folder (membership
+  only; never copies). A document lives in at most one folder, so filing it
+  MOVES it out of the folder it was in; one call is the whole move.
+- `artifactbridge_remove_document_from_folder` — unfile a document. It leaves
+  the document in no folder, which is allowed.
 
 ## Link documents with [[wikilinks]]
 
@@ -123,11 +125,13 @@ working-update tools reject only a leading block that declares an
   file it during the create itself (pass `folder_ids` only as a proposal the
   human confirms; a decline aborts the create). On other clients, call
   `artifactbridge_list_folders` and ask the human to pick a destination
-  folder; pass the chosen `folder_ids` (or omit for none). Link
+  folder; pass the chosen `folder_ids` (or omit for none). A document lives in
+  at most one folder, so `folder_ids` carries at most one id; two or more ids
+  fail the create. Link
   related workspace documents inline with `[[wikilinks]]` (see above).
   Authorization visibility is separate from `audience`. An API-token agent
-  create is private with no folder or with any private folder. It inherits
-  workspace visibility only when all selected folders are workspace-visible.
+  create is private with no folder or with a private folder. It inherits
+  workspace visibility only when the selected folder is workspace-visible.
   Pass `visibility: "private"` to narrow a shared-folder create. An agent cannot
   use `visibility: "workspace"` to widen an ambiguous or private-folder create.
   Private creation fails closed when the workspace private-object feature is

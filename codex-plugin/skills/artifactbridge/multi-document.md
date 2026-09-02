@@ -104,13 +104,17 @@ Confirm the batch actually landed — do not trust the accept call alone:
 
 Reorganize *membership and summaries*, never by copying content:
 
+A document lives in **at most one folder**, so filing is a move, not a copy.
+
 - **Canonical folder** — the one home for the current, authoritative set. File
   docs into it with `artifactbridge_add_document_to_folder` (idempotent; never
   copies). Give it a TLDR via `artifactbridge_set_folder_summary`.
-- **Legacy / pointer folder** — keep superseded docs discoverable. *Move* by
-  adding to the destination then `artifactbridge_remove_document_from_folder`
-  from the source — membership only, so the document and all its versions
-  survive. Removing the last folder is allowed.
+- **Legacy folder** — keep superseded docs discoverable. *Move* a document with
+  one `artifactbridge_add_document_to_folder` call on the destination: it takes
+  the document out of the folder it was in. Membership is all that changes, so
+  the document and all its versions survive. Use
+  `artifactbridge_remove_document_from_folder` only to leave a document in no
+  folder at all; that is allowed.
 - Refresh per-doc TLDRs with `artifactbridge_set_document_summary` and titles
   with `artifactbridge_rename_document` (title is metadata — no new version).
 - Never "reorganize" by re-creating documents; that orphans history. Re-file and
