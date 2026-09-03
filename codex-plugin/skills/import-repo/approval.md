@@ -10,6 +10,9 @@ rules protect that boundary. Follow every rule.
 - Apply the plan with `artifactbridge_apply_document_import_plan`. This step is
   a separate tool call.
 - Never call apply in the same step that first shows the plan to the human.
+- This rule governs agent tool calls. In the web Inbox, AI-2568 performs the
+  accept and the apply in one human action when the human presses Import on
+  the proposal's Inbox item; that one press IS the explicit human decision.
 
 ## Only a human accepts
 
