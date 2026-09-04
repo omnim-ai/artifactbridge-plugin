@@ -53,12 +53,24 @@ Never call `artifactbridge_accept_document_import_plan` or
 anything. A human decides at the bundle review URL, in a separate step this
 skill does not take.
 
+## Name the workspace on every call
+
+Every tool call lands in the resolved workspace of the connection. With no
+selector, the resolved workspace is the CLI's signed-in workspace. Never rely
+on logged-in connection state. Resolve the target workspace explicitly: call
+`artifactbridge_get_workspace_info`. It lists every workspace the credential
+can access. When the credential can access more than one workspace, pass
+`workspace` or `workspace_slug` on EVERY tool call in steps 2-8. Ask the human
+when the request context names a workspace that differs from the resolved one,
+or a workspace the credential cannot access.
+
 ## Workflow
 
 Follow these 10 steps in order.
 
 1. **Ask what to crawl.** Ask the human which local directory to crawl, and
-   which connected provider accounts (if any) to include. Zero connected
+   which connected provider accounts (if any) to include. Also ask which
+   workspace the result belongs in. Zero connected
    accounts is a valid, complete crawl — the bundle still gets created and
    still returns one URL.
 2. **Signal scan start.** Call `artifactbridge_start_import_scan` once, immediately before you start reading sources.
@@ -130,11 +142,13 @@ Follow these 10 steps in order.
    step 7. When the crawl selected nothing to propose — no local file passed
    the rules in steps 3-4 and no connected candidate passed step 5 — skip the
    plan and bundle steps, and pass `outcome: "empty"` with no bundle id.
-9. **Report one bundle review URL.** Tell the human the bundle contains one
-   local section and N connected sections (N may be zero), how many items each
-   section proposes, and the one review URL from step 7. State that nothing
-   was written yet. When the run completed `outcome: "empty"`, there is no
-   bundle and no URL: report that the scan found nothing to import instead.
+9. **Report one bundle review URL.** Tell the human the workspace the bundle
+   was created in, by name. Tell them the bundle contains one local section
+   and N connected sections (N may be zero). For each section, report how many
+   items the crawl found and how many items the plan proposes. Give the one
+   review URL from step 7. State that nothing was written yet. When the run
+   completed `outcome: "empty"`, there is no bundle and no URL: report that
+   the scan found nothing to import instead.
 10. **Stop.** Do not accept, apply, sync, or re-run the crawl. The human
    reviews and decides every section at the bundle review URL, in their own
    separate session.
