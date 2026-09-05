@@ -70,5 +70,5 @@ So this rule is yours to keep:
 
 Short, factual, link-rich entries are both safer and more useful than verbose
 ones. When in doubt, write less and link more. See
-[logbook](./logbook.md) and the full
-[`docs/agent-working-contract.md`](../../../docs/agent-working-contract.md).
+[logbook](./logbook.md) and the
+[Working contract](./SKILL.md#working-contract--always-follow) section of the root skill.
