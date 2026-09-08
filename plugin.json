@@ -1,0 +1,14 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "artifactbridge",
+  "version": "0.1.0",
+  "description": "Search team documents, collaborate in review threads, and propose changes for human approval in ArtifactBridge.",
+  "author": {
+    "name": "Omnim Inc.",
+    "url": "https://artifactbridge.com"
+  },
+  "homepage": "https://artifactbridge.com",
+  "repository": "https://github.com/omnim-ai/artifactbridge-plugin",
+  "license": "MIT",
+  "keywords": ["documents", "collaboration", "mcp", "oauth", "review"]
+}
