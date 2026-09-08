@@ -105,6 +105,8 @@ ArtifactBridge exposes these tools (from `src/mcp-documents.ts`):
 - `artifactbridge_list_documents` — list documents in the workspace.
 - `artifactbridge_search_documents` — search document content.
 - `artifactbridge_read_document` — read a document's current version.
+- `artifactbridge_read_image_version` — read one exact immutable Library image
+  version as a native image content block.
 - `artifactbridge_sync_document` — pull the latest from the external provider.
 - `artifactbridge_get_document_changes` — what changed since a known version.
 - `artifactbridge_browse_connected_source` — list metadata and folders from a
@@ -178,6 +180,12 @@ ArtifactBridge exposes these tools (from `src/mcp-documents.ts`):
 - `artifactbridge_read_proposal` — read a proposal's `proposed_md`, `unified_diff`, status, `stale`, version numbers, and `decision_reason`; read-only for both OAuth and `afb_` callers; body and diff framed as untrusted content.
 - `artifactbridge_request_proposal_agent_review` — request a review of the exact current proposal revision from one active agent participant that your token creator owns in an existing open Room attached to the same managed document. Pass the `current_revision_id` and `current_document_head_id` from `artifactbridge_read_proposal`. The idempotent request creates only content-free task metadata. It does not make a proposal decision.
 - `artifactbridge_create_document_from_docx` — create a managed deal document from a clean Word file (`file_name` + `content_base64`, 15 MiB or smaller); the first version's text matches the file and the file is kept as the version's package. A file with tracked changes is refused: use `artifactbridge_add_document_redline` instead. Ask the human for the destination folder as for `artifactbridge_create_document`.
+- `artifactbridge_create_document_from_image` — create a managed Library image
+  from PNG, JPEG, WebP, or GIF bytes, at most 3 MiB decoded.
+- `artifactbridge_submit_image_version` — submit exact replacement image bytes
+  with the exact version ID you read as `expected_base_version_id`; governed
+  submissions wait for human review. If the head is stale, read the returned
+  current version and retry the updated payload with a new `idempotency_key`.
 - `artifactbridge_add_document_redline` — add a counterparty's returned `.docx` (`file_name` + `content_base64`) as a redline proposal on a managed document: the server keeps the file, reads every tracked change into decidable edits, checks the file against the current version, projects the edits as a diff, and ingests the Word comments. Returns `created`, `review_request_id`, the check `summary`, and the `report` lines; a file with nothing to review returns `created: false`. A human decides every edit; an agent never decides.
 - `artifactbridge_decide_redline_edit` — record the signed-in human's decision on ONE redline edit: accepted or rejected (with an optional comment for the counterparty), or acknowledged for an edit outside the body. **Human decision: OAuth session only** — an `afb_` agent token is refused and should comment with a recommendation instead. Returns the decided count; `artifactbridge_accept_proposal` publishes once every edit is decided.
 - `artifactbridge_read_redline_reply` — read the reply `.docx` a human's Accept of a redline produced (accepted changes applied in place, rejected ones left as tracked changes, the human's comments as Word comments): `content_base64`, `file_name`, `byte_size`, `sha256`, the per-edit `decisions`, and `summary_text` — the plain-text decision list to paste into the e-mail that sends the file. Read-only: reading never sends the file; an open redline has no reply yet (`redline_reply_not_ready`).

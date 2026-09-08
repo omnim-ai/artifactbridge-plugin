@@ -148,6 +148,75 @@ working-update tools reject only a leading block that declares an
   to an earlier proposal.
   `[[wikilinks]]` in the proposed Markdown become cited provenance on the
   accepted version.
+
+## Library images
+
+Library image versions keep the original PNG, JPEG, WebP, or GIF bytes. They do
+not use `content_md`, external image URLs, or caller-supplied Storage keys.
+Create an image with standard base64 and a retry key:
+
+```json
+{
+  "title": "Launch marker",
+  "file_name": "launch-marker.png",
+  "content_type": "image/png",
+  "content_base64": "<standard base64, no data URL prefix>",
+  "idempotency_key": "launch-marker-create-v1",
+  "folder_ids": ["<folder uuid>"],
+  "review_mode": "governed"
+}
+```
+
+Call `artifactbridge_create_document_from_image`. The decoded input has a hard
+3 MiB limit. An exact retry must reuse the same `idempotency_key`; after any
+field changes, use a new key. Keep the returned `document_id` and
+`document_version_id`.
+
+Submit a later immutable version against the exact head you read:
+
+```json
+{
+  "document_id": "<document uuid>",
+  "expected_base_version_id": "<version uuid>",
+  "file_name": "launch-marker-v2.png",
+  "content_type": "image/png",
+  "content_base64": "<standard base64, no data URL prefix>",
+  "idempotency_key": "launch-marker-submit-v2"
+}
+```
+
+Call `artifactbridge_submit_image_version`. For a governed document, success
+returns `outcome: "review_opened"`, `decision_status: "pending"`, a
+`review_request_id`, and a private `candidate_id`. A human must accept the
+candidate before the document head changes. Do not retry that successful
+submission. If the tool reports a stale head, read the returned current version
+and retry the updated payload with a new idempotency key. For transport or
+timeout failures, retry the unchanged payload with the same key.
+
+Read exact bytes with this schema:
+
+```json
+{
+  "document_id": "<document uuid>",
+  "document_version_id": "<exact version uuid>"
+}
+```
+
+`artifactbridge_read_image_version` returns a native image content block with
+the stored MIME type and exact original bytes. MCP resource clients can read the
+current image from `document://<document uuid>` or an exact immutable version
+from `document-version://<document uuid>/<version uuid>`. Missing, private,
+revoked, and cross-workspace requests all fail without image metadata or bytes.
+
+For an image at the 3 MiB boundary, use the shipped HTTP client's exact-version
+tool or `document-version://` resource read. The client selects a fixed 5 MiB
+encoded-response budget only for these two request shapes and requires the
+registered server to return one plain `application/json` response. It refuses
+an SSE image result with an explicit response-mode error. Other calls keep the
+4 MiB JSON and 1 MiB SSE limits. A different MCP client must prove that it can
+receive the full encoded envelope; do not assume that its default limit is
+large enough.
+
 ## Spreadsheet documents (CSV/TSV)
 
 To give the workspace tabular data, create a **spreadsheet document**: call
