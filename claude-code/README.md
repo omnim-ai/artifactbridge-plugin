@@ -152,6 +152,8 @@ ArtifactBridge exposes these tools (from `src/mcp-documents.ts`):
 - `artifactbridge_read_document` — read a document's current version.
 - `artifactbridge_read_image_version` — read one exact immutable Library image
   version as a native image content block.
+- `artifactbridge_read_image_candidate` — read the pending candidate of one
+  image proposal as a native image content block.
 - `artifactbridge_sync_document` — pull the latest from the external provider.
 - `artifactbridge_get_document_changes` — what changed since a known version.
 - `artifactbridge_browse_connected_source` — list metadata and folders from a

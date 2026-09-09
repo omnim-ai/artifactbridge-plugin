@@ -62,6 +62,9 @@ clients should ignore these two and use `artifactbridge_search_documents` /
 - `artifactbridge_read_image_version` — read one exact immutable Library image
   version as an MCP-native image block. Pass both `document_id` and
   `document_version_id`; the server never substitutes the latest version.
+- `artifactbridge_read_image_candidate` — read the pending candidate of one
+  image proposal as an MCP-native image block. Pass the `review_request_id`;
+  the result names the `base_version_id` to read for a side-by-side comparison.
 - `artifactbridge_sync_document` — pull the latest from the external provider.
 - `artifactbridge_get_document_changes` — what changed since a known version.
 - `artifactbridge_browse_connected_source` — list metadata and folders from a

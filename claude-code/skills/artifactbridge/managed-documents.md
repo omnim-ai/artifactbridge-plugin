@@ -185,13 +185,26 @@ Submit a later immutable version against the exact head you read:
 }
 ```
 
-Call `artifactbridge_submit_image_version`. For a governed document, success
-returns `outcome: "review_opened"`, `decision_status: "pending"`, a
-`review_request_id`, and a private `candidate_id`. A human must accept the
-candidate before the document head changes. Do not retry that successful
-submission. If the tool reports a stale head, read the returned current version
-and retry the updated payload with a new idempotency key. For transport or
-timeout failures, retry the unchanged payload with the same key.
+Call `artifactbridge_submit_image_version`. Image versions follow the document
+policy. A governed image takes a proposal from any workspace member who can see
+it: success returns `outcome: "review_opened"`, `decision_status: "pending"`, a
+`review_request_id`, a private `candidate_id`, and a `link` to the review in the
+Inbox. The proposal enters the document owner's Inbox like a text proposal. A
+human must accept the candidate before the document head changes. Do not retry
+that successful submission. A working image takes a direct update from its owner
+only, the same rule as `artifactbridge_update_working_document`: success returns
+`outcome: "updated"`; another member's agent gets `forbidden`. If the tool
+reports a stale head, read the returned current version and retry the updated
+payload with a new idempotency key. For transport or timeout failures, retry the
+unchanged payload with the same key.
+
+To inspect a pending image proposal, call `artifactbridge_read_image_candidate`
+with the `review_request_id`. It returns the candidate as a native image content
+block with its status and `base_version_id`; read the base with
+`artifactbridge_read_image_version`. `artifactbridge_read_proposal` reports
+`kind: "image"` with an `image` object that names both reads, and
+`artifactbridge_list_proposals_for_document` reports each proposal's `kind`.
+Poll the decision with `artifactbridge_get_review_status`.
 
 Read exact bytes with this schema:
 
@@ -209,8 +222,8 @@ from `document-version://<document uuid>/<version uuid>`. Missing, private,
 revoked, and cross-workspace requests all fail without image metadata or bytes.
 
 For an image at the 3 MiB boundary, use the shipped HTTP client's exact-version
-tool or `document-version://` resource read. The client selects a fixed 5 MiB
-encoded-response budget only for these two request shapes and requires the
+tool, candidate tool, or `document-version://` resource read. The client selects
+a fixed 5 MiB encoded-response budget only for these request shapes and requires the
 registered server to return one plain `application/json` response. It refuses
 an SSE image result with an explicit response-mode error. Other calls keep the
 4 MiB JSON and 1 MiB SSE limits. A different MCP client must prove that it can
