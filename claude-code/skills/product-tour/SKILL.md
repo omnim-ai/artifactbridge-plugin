@@ -464,8 +464,8 @@ Then **checkpoint and end your turn**: give the proposal's real link, say in one
 line that this document changes only if they approve, and that this is the heart
 of the tour — the AI proposes, they decide. Tell them to open the proposal and
 review the change; it opens on "Preview" (the plan the way it will look once
-accepted, with removed and added text marked), and they can switch to the
-"Changed lines" toggle to see only what changed. Then they choose accept,
+accepted, with removed and added text marked), and they can press the
+"Show what changed" toggle to see only what changed. Then they choose accept,
 reject, or request changes in AB, and come
 back and say "Continue". Wait.
 
