@@ -379,9 +379,10 @@ a clear reviewer `summary` in the format the tool describes.
 Then **checkpoint and end your turn**: give the proposal's real link, say in one
 line that this document changes only if they approve, and that this is the heart
 of the tour — the AI proposes, they decide. Tell them to open the proposal and
-review the diff; it opens on "Changed lines" (just what changed), and they can
-switch to the "Preview" toggle to read the plan the way it will look once
-accepted. Then they choose accept, reject, or request changes in AB, and come
+review the change; it opens on "Preview" (the plan the way it will look once
+accepted, with removed and added text marked), and they can switch to the
+"Changed lines" toggle to see only what changed. Then they choose accept,
+reject, or request changes in AB, and come
 back and say "Continue". Wait.
 
 ## Lesson 6 — Read their real decision (a checkpoint — then stop)
