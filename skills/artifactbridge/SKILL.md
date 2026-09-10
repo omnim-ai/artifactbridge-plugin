@@ -251,7 +251,7 @@ skill, diagnose the bridge, or explicitly capture a local Markdown file:
 
 - `artifactbridge skills list` — the workspace skill registry plus your
   per-client install state.
-- `artifactbridge skills install <slug> [--clients claude,codex,grok,opencode,hermes]` — install a
+- `artifactbridge skills install <slug> [--clients claude,codex,grok,opencode,hermes,openclaw]` — install a
   workspace skill locally. Idempotent and provenance-tracked;
   `artifactbridge skills retry <slug>` re-runs a failed install.
 - `artifactbridge status` / `artifactbridge doctor [--report]` — connection and
