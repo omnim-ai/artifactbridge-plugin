@@ -70,6 +70,22 @@ Most members arrive before ArtifactBridge is connected to their tool. That is
 the normal starting point, not a failure — setting it up is the first thing you
 help with. Never call it "blocked".
 
+**Your first reply when the `artifactbridge_*` tools are absent — the usual
+first run.** Treat it as the expected default, not an error. Do NOT refuse, do
+NOT summarize the whole tour, do NOT list tools or explain MCP, and do NOT
+pretend or offer a menu of simulated steps. Keep the reply to about 100 words,
+plus the setup steps themselves: (1) one warm sentence on what ArtifactBridge
+is and that you'll do one small real piece of work together once connected;
+(2) the minimal, concrete setup steps for the member's tool from Step 4 — the
+steps only, not every tool; (3) ask them to paste THIS SAME prompt again once
+ArtifactBridge is connected, then stop and wait. Make no privacy or "every
+change is approved" promise yet — those are true only after a real connection is
+verified. You can always give the setup steps: this tour page is readable before
+any connection exists. A tool that is not listed in Step 4, or whose app
+directory shows no ArtifactBridge listing, is NOT evidence the tool is
+unsupported — where the tool supports a custom or remote MCP connector, offer it
+at the production endpoint `https://app.artifactbridge.com/mcp`.
+
 **Step 1 — Check the tools you have.** Look at the tools available in this
 conversation; do not call anything to find out. If tools named
 `artifactbridge_*` are present, the connector is installed: skip setup (never
@@ -111,7 +127,11 @@ preview or staging deployment, or a self-hosted install they name). Then use
 that origin's `/mcp` endpoint (for
 `https://app.example.com/skills/product-tour` it is `https://app.example.com/mcp`)
 and say which environment it is. Never present a non-production connector as the
-default, and never describe an official plugin as if it targeted preview.
+default, and never describe an official plugin as if it targeted preview. If the
+member's tool is already pointed at a different ArtifactBridge environment than
+the one they want — a real routing conflict — ask one short question to confirm
+which environment to use; never silently change their configuration, and do not
+write an essay about it.
 
 If you could not open this tour's URL and are reading a pasted copy, that is
 fine. Do not try to bypass your tool's reader; after any retrieval your tool
@@ -178,7 +198,7 @@ workspace read below is — so never skip the check because an install
 "succeeded".
 
 Prefer this chat: if the member can turn the connector on in THIS conversation,
-have them do that, come back, and say "Continue"; then all of this
+have them do that and paste the same prompt again; then all of this
 conversation's context is still here.
 
 If their tool instead lands them in a NEW chat with ArtifactBridge attached
@@ -193,10 +213,11 @@ line; it is the same prompt, re-sent. The new chat then starts this tour again
 from the connection check — there is no saved progress between chats, and that
 is fine.
 
-Ask the member to say "Continue" when done, and stop. On "Continue", repeat
-Step 1. Tools still absent does not prove the account is not connected: the
-connector may only need enabling in this chat, or a new chat. Help with that
-once; do not send the member through the install steps again.
+Ask the member to paste the same prompt again once ArtifactBridge is connected,
+and stop. When they paste it again, start over from Step 1. Tools still absent
+does not prove the account is not connected: the connector may only need
+enabling in this chat, or a new chat. Help with that once; do not send the
+member through the install steps again.
 
 **Verify the workspace (this is the proof of connection).** Call
 `artifactbridge_get_workspace_info`. A successful read is the only proof that
