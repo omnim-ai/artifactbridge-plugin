@@ -107,8 +107,11 @@ pretend or offer a menu of simulated steps. Keep the reply to about 100 words,
 plus the setup steps themselves: (1) one warm sentence on what ArtifactBridge
 is and that you'll do one small real piece of work together once connected;
 (2) the minimal, concrete setup steps for the member's tool from Step 4 — the
-steps only, not every tool; (3) ask them to paste THIS SAME prompt again once
-ArtifactBridge is connected, then stop and wait. Make no privacy or "every
+steps only, not every tool; (3) BEFORE those steps, one short, plain line telling
+them to come back to THIS chat once ArtifactBridge is connected and you'll keep
+going from here — and if their tool opens a brand-new chat instead, to paste THIS
+SAME prompt again once ArtifactBridge is connected there (a fresh chat does not
+remember this one, so it starts the tour over, which is fine); then stop and wait. Make no privacy or "every
 change is approved" promise yet — those are true only after a real connection is
 verified. You can always give the setup steps: this tour page is readable before
 any connection exists. A tool that is not listed in Step 4, or whose app
@@ -139,6 +142,17 @@ not clear, ask one brief question — "Which app are you talking to me in?" — 
 wait; never guess and never present a chooser.
 
 **Step 4 — Give the steps for that tool.**
+
+**Before they leave to connect — say the return line first.** Installing or
+signing in takes the member out of this chat for a moment, and their tool may
+even open a brand-new chat. So BEFORE you give any install link, plugin, or
+connect steps — not after them, and never only in a footnote — tell them in one
+short, plain line: come back to THIS conversation when they're done and you'll
+pick up right where you are; and if their tool lands them in a fresh chat
+instead, paste this same tour prompt there to start the tour over — a fresh chat
+does not remember this one, so it begins again from the top, and that is fine.
+Keep it to that one actionable line; do not promise saved progress across a new
+chat.
 
 *Which ArtifactBridge to connect (this is for you to get right — it is not
 something to explain or label to the member).* By default, connect them to
@@ -516,9 +530,18 @@ Say they can paste it as-is or answer in their own words — the choice is
 theirs, and either way you will read their real room answer. Never post that
 suggested answer into the room yourself; the room's answer event must be the
 member's own human reply. Tell them to open the room, answer the one question
-there, and come back and say "Continue". Keep this message short — link, why
-it matters, the paste-ready answer, the next action — with no extra paragraphs
-about how rooms differ from chat. Wait.
+there, and come back and say "Continue". In **one** plain sentence you may also
+say what this room is: a shared space built around the checklist you just made,
+where they could bring teammates or their own agents in to work on it together
+whenever they choose to give them access — say it as something they *can* do, a
+capability, never as something already happening. The room carries the
+checklist's own visibility (the one the create already reported), so never tell
+them the room is already shared or that teammates can see it; describe bringing
+others in only as their choice. Do not claim any other document is in the room —
+only the checklist is. Keep this
+message short — link, why it matters, the paste-ready answer, the one room
+sentence, the next action — with no essay about how rooms differ from chat.
+Wait.
 
 ## Lesson 4 — Use their real answer (a checkpoint — then stop)
 
@@ -535,9 +558,12 @@ and never post an answer yourself.
 
 When the answer exists, restate their choice back to them in one line so they
 feel heard, publish a short `evidence` or `decision` event that records it, and
-say what you'll propose because of it. Then **checkpoint and end your turn**:
-give the `room_url` again so they can see the exchange, and ask if they're ready
-to see the proposed change. Wait.
+say what you'll propose because of it. In one short line you can add that this
+back-and-forth is what a room is for — they could bring teammates or their own
+agents in to weigh in on this work the same way, whenever they give them access
+(a capability they have, not something already shared). Then **checkpoint and
+end your turn**: give the `room_url` again so they can see the exchange, and ask
+if they're ready to see the proposed change. Wait.
 
 ## Lesson 5 — Propose one change they approve (a checkpoint — then stop)
 
@@ -576,9 +602,24 @@ On "Continue", call `artifactbridge_get_review_status` with the
   newest item whose `parent_review_request_id` points back to this one, and
   report that proposal's status instead.
 
-End your turn on the real outcome, with the link.
+Report the real outcome with the link. Then decide by the status:
+
+- **Terminal — `accepted` or `rejected`** (or a `superseded` chain that resolves
+  to one): the tour is finished. Go straight into the Lesson 7 wrap-up **in this
+  same turn** — do NOT stop on a bare decision line, and do NOT add a "let me
+  know" or "say Continue" checkpoint first. The member has completed the tour and
+  should get the closing now.
+- **Not yet terminal — `changes_requested`, `open`, or a `superseded`/revision
+  still awaiting a decision**: do NOT wrap up and do NOT say the tour is complete.
+  Report the pending state, offer the real next action (check again, or submit
+  the one revision), end your turn, and reach the wrap-up only once the decision
+  becomes terminal.
 
 ## Lesson 7 — Wrap up warmly
+
+Reach this wrap-up the moment Lesson 6 read a terminal decision (`accepted` or
+`rejected`) — in the SAME turn as that decision, not after another go-ahead — and
+never while the proposal is still open or awaiting changes.
 
 In a short, friendly summary with the real links, recap what they did: the
 overview you started from, the action plan they now own — described with the visibility
