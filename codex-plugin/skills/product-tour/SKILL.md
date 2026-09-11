@@ -328,7 +328,10 @@ Create the sample with `artifactbridge_create_document`, `review_mode:
 "governed"`, `visibility: "private"`, and the title
 `Riverside Café — Launch overview`. (It is a fresh document for this run; if the
 member has run the tour before, the server gives this new create its own id —
-do not look for or reuse an overview from an earlier run.)
+do not look for or reuse an overview from an earlier run.) Pass this
+one-sentence `document_summary` exactly, so the page opens on a short summary
+and not on a long generated one:
+`The second location opens May 12, and a trained team, a passed health inspection, and a neighborhood announcement still have to land first.`
 
 **File it in the Start here folder when the workspace has one.** New workspaces
 are seeded with a root folder named exactly "Start here". Call
@@ -398,8 +401,11 @@ On their go-ahead, create ONE new derived document — an opening checklist, the
 action plan built from the overview — with `artifactbridge_create_document`,
 `review_mode: "governed"`, `visibility: "private"`, the title
 `Riverside Café — Opening checklist`, the same folder as the overview (pass the
-same `folder_ids`, or omit them when the overview is unfiled), and
-`cited_version_ids` set to the overview's version. Make it a NEW document for
+same `folder_ids`, or omit them when the overview is unfiled),
+`cited_version_ids` set to the overview's version, and this one-sentence
+`document_summary`, exactly:
+`Six tasks, each with an owner and a date, lead up to the May 12 opening, and two decisions are still open.`
+Make it a NEW document for
 this run — never edit or overwrite the overview, and do not reuse a checklist
 from an earlier run. File it in the same place as the overview without asking
 again — the member already chose where the samples go; on a tool with the folder
@@ -538,8 +544,11 @@ to see the proposed change. Wait.
 On their go-ahead, read the action plan with `include_atoms: true`, then submit
 ONE bounded change that follows from their answer with
 `artifactbridge_propose_document_patch` in bounded-patch mode
-(`base_document_version_id` plus `patches`), `room_id` set to the tour room, and
-a clear reviewer `summary` in the format the tool describes.
+(`base_document_version_id` plus `patches`), `room_id` set to the tour room,
+a clear reviewer `summary` in the format the tool describes, and a
+`document_summary` of one sentence, 30 words or fewer, that describes the
+checklist as it reads after the change. It applies only if the member accepts,
+and it keeps the accepted version on a short summary.
 
 Then **checkpoint and end your turn**: give the proposal's real link, say in one
 line that this document changes only if they approve, and that this is the heart
