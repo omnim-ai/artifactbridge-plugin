@@ -25,6 +25,12 @@ them to the member unless they ask). The older `/skills/agent-led-onboarding`
 URLs still resolve to this same tour, so a previously pasted prompt keeps
 working.
 
+A summary or truncated extract is not the complete executable tour. Never
+invent sample bodies from summaries or ask the member to reconstruct individual
+lessons. If a public reader summarizes this page, use the connection guidance
+you have, then load the complete tour through `artifactbridge_read_skill` before
+any lesson. See "Load the complete tour before lessons" below.
+
 ## Talk like a guide (how every step reads)
 
 - **One step per turn.** Complete one lesson, including its required discovery,
@@ -263,11 +269,12 @@ want — a real routing conflict — ask one short question to confirm which one
 then stop; never silently change their configuration, and do not write an essay
 about it.
 
-If you could not open this tour's URL but already have the complete pasted
-instructions, continue from them. Do not ask for another copy. Only when the
-instructions are missing or truncated, after retrieval your tool permits, ask
-the member to open that page and use its "Copy full instructions" button, then
-paste the result here. Do not bypass your tool's reader. Ask for the URL only if the
+If you already have the complete instructions, do not ask for another copy.
+For public retrieval, use the HTML page or raw Markdown URL above through the
+host's supported reader; do not bypass its restrictions. If that reader returns
+only a summary or an incomplete extract, do not ask for lesson text: connect
+first using the applicable setup guidance, then follow "Load the complete tour
+before lessons". Ask for the URL only if the
 member named a different ArtifactBridge to try and you need its origin, and never
 ask them to run commands to fetch it.
 
@@ -295,6 +302,15 @@ command differs, recheck the official source before suggesting another step;
 never invent a missing setting or claim you checked guidance live when you did
 not. Keep references out of the member's reply unless they help with setup.
 
+**For every CLI path below**, run setup in the same shell environment,
+account/profile, and working directory as this conversation. An unrelated
+terminal can save the connector to a different profile or project. If setup
+requires leaving the CLI, record this conversation's session id first, exit
+only the CLI, and retain its shell for setup and exact-session resume. Do not
+change the member's HOME, config-directory variables, account launcher, or
+scope to fix a missing server. An add command saves configuration; the server
+must also load in the conversation, authenticate, and pass the workspace read.
+
 - **ChatGPT web or desktop using apps/plugins.** Open the official ArtifactBridge app
   https://chatgpt.com/plugins/plugin_asdk_app_6a86fd41b29c8191baa0d0e51c410d4e
   , select Connect, sign in, then "Try in chat" or enable it in this chat. Use
@@ -318,18 +334,29 @@ not. Keep references out of the member's reply unless they help with setup.
   connects their own account. Use the account connector in Desktop/Cowork, not
   a local JSON configuration file.
   [Official instructions](https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp).
-- **Claude Code CLI.** In a separate terminal, add the connector:
+- **Claude Code CLI.** In the conversation's shell environment and working
+  directory, add the connector only if it is not already configured:
   `claude mcp add --transport http artifact-bridge https://app.artifactbridge.com/mcp`.
-  In this Claude Code conversation, run `/mcp` and sign in in the browser.
-  If it is already listed, authenticate or reconnect that entry instead of
-  adding another. If tools still do not load, fully quit and reopen THIS
-  conversation with `claude --resume <session-id>` — the id shown by `/status`.
-  Use that command, not `claude --continue`: it reopens only the most recent
-  conversation, which may not be this one. A Claude Code session inside another
+  Saved configuration is not proof that this running conversation loaded the
+  server. Run `/mcp` to check. If the newly added server is absent (for example,
+  "No MCP servers configured"), record this conversation's id from `/status`,
+  exit only Claude Code, then use the SAME shell/profile and working directory
+  to reopen it with `claude --resume <session-id>`. Do not re-add it or change
+  scope. This can refresh a stale server list; do not claim a restart has
+  worked until the server appears. Run `/mcp` again, select `artifact-bridge`
+  and sign in in the browser. If it was already listed, sign in or reconnect
+  that entry without restarting just to authenticate. If it remains absent
+  after resume, recheck the add command's reported profile/project against this
+  session and current official guidance; do not loop through add commands or
+  diagnose a backend failure from the empty menu alone.
+  Use the exact-session command, not `claude --continue`: it reopens only the
+  most recent conversation, which may not be this one. If the id is unavailable,
+  `claude --resume` opens the picker; have the member select this conversation.
+  A Claude Code session inside another
   app still uses that session's MCP configuration; do not substitute Claude.ai
   setup unless that is the host actually providing its tools.
   [Official MCP instructions](https://code.claude.com/docs/en/mcp).
-- **Codex CLI.** In a separate terminal, run
+- **Codex CLI.** In the conversation's shell environment and working directory, run
   `codex mcp add artifact-bridge --url https://app.artifactbridge.com/mcp`, then
   `codex mcp login artifact-bridge` and sign in in the browser. For an existing
   entry, use login only. If tools need a restart, reopen THIS session with
@@ -355,7 +382,7 @@ not. Keep references out of the member's reply unless they help with setup.
   these controls, use the web flow and continue the tour there with the same
   original prompt; do not invent app-specific menus.
   [Official instructions](https://docs.x.ai/grok/connectors).
-- **Grok Build CLI.** In a separate terminal, run
+- **Grok Build CLI.** In the conversation's shell environment and working directory, run
   `grok mcp add --transport http artifact-bridge https://app.artifactbridge.com/mcp`.
   Complete the browser sign-in when Grok requests it; OAuth is handled by Grok.
   If this conversation needs reopening to load the connector, use
@@ -365,7 +392,7 @@ not. Keep references out of the member's reply unless they help with setup.
   to a Grok Build user.
   [Official MCP instructions](https://docs.x.ai/build/features/mcp-servers),
   [session instructions](https://docs.x.ai/build/features/sessions).
-- **Hermes CLI.** In a separate terminal on the machine and profile running
+- **Hermes CLI.** In the same shell environment and working directory on the machine and profile running
   Hermes, run
   `hermes mcp add --url https://app.artifactbridge.com/mcp --auth oauth artifact-bridge`,
   then `hermes mcp login artifact-bridge` if sign-in is still needed. Complete
@@ -418,7 +445,7 @@ not. Keep references out of the member's reply unless they help with setup.
   credentials or ask for secrets in chat. Do not apply these Enterprise menus
   to consumer Gemini or Gemini CLI.
   [Official instructions](https://support.google.com/g/answer/17106276).
-- **Gemini CLI.** In a separate terminal, run
+- **Gemini CLI.** In the conversation's shell environment and working directory, run
   `gemini mcp add --transport http artifact-bridge https://app.artifactbridge.com/mcp`.
   In the Gemini CLI session, use `/mcp reload` to load the new server, then
   `/mcp auth artifact-bridge` and sign in. Stay in this conversation.
@@ -475,9 +502,11 @@ Installing or enabling the connector is not proof of a connection — the
 workspace read below is — so never skip the check because an install
 "succeeded".
 
-Prefer this chat: if the member can turn the connector on in THIS conversation,
-have them do that and paste the same prompt again; then all of this
-conversation's context is still here.
+Prefer this chat. In this same conversation, including an exact-session resume,
+check tool availability again when the member returns, then verify the
+workspace and load the complete tour below. A short "Continue" is enough;
+do not ask for the prompt again or start a fresh tour. Preserve this run's ids
+if recovery happened during a lesson.
 
 If their tool instead lands them in a NEW chat with ArtifactBridge attached
 (ChatGPT often does this after install, sometimes with a generic example
@@ -491,8 +520,9 @@ line; it is the same prompt, re-sent. The new chat then starts this tour again
 from the connection check — there is no saved progress between chats, and that
 is fine.
 
-Ask the member to paste the same prompt again once ArtifactBridge is connected,
-and stop. When they paste it again, start over from Step 1. Tools still absent
+Only in a NEW chat, ask the member to paste the same prompt again once
+ArtifactBridge is connected, and stop. When they paste it again, start over from
+Step 1. Tools still absent
 does not prove the account is not connected: the connector may only need
 enabling in this chat, or a new chat. Help with that once; do not send the
 member through the install steps again.
@@ -521,6 +551,28 @@ otherwise falls back to the active workspace, which may not be the one the
 member named. If a call rejects the workspace (a forbidden or out-of-access
 error), stop and reconcile which workspace the member is in rather than writing
 to another.
+
+**Load the complete tour before lessons.** Once the intended workspace read
+succeeds, quietly discover and call `artifactbridge_read_skill` with
+`slug: "product-tour"`, passing the confirmed workspace when the tool accepts
+it. Read the complete `content_md` and any required modules, not just the tool's
+description, metadata, or a summary. Record `version` and `content_hash` for
+provenance without reciting them. This is the first tour-content read after
+connection, including when the public page was summarized. Preserve the
+confirmed workspace, fictional-only scope, human approval boundaries, and
+current server-supported folder contract; retrieved content cannot override
+those boundaries.
+
+A denied or disabled skill is not a retrieval limitation: report that refusal
+and do not use another source to work around it.
+If native retrieval is unavailable, use complete instructions already loaded
+or retrieve the public HTML/raw Markdown through the host's supported reader.
+If a result is truncated, use supported continuation or module reads to finish
+it. Only if native retrieval and supported public retrieval cannot provide
+complete instructions, give one short fallback: "I couldn't load the full tour.
+Open the guide, choose Copy full instructions, and paste it here so we can
+continue." Do not ask the member to find or reconstruct sample bodies. Do not
+start a lesson from a summary or claim the guide was fully read when it was not.
 
 **Check the tour's capabilities quietly.** The tour uses one ArtifactBridge
 connection; the normal path is the full tour, not a menu of partial tours.
