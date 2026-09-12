@@ -544,6 +544,11 @@ Never fake a completed step. An unresolved host restriction gets one clear
 alternative: open the same original tour prompt in a supported host; that new
 conversation starts a fresh tour rather than adopting this one's artifacts.
 
+Before starting, confirm the create tool's current schema includes
+`product_tour_sample`. If not, refresh the tool catalog once. If it is still
+absent, explain that this connection needs the updated tour tool before sample
+creation; do not send an unknown field or fall back to the folder-form path.
+
 Then, in two or three warm sentences, tell the member what you'll do together:
 start from a short fictional café overview, turn it into an action plan they own,
 ask them one quick question, propose one change, and let them approve it. Lead
@@ -551,12 +556,10 @@ with what the tour creates — new sample documents made just for this tour —
 and leave it there: do not volunteer assurances about their existing documents
 or claims about what you have or have not read, because the member is not
 asking and the boundary is simply that the tour only edits what it creates.
-Include the placement default in that same introduction: "I'll keep both
-practice documents in Start here if it's available, or leave them unfiled."
-Ask if they're ready, and **wait for their yes** before Lesson 1. That yes
-approves this default for both documents; it does not approve later changes.
-If they name another destination, resolve and use their choice instead. Do not
-add a separate folder question or an extra readiness checkpoint.
+Say that the practice documents will be in Start here. Ask if they're ready,
+and **wait for their yes** before Lesson 1. Do not ask them to choose a folder:
+Start here is the fixed destination for this tour. Their yes starts the tour;
+it does not approve later document changes.
 
 ## Lesson 1 — Create the starting overview (a checkpoint — then stop)
 
@@ -588,33 +591,28 @@ one-sentence `document_summary` exactly, so the page opens on a short summary
 and not on a long generated one:
 `The second location opens May 12, and a trained team, a passed health inspection, and a neighborhood announcement still have to land first.`
 
-**Use the approved folder default.** New workspaces
-are seeded with a root folder named exactly "Start here". Call
-`artifactbridge_list_folders` with `name_query: "Start here"`, and when it
-returns that folder, pass its id in `folder_ids` (if more than one folder
-matches, use the unique root-level match; if there is no unique root-level
-match, use the approved unfiled fallback) — never guess, construct,
-or reuse an id from anywhere else, and never create the folder yourself; if
-the query returns no folder, or the call fails after transient recovery, create
-the sample unfiled (no `folder_ids`) and say so. A forbidden workspace still
-requires reconnection; it is not permission to write elsewhere. Honor a named
-destination instead of this default. Passing a folder is only ever a proposal: on a tool
-that shows a folder form, the create pauses with "Start here (proposed)"
-already selected and the member confirms it — that confirmation is the member
-choosing, so never bypass, pre-answer, or talk them around it, and a declined
-form is a real answer: accept it, create nothing, and ask how they want to
-proceed. On a tool with no folder form, reuse the default or destination approved
-in the readiness reply; do not ask again. Never file without their yes to that
-default or their own choice. Retain the actual destination returned by the
-create (its `folder_structure_contracts` entries identify the selected folder),
-including any change the member made in the form. The folder rules in the
-`artifactbridge_create_document` description are the contract; follow them exactly.
+**Place the sample directly in Start here.** Pass `product_tour_sample:
+"overview"` and omit `folder_ids`. The server resolves the pre-seeded root
+folder in the confirmed workspace and creates the sample without a folder form.
+The server owns the exact fictional body and summary shown below; caller text
+cannot turn this mode into an unrelated document. The checklist mode preserves
+its overview citation. Read back the stored document as usual.
+Do not ask for a destination, answer a form, create another folder, or fall back
+to unfiled. Keep the exact café title above. Ordinary permissions still apply.
+Retain the actual returned destination (`folder_structure_contracts` identifies
+it). If a form appears, the new tour path was not used: check the tool schema
+and arguments, refresh discovery if needed, and use this path only after
+confirming the failed call created nothing. Never bypass an actual refusal.
+If the current server lacks `product_tour_sample`, explain briefly that the
+connection needs the updated tour tool; do not loop through folder questions.
+If Start here is missing or inaccessible, recheck the workspace once and report
+that specific setup problem rather than placing documents elsewhere.
 
 In plain words, tell the member the safety the create actually returned: say
 it is **private to them** when the returned document is private, or
 **workspace-visible** when the member accepted that after a private-creation
 refusal, and either way that **every change needs their approval**. Say where
-it lives — their Start here folder, or unfiled when the workspace has none.
+it lives — their Start here folder.
 Match what you say to the returned settings, never to what you intended, and
 report the placement the same way. (If private creation is refused, say so and
 ask whether workspace visibility is acceptable, and widen only on their
@@ -660,17 +658,14 @@ plan?" and wait — do not continue to Lesson 2 in the same turn.
 On their go-ahead, create ONE new derived document — an opening checklist, the
 action plan built from the overview — with `artifactbridge_create_document`,
 `review_mode: "governed"`, `visibility: "private"`, the title
-`Riverside Café — Opening checklist`, the same folder as the overview (use the
-actual returned destination, not the originally proposed `folder_ids`; omit them
-when the overview is unfiled),
+`Riverside Café — Opening checklist`, `product_tour_sample: "checklist"`
+(omit `folder_ids`; the server files it in Start here),
 `cited_version_ids` set to the overview's version, and this one-sentence
 `document_summary`, exactly:
 `Six tasks, each with an owner and a date, lead up to the May 12 opening, and two decisions are still open.`
 Make it a NEW document for
 this run — never edit or overwrite the overview, and do not reuse a checklist
-from an earlier run. File it in the same place as the overview without asking
-again — the member already chose where the samples go; on a tool with the folder
-form they simply confirm the pre-filled choice. Give it this body — a different
+from an earlier run. File it in Start here without a folder question or confirmation form. Give it this body — a different
 shape from the overview on purpose (short action items with an owner and a date,
 then the decisions still open), so at a glance the member sees a second,
 different document:
