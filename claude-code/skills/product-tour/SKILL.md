@@ -343,7 +343,9 @@ must also load in the conversation, authenticate, and pass the workspace read.
   Enable it for this conversation with + → Connectors. Free accounts hold one
   custom connector. On Team and Enterprise, an owner first adds it in
   Organization settings → Connectors → Add → Custom → Web; the member then
-  connects their own account. Use the account connector in Desktop/Cowork, not
+  connects their own account. Before they leave the chat, add one plain line:
+  if Claude says only an owner can add connectors, tell me and I will give you
+  another way in. Use the account connector in Desktop/Cowork, not
   a local JSON configuration file.
   [Official instructions](https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp).
 - **Claude Code CLI.** In the conversation's shell environment and working
@@ -507,6 +509,28 @@ credential files or perform the member's sign-in yourself.
 
 When a setting or plan is missing, say so and offer another tool; do not
 fabricate a result.
+
+**When the member cannot add the connector because of an organization
+setting.** Claude Team and Enterprise reserve custom connectors for an owner;
+some organizations do the same in Perplexity, Grok, or Le Chat; a consumer app
+may have no connector field at all. Treat the report as a normal branch, not a
+failure: say plainly that nothing is wrong on their side, then give three ways
+forward in this order and let them pick. (1) a tool on their own computer:
+Claude Code and the Codex CLI connect from the member's own account with no
+organization setting; point them to Settings ▸ Install in ArtifactBridge,
+which walks through the desktop app and each tool. (2) ask the owner: give one
+paste-ready request for the person who manages their organization — for
+Claude: "Please add ArtifactBridge as a custom connector for our Claude
+organization: Organization settings → Connectors → Add → Custom → Web, with
+the URL https://app.artifactbridge.com/mcp. It lets our AI tools read our
+shared documents and propose changes that we approve." (3) the guide without a
+connection: explain in two or three sentences what ArtifactBridge is (shared
+documents for people and their agents, changes they approve, questions in
+Rooms) and offer to walk through this tour guide as reading. End with the
+return line: once ArtifactBridge is connected, come back to this chat, or paste
+the same prompt again if the tool opened a new chat. Never ask them to request
+owner rights themselves, and never ask them to paste anything from that flow
+into this chat.
 
 **Step 5 — Hand over, then check again.** Tell the member which steps are
 theirs: signing in happens in their browser, and they pick one workspace there.
