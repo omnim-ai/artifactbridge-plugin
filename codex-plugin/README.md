@@ -222,6 +222,7 @@ ArtifactBridge exposes these tools (from `src/mcp-documents.ts`):
 - `artifactbridge_create_harvest_category` — create one harvest category (owner or admin only; name ≤ 40 characters unique ignoring case, description ≤ 80, at most 12 active).
 - `artifactbridge_update_harvest_category` — rename, describe, archive, or restore one harvest category (owner or admin only; delete is archive-only).
 - `artifactbridge_reorder_harvest_categories` — replace the display order of the active harvest categories (owner or admin only; every active id exactly once).
+- `artifactbridge_report_tour_checkpoint` — product tour only: report a lesson checkpoint (lesson 0–7, status started/done/stuck/left, optional short note for the ArtifactBridge team; never document content).
 
 ## Governance types
 
