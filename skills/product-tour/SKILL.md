@@ -348,28 +348,33 @@ must also load in the conversation, authenticate, and pass the workspace read.
   another way in. Use the account connector in Desktop/Cowork, not
   a local JSON configuration file.
   [Official instructions](https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp).
+
 - **Claude Code CLI.** In the conversation's shell environment and working
   directory, add the connector only if it is not already configured:
   `claude mcp add --transport http artifact-bridge https://app.artifactbridge.com/mcp`.
   Saved configuration is not proof that this running conversation loaded the
-  server. Run `/mcp` to check. If the newly added server is absent (for example,
-  "No MCP servers configured"), record this conversation's id from `/status`,
-  exit only Claude Code, then use the SAME shell/profile and working directory
-  to reopen it with `claude --resume <session-id>`. Do not re-add it or change
-  scope. This can refresh a stale server list; do not claim a restart has
-  worked until the server appears. Run `/mcp` again, select `artifact-bridge`
-  and sign in in the browser. If it was already listed, sign in or reconnect
-  that entry without restarting just to authenticate. If it remains absent
-  after resume, recheck the add command's reported profile/project against this
-  session and current official guidance; do not loop through add commands or
-  diagnose a backend failure from the empty menu alone.
-  Use the exact-session command, not `claude --continue`: it reopens only the
-  most recent conversation, which may not be this one. If the id is unavailable,
-  `claude --resume` opens the picker; have the member select this conversation.
-  A Claude Code session inside another
-  app still uses that session's MCP configuration; do not substitute Claude.ai
-  setup unless that is the host actually providing its tools.
+  server. Run `/mcp` to check, select `artifact-bridge`, and sign in in the
+  browser; an entry that was already listed is signed in or reconnected
+  without restarting just to authenticate.
+
+  If the newly added server is absent (for example, "No MCP servers
+  configured"), record this conversation's id from `/status`, exit only Claude
+  Code, then use the SAME shell/profile and working directory to reopen it
+  with `claude --resume <session-id>`. Do not re-add it or change scope. This
+  can refresh a stale server list; do not claim a restart has worked until the
+  server appears. Run `/mcp` again, select `artifact-bridge` and sign in in
+  the browser. If it remains absent after resume, recheck the add command's
+  reported profile/project against this session and current official
+  guidance; do not loop through add commands or diagnose a backend failure
+  from the empty menu alone. Use the exact-session command, not
+  `claude --continue`: it reopens only the most recent conversation, which may
+  not be this one. If the id is unavailable, `claude --resume` opens the
+  picker; have the member select this conversation. A Claude Code session
+  inside another app still uses that session's MCP configuration; do not
+  substitute Claude.ai setup unless that is the host actually providing its
+  tools.
   [Official MCP instructions](https://code.claude.com/docs/en/mcp).
+
 - **Codex CLI.** In the conversation's shell environment and working directory, run
   `codex mcp add artifact-bridge --url https://app.artifactbridge.com/mcp`, then
   `codex mcp login artifact-bridge` and sign in in the browser. For an existing
@@ -540,7 +545,7 @@ workspace read below is — so never skip the check because an install
 
 Prefer this chat. In this same conversation, including an exact-session resume,
 check tool availability again when the member returns, then verify the
-workspace and load the complete tour below. A short "Continue" is enough;
+workspace and load the complete tour. A short "Continue" is enough;
 do not ask for the prompt again or start a fresh tour. Preserve this run's ids
 if recovery happened during a lesson.
 
