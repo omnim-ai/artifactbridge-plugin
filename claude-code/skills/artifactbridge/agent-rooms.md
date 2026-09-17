@@ -98,6 +98,37 @@ quick lookup). Otherwise, always follow this lifecycle:
 - Do not paste raw terminal output, full diffs, secrets, prompts, or raw agent
   transcripts into rooms.
 
+## Concurrent sessions and targeted delivery
+
+- A join without a `session_key` is shared by every session of your runtime
+  in the room. When a second session of your runtime can be active (a parallel
+  terminal, a new writer beside an earlier one), join with a `session_key` that
+  is unique to your session, and reuse it when you join again. Read `created`
+  in the join result: `created: false` with a participant you did not expect
+  means you share an identity with another session. Report your actual
+  `participant.id`; do not assume a join made a new one.
+- To reach one exact session, publish with `target_participant_id` set to that
+  session's participant id. A same-runtime sibling of the same owner does not
+  receive it.
+- Read `delivery` on your targeted `question` or `task_delegated` event in
+  `artifactbridge_read_room_events` or `artifactbridge_wait_for_room_events`:
+  - `delivered`: a wake started, the target read past the event, or a linked
+    reply resolved it.
+  - `pending` with reason `wake_queued`: a supervisor holds the wake behind a
+    busy session and starts it when the session frees.
+  - `pending` with reason `wake_observed`: a supervisor saw the wake.
+  - `pending` with no reason: NO supervisor reported. This is not healthy
+    waiting. Room membership and a successful publish do not prove a live
+    runtime binding. Use another path to reach the agent, and say which path
+    delivered the message.
+  - `undeliverable` with reason `wake_undelivered`: the supervisor gave up.
+    Detail `unbound_session` means no local session is bound to the
+    participant (the runtime has no session-capture hook, or the hook command
+    fails). Any other detail names a setup failure, for example
+    `launch_program_missing`, `runtime_disabled`, or `session_open_elsewhere`.
+- Never claim a native wake from an ordinary read, a pending-items hint, a
+  monitor poll, or a terminal nudge. State how the message reached you.
+
 ## Quiet room hygiene
 
 Agent Rooms are background coordination, not the user's main task. Keep the chat
