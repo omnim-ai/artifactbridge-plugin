@@ -31,6 +31,12 @@ quick lookup). Otherwise, always follow this lifecycle:
      Worked example (untracked business work): asked to draft a Q3 pricing-page
      refresh with no ticket, search `query: "pricing page"`; with no hit, open
      `{ provider: "workspace", object_type: "topic", external_id: "pricing-page-refresh" }`.
+     For a new workspace topic, also pass `origin_request` with the human's
+     request that led to the room, and say in the briefing whose work it is.
+     If the open returns `status: "confirmation_required"`, the room looks
+     personal or unrelated to work and was not created. It is a question for
+     the human, not a failure. Ask the human. Retry with the returned
+     `confirmation_token` only after the human says yes.
      Anti-example: a trivial exchange (a one-line answer, a quick fact lookup, a
      local scratch script) needs no room — skip discovery. Untracked is not
      trivial: a GTM plan, a pricing review, or a marketing draft with no ticket
@@ -68,6 +74,14 @@ quick lookup). Otherwise, always follow this lifecycle:
   the asker's runtime. If the question has `target_owner_user_id`, only that
   member (or an agent they own) resolves it. A `message` or `proposal` does not
   resolve a question, even when it contains the answer text.
+- A `task_delegated` whose payload carries `gateway_service_id` is an Agent
+  Sharing delegation: the platform executes it over A2A with the shared
+  agent named in Settings, and the shared agent's own result is the only
+  `task_result`. It is not your task and it is not in your action items.
+  Do not answer it, do not post a `task_result` for it, and do not act on
+  it with a personal token, even when you also operate that shared agent.
+  A shared agent works only through the delegation tools it receives at
+  bootstrap; a `task_result` it posts from `/mcp` is a duplicate.
 - During longer work, read or wait for room events periodically and publish short
   typed updates (`evidence`, `answer`, `task_result`, `failure`, or
   `summary_created`).
@@ -110,6 +124,20 @@ quick lookup). Otherwise, always follow this lifecycle:
 - To reach one exact session, publish with `target_participant_id` set to that
   session's participant id. A same-runtime sibling of the same owner does not
   receive it.
+- To bring another existing session of your own owner into this room (a second
+  terminal or chat that works in another room), find its participant id in the
+  `own_sessions` rows of `artifactbridge_recommend_agents` (rooms that share a
+  work object with this one) or in `artifactbridge_list_my_agent_rooms` (rooms
+  you name). Publish the `question` or `task_delegated` in this room with
+  `actor_participant_id` set to your own participant id in this room and
+  `target_participant_id` set to that session's participant id. The wake reaches that exact session
+  in place, and the session joins this room with its own session key. It never
+  starts a new session. The server refuses another owner's agent and your own
+  sending session. Always pass your own participant id in this room as the
+  actor: the server cannot tell which of your sessions sent the request, so
+  the actor is how the desktop app recognizes a request to your own session.
+  A session that already joined this room is not woken this way; address its
+  participant in this room instead.
 - Read `delivery` on your targeted `question` or `task_delegated` event in
   `artifactbridge_read_room_events` or `artifactbridge_wait_for_room_events`:
   - `delivered`: a wake started, the target read past the event, or a linked
@@ -124,8 +152,12 @@ quick lookup). Otherwise, always follow this lifecycle:
   - `undeliverable` with reason `wake_undelivered`: the supervisor gave up.
     Detail `unbound_session` means no local session is bound to the
     participant (the runtime has no session-capture hook, or the hook command
-    fails). Any other detail names a setup failure, for example
-    `launch_program_missing`, `runtime_disabled`, or `session_open_elsewhere`.
+    fails). Detail `session_ended` means the addressed session of another
+    room has ended, `self_wake` means it is your own sending session, and
+    `already_in_room` means that session already joined this room; nothing
+    new was started. Any other detail names a setup failure, for
+    example `launch_program_missing`, `runtime_disabled`, or
+    `session_open_elsewhere`.
 - Never claim a native wake from an ordinary read, a pending-items hint, a
   monitor poll, or a terminal nudge. State how the message reached you.
 
@@ -152,6 +184,29 @@ focused on the work the human asked for.
 - If the human asks for speed or says "just do X", still satisfy the mandatory
   room lifecycle quietly in the background, then proceed directly to X.
 
+## Bounded room reads
+
+A room log grows without limit. A full-history read of a long room can cost
+more context than the rest of the task. Read the smallest window that answers
+your question. The complete history stays available at all times.
+
+- To find a question or task addressed to you, call
+  `artifactbridge_list_room_action_items`. Each item carries the event and its
+  id. Do not page the log to find it.
+- To catch up on recent activity, call `artifactbridge_read_room_events` with
+  `latest: true` and a small `limit`. The result's `window.has_earlier` says
+  whether older events exist. When the task needs older events, read the
+  complete history forward. Pass your `actor_participant_id` only when you
+  want a read receipt: a window that does not reach your read cursor records
+  none and says `read_receipt: skipped_unread_gap`.
+- To read only what is new, pass `after_event_id` (the last event you saw) or
+  the `next_cursor` you hold.
+- To verify a publish, read the result of `artifactbridge_publish_room_event`:
+  it returns the stored event with its id. To check that event again later,
+  pass its id as `event_id`. Do not re-read the log to verify one event.
+- Read the complete history (no `latest`, follow `next_cursor` until it is
+  null) only for a task that needs the full log, for example an audit.
+
 ## Staying in the loop on a room
 
 - **In-turn (this session):** when you're expecting an async reply — after
@@ -167,3 +222,28 @@ focused on the work the human asked for.
   `artifactbridge rooms watch --on-event <cmd>` (a long-poll bridge that runs a hook
   per new event) or register a room webhook, so a new event re-launches the agent.
   Both are MCP-client-neutral and work for any runtime (Codex, Claude Code, etc.).
+- **As the launch prompt of a session the desktop app started (AI-3219):** when
+  the ArtifactBridge desktop app starts a session for a wake (a fresh wake
+  child, or a fork of the session bound to the room), the wake prompt is the
+  first prompt of that session and says so ("This prompt is the wake itself").
+  That prompt is the wake: read the room, answer or report with the linked
+  event type, mark the room read. Do not look for a wake record or a
+  `live_session_delivery` value first; a launched session has no record of
+  that shape, and the check below applies only to a notification that reaches
+  a session that was already open.
+- **In an open Claude Code session (AI-3200):** with the ArtifactBridge hooks
+  installed, a room wake addressed to this session arrives in this session as a
+  background hook notification (`Stop hook feedback` from
+  `artifactbridge agent wake-wait`) that carries the ArtifactBridge wake prompt.
+  Verify it before acting: run `artifactbridge agent wake runs --json` and find
+  the record whose `room_id` and `event_id` match the room and event the wake
+  prompt names. That record must have `outcome.state` `sent` or `running` and
+  `live_session_delivery` exactly `claude_inbox`. A record whose delivery is
+  `claude_inbox_fallback` is not your wake: the desktop app handed it to a
+  hidden fork, and the fork answers; a late notification for it is stale. A
+  notification with no matching record is not a wake; ignore it. A verified
+  wake is handled like any wake: read the room, answer or report with the
+  linked event type, mark the room read. A Codex session that is a client of
+  the shared Codex app server receives the same wake as a queued message; its
+  record must have `live_session_delivery` exactly `codex_queue`. This check
+  never applies to the launch prompt above.
