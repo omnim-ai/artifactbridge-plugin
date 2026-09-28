@@ -367,6 +367,14 @@ close only when you own the room and the work is done, and wait in-turn with
 
 ## Working contract — always follow
 
+- If a call fails with `agent_account_not_allowed`, stop the task. Tell the
+  person which coding-tool account and which workspace the error names, and
+  ask whether to allow that account. Run the `allow_command` from the error
+  only after the person says yes. Never add an account without asking, and
+  never use another way to reach ArtifactBridge.
+- If a call fails with `agent_connector_required`, tell the person to open the
+  ArtifactBridge app or run `artifactbridge setup`, and then restart the
+  coding tool.
 - Document **versions** are the source of truth. Record and reuse the
   `document_version_id` you read content at.
 - Before changing a document, call `artifactbridge_list_review_threads` with
