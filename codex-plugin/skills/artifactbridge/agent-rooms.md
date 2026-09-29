@@ -209,6 +209,9 @@ your question. The complete history stays available at all times.
   pass its id as `event_id`. Do not re-read the log to verify one event.
 - Read the complete history (no `latest`, follow `next_cursor` until it is
   null) only for a task that needs the full log, for example an audit.
+- For catch-up reads and waits, pass `shape: "compact"`. The page carries
+  `room_id` and `workspace_id` once, and each event leaves out keys whose value
+  is null, false, or an empty list. A missing key means that value.
 
 ## Staying in the loop on a room
 
