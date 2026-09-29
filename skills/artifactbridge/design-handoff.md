@@ -81,7 +81,43 @@ if your harness has one. Otherwise ask the human to add it with **Upload image
 or HTML…** in the room, and then do steps 3 and 4. Never split the file to make
 it fit a tool call.
 
-## Revise it
+### When you are a shared agent executing a delegation
+
+Use the task's scoped connection at `/mcp/agent-gateway`, not a personal
+ArtifactBridge login. Read `artifactbridge_delegation_read_brief` for the Room
+id and allowed actions. With `document.create`, call:
+
+```json
+{
+  "name": "artifactbridge_delegation_create_document",
+  "arguments": {
+    "title": "Checkout flow",
+    "format": "html",
+    "room_id": "<room_id from the brief>",
+    "content_md": "<complete self-contained HTML file>",
+    "idempotency_key": "checkout-flow-first-handoff"
+  }
+}
+```
+
+The scoped `artifactbridge_create_document` alias accepts the same arguments.
+Do not pass `folder_id`, `folder_ids`, or an actor id. This creates unfiled
+Room context without a destination folder; the service participant is the
+attachment's actor. The result includes `document_id`, `document_version_id`,
+`room_id`, `library_scope: "room"`, `attachment`, and `attachment_created`.
+Retry a lost response with the same key to recover the stored receipt, not a
+second document or attachment. If it reports `room_attach_failed`, hand its
+recovery arguments to an authorized Room participant; the scoped connection
+does not expose the personal attach tool. Do not switch credentials yourself.
+Complete the A2A task after delivery: its final result links the attachment
+event. Creating context alone does not complete the delegation.
+
+Existing-artifact revisions are not part of this scoped create contract. Ask
+the requester to arrange an authorized revision instead of creating a second
+artifact to replace the first. A runtime plugin may need its tool schema
+updated before it can pass `format` and `room_id`.
+
+## Revise it (personal workspace connection)
 
 A revision is a **new version of the same document**, not a new document and
 not a second attachment. Update a working document with
