@@ -141,7 +141,9 @@ quick lookup). Otherwise, always follow this lifecycle:
 - Read `delivery` on your targeted `question` or `task_delegated` event in
   `artifactbridge_read_room_events` or `artifactbridge_wait_for_room_events`:
   - `delivered`: a wake started, the target read past the event, or a linked
-    reply resolved it.
+    reply resolved it. For a question or task that needs a reply, an
+    undelivered wake outranks a read or a start: only the linked reply then
+    gives `delivered`.
   - `pending` with reason `wake_queued`: a supervisor holds the wake behind a
     busy session and starts it when the session frees.
   - `pending` with reason `wake_observed`: a supervisor saw the wake.
@@ -155,7 +157,8 @@ quick lookup). Otherwise, always follow this lifecycle:
     fails). Detail `session_ended` means the addressed session of another
     room has ended, `self_wake` means it is your own sending session, and
     `already_in_room` means that session already joined this room; nothing
-    new was started. Any other detail names a setup failure, for
+    new was started. Detail `turn_unconfirmed` means the target ran its turn
+    but posted no linked reply. Any other detail names a setup failure, for
     example `launch_program_missing`, `runtime_disabled`, or
     `session_open_elsewhere`.
 - Never claim a native wake from an ordinary read, a pending-items hint, a
