@@ -137,6 +137,12 @@ working-update tools reject only a leading block that declares an
   Private creation fails closed when the workspace private-object feature is
   disabled. OAuth callers retain the explicit human choice and workspace
   default.
+- `artifactbridge_register_document_skill` — register a managed Markdown
+  document as a workspace skill. When the human asks you to bring in a file
+  whose name or title contains "skill" (any case), create the document, then
+  call `artifactbridge_register_document_skill` right away and tell the human
+  the slug and link. If the tool answers `agent_decision_forbidden`, tell the
+  human to use "Use as skill…" on the document (give the link).
 - `artifactbridge_propose_document_patch` — propose a change for review. Pass
   either `proposed_md` for a complete replacement or
   `base_document_version_id` plus `patches` for bounded changes. Do not pass both
