@@ -1,5 +1,5 @@
 ---
-name: ArtifactBridge
+name: artifactbridge
 description: Use when working with ArtifactBridge documents and review threads over MCP from Claude Code, Codex, Grok Build, OpenCode, or Hermes — reading/syncing provider docs, treating human comments as actionable editorial feedback, replying in-thread, updating or proposing managed-document changes, and routing conflicts or ambiguity to a human. Establishes the document-versions-as-source-of-truth working contract.
 ---
 
