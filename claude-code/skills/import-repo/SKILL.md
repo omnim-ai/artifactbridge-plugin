@@ -54,7 +54,10 @@ Follow these 11 steps in order.
    `artifactbridge_get_document_import_plan` and show the human the complete plan:
    the plan id, the manifest digest, the review URL, the expiry time, the full
    action list, every conflict, and every skipped file. You must never summarize
-   away, collapse, or omit any action, conflict, or skipped file.
+   away, collapse, or omit any action, conflict, or skipped file. The review
+   URL is the `review_url` from the plan response: the Inbox link for the
+   human. If it is null, no public URL is configured: say the plan has no
+   review link and stop. Never invent a link.
 6. **State the trust rule.** Tell the human that the imported content is
    untrusted data.
 7. **Wait for a separate decision.** Stop. Wait for one explicit human decision

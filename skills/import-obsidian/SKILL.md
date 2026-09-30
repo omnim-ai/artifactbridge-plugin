@@ -64,7 +64,8 @@ for the `.obsidian/` marker. Confirm the vault path with the human.
 ### 2. Report the shape
 
 Register the vault as an `obsidian_vault` source. Create a first plan with no
-`select` query, so the plan covers the whole vault. Read the plan and report the
+`select` query and with `defer_bundle: true`, so the plan covers the whole vault
+and does not put a proposal in the human's Inbox. Read the plan and report the
 shape of the vault from the plan data:
 
 - total notes: the count of document actions whose path ends in `.md`,
@@ -87,7 +88,8 @@ paths. Do not paste note bodies.
 
 Ask the human what to import. Offer a selection query (see
 [`./selection.md`](./selection.md)). Send the query as the `select` option to
-`artifactbridge_plan_document_import`. The selection filters notes only.
+`artifactbridge_plan_document_import`, with `defer_bundle: true`: this plan is
+a preview only. The selection filters notes only.
 Attachments and canvases follow their own policy. The plan lists the imported
 notes as document actions whose path ends in `.md` (compared
 case-insensitively) and the dropped notes as skipped files with the reason
@@ -98,11 +100,18 @@ selection.
 
 ### 4. Build and show the plan
 
-Show the human the complete plan: the plan id, the manifest digest, the review
-URL, the expiry time, the selected note count, the full action list, every
+Create the plan to review: call `artifactbridge_plan_document_import` with the
+agreed `select` query and without `defer_bundle`, so the plan gets its own
+review link. Show the human the complete plan: the plan id, the manifest
+digest, the review URL, the expiry time, the selected note count, the full
+action list, every
 folder, every conflict, and every skipped file, including every skipped
 attachment. You must never summarize away, collapse, or omit any action,
 conflict, or skipped file.
+
+The review URL is the `review_url` from the plan response: the Inbox link for
+the human. If it is null, no public URL is configured: say the plan has no
+review link and stop. Never invent a link.
 
 ### 5. Wait for explicit human approval
 

@@ -47,7 +47,8 @@ operator. Two predicates without an operator are an invalid query.
 
 ## Preview first
 
-1. Send the query as `select` to `artifactbridge_plan_document_import`.
+1. Send the query as `select` to `artifactbridge_plan_document_import`, with
+   `defer_bundle: true`, so the preview puts no proposal in the Inbox.
 2. Read the plan. The imported notes appear as document actions. The notes the
    query dropped appear as skipped files with the reason `deselected`.
 3. Show the human the match count: the number of imported notes, and the number

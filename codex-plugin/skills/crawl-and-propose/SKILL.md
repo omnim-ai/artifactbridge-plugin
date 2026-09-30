@@ -88,7 +88,8 @@ Follow these 10 steps in order.
    Register the source with `artifactbridge_register_import_source` and use
    its returned `source_id`. Then call `artifactbridge_plan_document_import`
    with `source: { kind: "local_directory", source_id, source_revision,
-   entries }`:
+   entries }` and `defer_bundle: true`. Step 7 bundles this plan with the
+   connected plans, so it must not get its own review link first:
    - `source_revision`: a string (1-500 characters) that identifies this
      crawl attempt, for example a timestamp or a git commit hash if the
      directory is a git checkout.
