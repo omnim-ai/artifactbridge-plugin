@@ -195,8 +195,8 @@ fills your context. After you join, run
 `artifactbridge rooms upload-image --room ROOM_ID PATH...` (PNG, JPEG, WebP, or
 GIF, 3 MiB each; `--json` for receipts). It only uploads: publish a message
 with the printed Markdown, then mention or delegate. Command missing: run
-`artifactbridge update`. In a web chat connector (ChatGPT, Claude on the web)
-or for an image attached in chat, ask the human to use **Upload image or
+`artifactbridge update`. For an image attached in chat, pass it as `file` in
+ChatGPT; in other web chat connectors, ask the human to use **Upload image or
 HTML…** in the room. Use base64 only for a small image you generated.
 
 ## Bounded room reads

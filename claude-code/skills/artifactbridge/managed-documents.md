@@ -169,8 +169,10 @@ artifactbridge docs upload-image launch-marker-v2.png --document <document uuid>
 ```
 
 Use `--no-folder` instead of `--folder` for an unfiled image. If the command is
-missing, run `artifactbridge update`. In a web chat connector, ask the human to
-upload the image in the app.
+missing, run `artifactbridge update`. For an image the user attached in chat:
+in ChatGPT, pass the attached image as `file` (instead of `content_base64`,
+`content_type`, and `file_name`; the server reads the type from the bytes); in
+other web chat connectors, ask the human to upload the image in the app.
 
 For a small image that you generated, create it with standard base64 and a
 retry key:
