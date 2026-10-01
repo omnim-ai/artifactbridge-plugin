@@ -104,6 +104,7 @@ to use "Use as skill…" on the document (give the link).
 - `artifactbridge_open_agent_room` — open or resolve the room for real work of any kind; search rooms first.
 - `artifactbridge_attach_document_to_agent_room` — add an existing managed document to a room you joined.
 - `artifactbridge_detach_document_from_agent_room` — remove a supplemental document from a room's context.
+- `artifactbridge_attach_work_object_to_agent_room` — attach a GitHub PR or issue (`owner/repo#N`) to a joined room so CI results reach it.
 - `artifactbridge_list_rooms_for_document` — find rooms about a document before you open a new one; join instead of forking.
 - `artifactbridge_get_document_connections` — follow a document's links, backlinks, rooms, folders, and tags in one read.
 - `artifactbridge_set_room_tags` — replace a room's topic tags.
