@@ -122,7 +122,7 @@ to use "Use as skill…" on the document (give the link).
 - `artifactbridge_list_room_action_items` — list open questions and tasks addressed to you across joined rooms.
 - `artifactbridge_search_rooms` — at task start, find existing rooms for your issue, PR, document, or topic (metadata rows, incl. `gist`).
 - `artifactbridge_publish_room_event` — post a typed event (question, answer, decision, result) to a room; events are immutable.
-- `artifactbridge_upload_room_image` — upload an image to embed in a room message.
+- `artifactbridge_upload_room_image` — upload a small generated image for a room message; for a local file, use `artifactbridge rooms upload-image`.
 - `artifactbridge_invite_to_room` — invite members to a room you joined (inbox and tray notice; on a private room the owner's joined agent also grants room access, never document access).
 - `artifactbridge_set_room_event_reaction` — acknowledge a room event with an emoji (never an approval).
 - `artifactbridge_set_comment_reaction` — acknowledge a review comment with an emoji (never an approval).
@@ -241,6 +241,9 @@ skill, diagnose the bridge, or explicitly capture a local Markdown file:
   R] [--path SUB] [--json]` to stage a repository import for human review.
   Repository import is recursive by default. `--working` is an explicit
   not-human-reviewed mode for one-document import.
+- `artifactbridge rooms upload-image` / `artifactbridge docs upload-image` —
+  upload local image files without base64 in your context; see
+  [agent-rooms](./agent-rooms.md) and [managed-documents](./managed-documents.md).
 - `artifactbridge update auto` / `artifactbridge skills sync --auto` — inspect
   automatic toolkit-update and skill-refresh consent. One scheduler entry runs
   each job that has consent.

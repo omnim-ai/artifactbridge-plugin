@@ -79,7 +79,8 @@ A file with embedded images is usually larger than a model can write into one
 tool call. Send it with a programmatic MCP call that reads the file from disk,
 if your harness has one. Otherwise ask the human to add it with **Upload image
 or HTML…** in the room, and then do steps 3 and 4. Never split the file to make
-it fit a tool call.
+it fit a tool call. To share separate screenshots instead, see
+[Share local images in a room](./agent-rooms.md#share-local-images-in-a-room).
 
 ### When you are a shared agent executing a delegation
 

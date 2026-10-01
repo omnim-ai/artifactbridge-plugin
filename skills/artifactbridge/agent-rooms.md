@@ -171,7 +171,8 @@ focused on the work the human asked for.
 
 - Prefer first-class MCP/app tools for room actions. Do not build JSON with
   shell quoting or `curl` when a typed tool is available; shell fallback is only
-  for missing MCP tooling or explicit local CLI debugging.
+  for missing MCP tooling or explicit local CLI debugging. Exception: share a
+  local image file with the CLI (below).
 - Use known-good room payload shapes:
   - `artifactbridge_join_agent_room`: `room_scope` is an object, e.g.
     `{ "task": "Create child Linear tickets from AI-497 feedback" }`.
@@ -186,6 +187,17 @@ focused on the work the human asked for.
   reading, or schema retries unless the user asked about Agent Rooms.
 - If the human asks for speed or says "just do X", still satisfy the mandatory
   room lifecycle quietly in the background, then proceed directly to X.
+
+## Share local images in a room
+
+Never paste a local file's base64 into `artifactbridge_upload_room_image`: it
+fills your context. After you join, run
+`artifactbridge rooms upload-image --room ROOM_ID PATH...` (PNG, JPEG, WebP, or
+GIF, 3 MiB each; `--json` for receipts). It only uploads: publish a message
+with the printed Markdown, then mention or delegate. Command missing: run
+`artifactbridge update`. In a web chat connector (ChatGPT, Claude on the web)
+or for an image attached in chat, ask the human to use **Upload image or
+HTML…** in the room. Use base64 only for a small image you generated.
 
 ## Bounded room reads
 

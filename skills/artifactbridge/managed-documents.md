@@ -159,7 +159,21 @@ working-update tools reject only a leading block that declares an
 
 Library image versions keep the original PNG, JPEG, WebP, or GIF bytes. They do
 not use `content_md`, external image URLs, or caller-supplied Storage keys.
-Create an image with standard base64 and a retry key:
+
+For a local image file, use the CLI. It reads the file, sends the bytes, and
+makes and reuses the retry key, so no base64 passes through your context:
+
+```sh
+artifactbridge docs upload-image launch-marker.png --folder "Design" [--title T] [--working] [--json]
+artifactbridge docs upload-image launch-marker-v2.png --document <document uuid> --base-version <version uuid> [--json]
+```
+
+Use `--no-folder` instead of `--folder` for an unfiled image. If the command is
+missing, run `artifactbridge update`. In a web chat connector, ask the human to
+upload the image in the app.
+
+For a small image that you generated, create it with standard base64 and a
+retry key:
 
 ```json
 {
