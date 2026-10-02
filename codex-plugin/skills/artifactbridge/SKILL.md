@@ -139,6 +139,7 @@ to use "Use as skill…" on the document (give the link).
 - `artifactbridge_report_tour_checkpoint` — product tour only: report a lesson checkpoint.
 - `artifactbridge_prepare_product_tour` — product tour only: prepare the Welcome and read the tour state.
 - `artifactbridge_report_product_tour` — product tour only: report a tour milestone.
+- `artifactbridge_propose_beginner_tips_change` — first use: suggest the tip 1 change, once.
 - `artifactbridge_discover_gateway_services` — find external A2A services that could take a task; it never delegates.
 - `artifactbridge_delegate_to_gateway_service` — delegate one task from a room you joined to an external service.
 - `artifactbridge_cancel_gateway_delegation` — cancel a delegation you requested or that runs in your room.

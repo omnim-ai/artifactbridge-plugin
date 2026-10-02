@@ -216,6 +216,7 @@ outranks the line check. One reply ends each turn, within the budget above.
 | Prepare answers a `review` that is `accepted` or `rejected` | Lesson 2, then Lesson 3 | The Lesson 3 close |
 | Prepare answers a `review` that is `superseded` | Lesson 2's `superseded` step: link its one revision, or stop | That revision's Lesson 2 reply, or a plain stop |
 | No review, but you hold a `review_request_id` from this attempt (its `proposal_created` was refused or failed) | Lesson 2 on that held proposal; never read and propose again | Where Lesson 2 leads: the pending reminder, the revision link, the close, or a plain stop |
+| No review, no held proposal, and `welcome.template_version` is 2 or higher (Beginner tips) | Lesson 1's tip 1 change: call the tool once and link what it answers; the Notes rows below never apply | The proposal link and Continue, Lesson 2 for a decided change, or the Lesson 3 close when no change is available |
 | No review, no held proposal, and the exact replacement line is already in the Welcome under Notes (or at the member's explicitly selected target) | Lesson 1 read, then record `already_present`; on `applied: true`, Lesson 3 | The Lesson 3 close; on refusal, see Lesson 1 |
 | No review, no held proposal, no replacement line, and exactly one unchanged starter line under Notes | Lesson 1: read and propose the line replacement | The proposal link and Continue |
 | No review, no held proposal, no replacement line, and the member explicitly chose an alternative line that still matches one current line | Lesson 1: propose replacing that chosen line | The proposal link and Continue |
@@ -362,7 +363,8 @@ quietly discover and call `artifactbridge_prepare_product_tour`, passing the
 confirmed workspace when the tool accepts it. This authenticated read is what
 proves the connection to ArtifactBridge, and its answer is the tour's state:
 `attempt_id` (keep it; every milestone report needs it), `phase`, `welcome`
-(the private Welcome's `document_id` and status), `review` (a proposal already
+(the private Welcome's `document_id`, status, and `template_version`: 2 or
+higher is a 💡 Beginner tips document, 1 or null an older Welcome), `review` (a proposal already
 under review, if any), `setup` (the member's bounded answers: which assistant
 they use — `chatgpt`, `claude_code`, `claude_app`, `other`, `unsure`, or
 `claude` from an older answer that names no surface — where their information
@@ -399,7 +401,8 @@ start a lesson from a summary or claim the guide was fully read when it was not.
 **Check the tour's capabilities quietly.** Resolve the tools the lessons and
 recovery use through native discovery: `artifactbridge_prepare_product_tour`,
 `artifactbridge_report_product_tour`, `artifactbridge_read_document`,
-`artifactbridge_propose_document_patch`, `artifactbridge_get_review_status`,
+`artifactbridge_propose_document_patch`,
+`artifactbridge_propose_beginner_tips_change`, `artifactbridge_get_review_status`,
 `artifactbridge_list_proposals_for_document`, and
 `artifactbridge_get_human_replies`, `artifactbridge_open_agent_room`,
 `artifactbridge_join_agent_room`, `artifactbridge_read_room_context`,
@@ -494,6 +497,42 @@ recovery rules: the tour is partial, and you still explain Rooms and skills.
 line check, and never propose anew. A `review_request_id` you hold from this
 attempt counts the same, even when prepare names no `review`. The server refuses `already_present` while
 a review is `open` or `changes_requested`.
+
+**Choose the lesson by template version.** Prepare's
+`welcome.template_version` decides it. When it is 2 or higher, the Welcome is
+the member's 💡 Beginner tips: use the tip 1 change below and skip every Notes
+step after it. When it is 1 or null, the Welcome is an older one: skip the tip
+1 change and use the Notes steps unchanged.
+
+**Beginner tips: the tip 1 change.** With no `review` entry and no held
+proposal, call `artifactbridge_propose_beginner_tips_change` once, with no
+arguments. The server picks the document, the text, and your name; it makes at
+most one such change per member, ever, whether this tour or the connection
+instructions asked first. Never use `artifactbridge_propose_document_patch`
+here, never pick another line, and never restore tip 1 yourself. Act on its
+`outcome`:
+
+- `created`, or `existing` with a `review_request_id`: that change is this
+  tour's proposal, whatever its status. Record `proposal_created` with its
+  `review_request_id`, and handle a refusal as the Notes path below does. When
+  the answer's `review.status` is `open` or `changes_requested`, give the
+  checkpoint below. When it is `accepted` or `rejected`, go to Lesson 2 in this
+  same turn. Never ask for a second change.
+- `ineligible`, or `existing` with `review_request_id: null`: tip 1 was
+  edited or removed, the document moved, or the change was deleted. There is
+  nothing to review, and the tool never makes another change. Do not propose
+  anything, and do not ask which line to replace. Record `already_present`; on
+  `applied: true`, go to Lesson 3 in this same turn and say plainly that this
+  document has no tip 1 change to review. Handle a refusal as the Notes path
+  below does.
+
+For a Beginner tips change, Lessons 2 and 3 mean the new tip 1 line
+("Connected your …") wherever they say "the line". The checkpoint names the
+💡 Beginner tips document and says tip 1 changes to say that their AI is
+connected, only if they approve.
+
+**Older Welcome only: the Notes steps.** The rest of this lesson applies only
+when `welcome.template_version` is 1 or null.
 
 **Then check for the replacement line.** With no `review` entry, check for the
 exact replacement sentence below as a standalone line under `## Notes` (or
@@ -669,7 +708,8 @@ calls, so it matches what was saved:
 share two or three sentences:
 
 1. The real Welcome link and the actual decision: the version they accepted,
-   no change from a rejected proposal, or the line that was already there.
+   no change from a rejected proposal, the line that was already there, or
+   that Beginner tips had no tip 1 change to review.
    Name anything still pending or unavailable.
 2. Rooms and skills in one sentence, condensed from the accepted wording
    without adding claims:
