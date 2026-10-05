@@ -156,7 +156,7 @@ to use "Use as skill…" on the document (give the link).
 - `artifactbridge_grant_document_access` — human owners only: give a member access to a private document.
 - `artifactbridge_revoke_document_access` — remove a direct document grant; the owner always keeps access.
 - `artifactbridge_propose_document_patch` — propose a governed-document change (not for working documents); write `summary` by [proposal-summary](./proposal-summary.md).
-- `artifactbridge_update_working_document` — update a working document; after changes are requested, revise via `artifactbridge_propose_document_patch` + `revises_review_request_id`.
+- `artifactbridge_update_working_document` — update a working document (full body or `patches`); revise reviews via `artifactbridge_propose_document_patch` + `revises_review_request_id`.
 - `artifactbridge_set_document_summary` — set or clear a document's TLDR without a new version.
 - `artifactbridge_set_document_tags` — replace a document's tags; read the current tags first.
 - `artifactbridge_rename_document` — rename a managed document without a new version.

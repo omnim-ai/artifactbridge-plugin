@@ -49,6 +49,11 @@ Create one agent-owned working doc to track the batch:
   `artifactbridge_update_working_document`, passing
   `expected_base_version_id` = the version you last read (a stale base is
   rejected as a conflict — re-read and retry).
+- To append a tracker row, do not resend the whole tracker. Read it with
+  `artifactbridge_read_document` and `include_atoms: true`. Then call
+  `artifactbridge_update_working_document` with `patches`: use
+  `insert_after_section` or `replace_line_range`, and pass the read
+  `document_version_id` as `expected_base_version_id`.
 
 ## 3. Propose across many documents; capture every ID
 
