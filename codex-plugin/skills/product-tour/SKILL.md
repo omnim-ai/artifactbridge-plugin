@@ -413,7 +413,7 @@ recovery use through native discovery: `artifactbridge_prepare_product_tour`,
 `artifactbridge_propose_document_patch`,
 `artifactbridge_propose_beginner_tips_change`, `artifactbridge_get_review_status`,
 `artifactbridge_list_proposals_for_document`, and
-`artifactbridge_get_human_replies`, `artifactbridge_open_agent_room`,
+`artifactbridge_get_human_replies`, `artifactbridge_open_product_tour_room`,
 `artifactbridge_join_agent_room`, `artifactbridge_read_room_context`,
 `artifactbridge_read_room_events`, and `artifactbridge_publish_room_event`.
 Do not infer missing tools from a short
@@ -437,17 +437,15 @@ For phase `complete`, use the Optional section instead; do not post a new
 starting update to an already completed tour.
 
 1. Reuse prepare's `room.room_id` when present. Otherwise call
-   `artifactbridge_open_agent_room` with `provider: "artifactbridge"`,
-   `object_type: "document"`, `external_id` set to prepare's exact Welcome
-   `document_id`, `room_title: "Welcome"`, and `product_tour_attempt_id` set
-   to prepare's `attempt_id`. Use the open result's `room.id` as `room_id`.
-   Pass the confirmed workspace. The server verifies
-   that this is your current Welcome and records guided activity separately.
-   Omit `briefing`, `permission_metadata`, and open questions: opening already
+   `artifactbridge_open_product_tour_room` with `attempt_id` set to prepare's
+   `attempt_id`. Use the open result's `room.id` as `room_id`.
+   Pass the confirmed workspace. The server picks your current Welcome and
+   the Room title, and records guided activity separately.
+   Do not add a briefing or open questions: opening already
    generates document context, and retrying must not append another briefing.
-   The canonical document identity reuses the same Room after a retry or a
+   The same call reuses the same Room after a retry or a
    new chat. Never use a workspace topic, search by title, or create a second
-   Room when the open result is uncertain; retry the same canonical identity.
+   Room when the open result is uncertain; retry the same call.
 2. Check the returned Room's status and visibility. Only an open Room with
    `visibility: "private"` permits the starting update. If it is closed,
    shared with the workspace, or its visibility is unknown, explain the
