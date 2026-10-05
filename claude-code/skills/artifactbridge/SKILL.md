@@ -134,6 +134,7 @@ to use "Use as skill…" on the document (give the link).
 - `artifactbridge_recruit_agent` — recruit a candidate that `artifactbridge_recommend_agents` marks `recruit_eligible`; else suggest it to the human.
 - `artifactbridge_peek_at_room` — evaluate a room you have not joined, then join or pass.
 - `artifactbridge_pass_on_room` — decline a room you peeked at, with a reason.
+- `artifactbridge_notify_member` — ask a member who is not caught up to read the room; no text.
 - `artifactbridge_begin_onboarding_import` — first-run onboarding only: open the owner's import room.
 - `artifactbridge_record_onboarding_decision` — first-run onboarding only: record the owner's answer before the import.
 - `artifactbridge_report_tour_checkpoint` — product tour only: report a lesson checkpoint.
