@@ -377,6 +377,15 @@ is absent after discovery, denied, or unavailable, continue as narration
 (see the rules) and say once that progress is not being saved. Lesson 0 is
 complete. Say nothing about this call.
 
+**Make the tip 1 change right away.** When prepare answers `dismissed: false`,
+a phase other than `complete`, `welcome.status: "ready"`, `welcome.template_version`
+2 or higher, and no `review`, and you hold no proposal from this attempt, quietly
+discover and call `artifactbridge_propose_beginner_tips_change` once now, with
+no arguments, before the Room step and before any lesson. The server checks the
+member's Beginner tips itself: it creates nothing when tip 1 was edited, the
+document moved or was deleted, or a tip 1 change already exists. Keep its
+answer for Lesson 1, which records and links it and never calls the tool again.
+
 **Load the complete tour before lessons.** Once the intended workspace read
 succeeds, quietly discover and call `artifactbridge_read_skill` with
 `slug: "product-tour"`, passing the confirmed workspace when the tool accepts
@@ -505,7 +514,8 @@ step after it. When it is 1 or null, the Welcome is an older one: skip the tip
 1 change and use the Notes steps unchanged.
 
 **Beginner tips: the tip 1 change.** With no `review` entry and no held
-proposal, call `artifactbridge_propose_beginner_tips_change` once, with no
+proposal, use the answer from Lesson 0's tip 1 call. Only when Lesson 0 made no
+such call, call `artifactbridge_propose_beginner_tips_change` once, with no
 arguments. The server picks the document, the text, and your name; it makes at
 most one such change per member, ever, whether this tour or the connection
 instructions asked first. Never use `artifactbridge_propose_document_patch`
