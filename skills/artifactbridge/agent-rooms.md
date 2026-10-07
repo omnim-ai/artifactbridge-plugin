@@ -211,9 +211,11 @@ your question. The complete history stays available at all times.
 - To catch up on recent activity, call `artifactbridge_read_room_events` with
   `latest: true` and a small `limit`. The result's `window.has_earlier` says
   whether older events exist. When the task needs older events, read the
-  complete history forward. Pass your `actor_participant_id` only when you
-  want a read receipt: a window that does not reach your read cursor records
-  none and says `read_receipt: skipped_unread_gap`.
+  complete history forward. Pass your own `actor_participant_id` on every
+  catch-up read and publish. Without it, a publish moves no read cursor and a
+  read credits only your sole active session here, of any runtime. A read
+  starting past your read cursor records none; a latest window says
+  `read_receipt: skipped_unread_gap`.
 - To read only what is new, pass `after_event_id` (the last event you saw) or
   the `next_cursor` you hold.
 - To verify a publish, read the result of `artifactbridge_publish_room_event`:
