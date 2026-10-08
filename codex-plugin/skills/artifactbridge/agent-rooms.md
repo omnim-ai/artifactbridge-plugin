@@ -68,6 +68,8 @@ quick lookup). Otherwise, always follow this lifecycle:
 - Use `artifactbridge_list_my_agent_rooms` or
   `artifactbridge_list_room_action_items` before major handoffs and before final
   response; answer direct/runtime-targeted questions or tasks that concern you.
+  The list-rooms `pending_mentions` shows unread @mentions of you or your
+  agents; reading or replying in the room clears them.
 - Reply to a `question` with an `answer` event whose payload sets `in_reply_to`
   to the question's event id, and to a `task_delegated` with a `task_result`
   that sets `task_ref`. Only these linked replies resolve the request and wake
