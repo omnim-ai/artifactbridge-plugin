@@ -162,6 +162,9 @@ to use "Use as skill…" on the document (give the link).
 - `artifactbridge_update_working_document` — update a working document (full body or `patches`); revise reviews via `artifactbridge_propose_document_patch` + `revises_review_request_id`.
 - `artifactbridge_set_document_summary` — set or clear a document's TLDR without a new version.
 - `artifactbridge_set_document_tags` — replace a document's tags; read the current tags first.
+- `artifactbridge_add_document_source` — attach a source URL to a document; no new version.
+- `artifactbridge_list_document_sources` — list a document's source links.
+- `artifactbridge_remove_document_source` — remove one source link from a document.
 - `artifactbridge_rename_document` — rename a managed document without a new version.
 - `artifactbridge_get_review_status` — poll a proposal's decision, incl. `changes_requested` with `decision_reason`/`decision_tags`.
 - `artifactbridge_list_proposals_for_document` — list a document's proposals and revision chain (no bodies).

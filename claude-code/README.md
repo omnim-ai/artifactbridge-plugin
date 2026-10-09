@@ -227,6 +227,9 @@ ArtifactBridge exposes these tools (from `src/mcp-documents.ts`):
 - `artifactbridge_update_working_document` — direct-write a new version of a working (agent-owned) doc with no review (owner-only; pass `expected_base_version_id`, stale writes are rejected as a conflict).
 - `artifactbridge_set_document_summary` — set/refresh a managed document's agent-authored TLDR without a new version (clears its stale flag); empty `summary` clears it.
 - `artifactbridge_set_document_tags` — replace a managed document's topic tags (up to 20 tags, 64 characters each; full-set replacement, empty array clears). Tags normalize to lowercase kebab-case slugs and drive the web Documents tag filter. This takes tag ownership from ambient auto-tagging, so read the current tags first. Member-gated.
+- `artifactbridge_add_document_source` — attach a source link (an http or https URL, optional title up to 200 characters) to a managed document as metadata. Adding a URL the document already has returns the existing link (`created: false`). At most 50 links per document. Does not create a version; `artifactbridge_read_document` returns the links in `sources`. Member-gated.
+- `artifactbridge_list_document_sources` — list a managed document's source links (`id`, `url`, `title`, `created_at`), oldest first.
+- `artifactbridge_remove_document_source` — remove one source link by its `source_id`. An unknown id is `not_found`. Does not create a version. Member-gated.
 - `artifactbridge_rename_document` — rename a managed document's title in place without a new version (history stays intact); managed-only, external docs rejected; attributed to your token's creator and audited.
 - `artifactbridge_get_review_status` — poll a proposal's review decision (`decision_reason` / `decision_tags`).
 - `artifactbridge_list_proposals_for_document` — list a document's proposals (metadata only).
