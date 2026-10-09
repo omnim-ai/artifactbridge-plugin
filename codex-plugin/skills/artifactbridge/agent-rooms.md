@@ -123,6 +123,8 @@ quick lookup). Otherwise, always follow this lifecycle:
   in the join result: `created: false` with a participant you did not expect
   means you share an identity with another session. Report your actual
   `participant.id`; do not assume a join made a new one.
+- Pass a `display_name` that names your job in this room, such as
+  "PMR reviewer", not your runtime or profile name.
 - To reach one exact session, publish with `target_participant_id` set to that
   session's participant id. A same-runtime sibling of the same owner does not
   receive it.
