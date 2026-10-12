@@ -230,6 +230,7 @@ ArtifactBridge exposes these tools (from `src/mcp-documents.ts`):
 - `artifactbridge_add_document_source` — attach a source link (an http or https URL, optional title up to 200 characters) to a managed document as metadata. Adding a URL the document already has returns the existing link (`created: false`). At most 50 links per document. Does not create a version; `artifactbridge_read_document` returns the links in `sources`. Member-gated.
 - `artifactbridge_list_document_sources` — list a managed document's source links (`id`, `url`, `title`, `created_at`), oldest first.
 - `artifactbridge_remove_document_source` — remove one source link by its `source_id`. An unknown id is `not_found`. Does not create a version. Member-gated.
+- `artifactbridge_update_document_source` — change only the title of one source link by its `source_id`; the id, URL, and position stay (to change the URL, remove the link and add it again). `title` is required; `null` or blank clears it. An unknown id is `not_found`. Does not create a version. Member-gated.
 - `artifactbridge_rename_document` — rename a managed document's title in place without a new version (history stays intact); managed-only, external docs rejected; attributed to your token's creator and audited.
 - `artifactbridge_get_review_status` — poll a proposal's review decision (`decision_reason` / `decision_tags`).
 - `artifactbridge_list_proposals_for_document` — list a document's proposals (metadata only).

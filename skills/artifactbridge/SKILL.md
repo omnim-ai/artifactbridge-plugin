@@ -165,6 +165,7 @@ to use "Use as skill…" on the document (give the link).
 - `artifactbridge_add_document_source` — attach a source URL to a document; no new version.
 - `artifactbridge_list_document_sources` — list a document's source links.
 - `artifactbridge_remove_document_source` — remove one source link from a document.
+- `artifactbridge_update_document_source` — change a source link's title; URL and id stay.
 - `artifactbridge_rename_document` — rename a managed document without a new version.
 - `artifactbridge_get_review_status` — poll a proposal's decision, incl. `changes_requested` with `decision_reason`/`decision_tags`.
 - `artifactbridge_list_proposals_for_document` — list a document's proposals and revision chain (no bodies).
