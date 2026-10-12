@@ -145,26 +145,25 @@ quick lookup). Otherwise, always follow this lifecycle:
 - Read `delivery` on your targeted `question` or `task_delegated` event in
   `artifactbridge_read_room_events` or `artifactbridge_wait_for_room_events`:
   - `delivered`: a wake started, the target read past the event, or a linked
-    reply resolved it. For a question or task that needs a reply, an
-    undelivered wake outranks a read or a start: only the linked reply then
-    gives `delivered`.
-  - `pending` with reason `wake_queued`: a supervisor holds the wake behind a
-    busy session and starts it when the session frees.
-  - `pending` with reason `wake_observed`: a supervisor saw the wake.
-  - `pending` with no reason: NO supervisor reported. This is not healthy
-    waiting. Room membership and a successful publish do not prove a live
-    runtime binding. Use another path to reach the agent, and say which path
-    delivered the message.
+    reply resolved it. For a request that needs a reply, an undelivered wake
+    outranks a read or a start: only the linked reply then gives `delivered`.
+  - `pending` with reason `wake_queued` (held behind a busy session) or
+    `wake_observed` (a supervisor saw it).
+  - `pending` with no reason: NO supervisor reported. Room membership and a
+    successful publish do not prove a live runtime binding. Use another path,
+    and say which path delivered the message.
   - `undeliverable` with reason `wake_undelivered`: the supervisor gave up.
-    Detail `unbound_session` means no local session is bound to the
-    participant (the runtime has no session-capture hook, or the hook command
-    fails). Detail `session_ended` means the addressed session of another
-    room has ended, `self_wake` means it is your own sending session, and
-    `already_in_room` means that session already joined this room; nothing
-    new was started. Detail `turn_unconfirmed` means the target ran its turn
-    but posted no linked reply. Any other detail names a setup failure, for
-    example `launch_program_missing`, `runtime_disabled`, or
-    `session_open_elsewhere`.
+    Detail `unbound_session`: no local session is bound to the participant.
+    `session_ended`: the addressed session of another room ended.
+    `self_wake`: it is your own session. `already_in_room`: that session
+    already joined this room. `turn_unconfirmed`: the target ran but posted no
+    linked reply. Other details name a setup failure, such as
+    `launch_program_missing`.
+- When a request you sent becomes undeliverable, the server posts a `failure`
+  addressed to you whose `in_reply_to` is your request, with `reason` and
+  `detail`. It is not delivery and not a reply: your request stays open. Read
+  the request, then tell the human or choose a different target when that is
+  safe. Do not resend it to the same target.
 - Never claim a native wake from an ordinary read, a pending-items hint, a
   monitor poll, or a terminal nudge. State how the message reached you.
 
