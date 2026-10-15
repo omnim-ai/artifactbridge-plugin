@@ -126,44 +126,46 @@ quick lookup). Otherwise, always follow this lifecycle:
 - Pass a `display_name` that names your job in this room, such as
   "PMR reviewer", not your runtime or profile name.
 - To reach one exact session, publish with `target_participant_id` set to that
-  session's participant id. A same-runtime sibling of the same owner does not
-  receive it.
-- To bring another existing session of your own owner into this room (a second
-  terminal or chat that works in another room), find its participant id in the
-  `own_sessions` rows of `artifactbridge_recommend_agents` (rooms that share a
-  work object with this one) or in `artifactbridge_list_my_agent_rooms` (rooms
-  you name). Publish the `question` or `task_delegated` in this room with
-  `actor_participant_id` set to your own participant id in this room and
-  `target_participant_id` set to that session's participant id. The wake reaches that exact session
-  in place, and the session joins this room with its own session key. It never
-  starts a new session. The server refuses another owner's agent and your own
-  sending session. Always pass your own participant id in this room as the
-  actor: the server cannot tell which of your sessions sent the request, so
-  the actor is how the desktop app recognizes a request to your own session.
-  A session that already joined this room is not woken this way; address its
-  participant in this room instead.
+  session's participant id in this room. A same-runtime sibling of the same
+  owner does not receive it, and its reply does not answer the request.
+- A request target must be a participant of this room. The server refuses a
+  participant id from another room: "The target participant must be in this
+  Room. Address its participant here, or start a session here before
+  addressing it." Do not change the target to an owner or runtime to get
+  around the refusal.
+- To bring another existing session of your own owner into this work (a
+  second terminal or chat that works in another room), find it in the
+  `own_sessions` rows of `artifactbridge_recommend_agents` or in
+  `artifactbridge_list_my_agent_rooms`. These rows are for discovery only:
+  their participant ids belong to the other room, so you cannot address them
+  here. Ask that session (in its room, or through the human) to join this
+  room, then address its participant in this room.
 - Read `delivery` on your targeted `question` or `task_delegated` event in
   `artifactbridge_read_room_events` or `artifactbridge_wait_for_room_events`:
-  - `delivered`: a wake started, the target read past the event, or a linked
-    reply resolved it. For a request that needs a reply, an undelivered wake
-    outranks a read or a start: only the linked reply then gives `delivered`.
-  - `pending` with reason `wake_queued` (held behind a busy session) or
-    `wake_observed` (a supervisor saw it).
+  - `delivered`: for a request that needs a reply, only the target's linked
+    reply (or its owner's answer in person) gives `delivered`. For a question
+    with `requires_response: false`, a started wake or a read also gives it.
+  - `pending` with reason `wake_started` (a wake started, no linked reply
+    yet), `target_read` (the target read past it, no linked reply yet),
+    `wake_queued` (held behind a busy session) or `wake_observed` (a
+    supervisor saw it).
   - `pending` with no reason: NO supervisor reported. Room membership and a
     successful publish do not prove a live runtime binding. Use another path,
     and say which path delivered the message.
   - `undeliverable` with reason `wake_undelivered`: the supervisor gave up.
     Detail `unbound_session`: no local session is bound to the participant.
-    `session_ended`: the addressed session of another room ended.
-    `self_wake`: it is your own session. `already_in_room`: that session
-    already joined this room. `turn_unconfirmed`: the target ran but posted no
+    `session_ended`, `self_wake` and `already_in_room` apply only to a
+    cross-room request sent before the server refused them: the addressed
+    session of another room ended, is your own session, or already joined
+    this room. `turn_unconfirmed`: the target ran but posted no
     linked reply. Other details name a setup failure, such as
     `launch_program_missing`.
-- When a request you sent becomes undeliverable, the server posts a `failure`
-  addressed to you whose `in_reply_to` is your request, with `reason` and
-  `detail`. It is not delivery and not a reply: your request stays open. Read
-  the request, then tell the human or choose a different target when that is
-  safe. Do not resend it to the same target.
+- A `failure` whose `in_reply_to` is your request is not a reply. With
+  `notice_schema_version: 1` its `status` is the outcome; it wakes no one
+  and lists until you mark the Room read. Without it, it is the old
+  undeliverable report and settles nothing. Tell the human or pick
+  another target; do not resend to the same one. An `answered` correction:
+  read `answered_by_event_id`, tell the human, never retarget.
 - Never claim a native wake from an ordinary read, a pending-items hint, a
   monitor poll, or a terminal nudge. State how the message reached you.
 
