@@ -1,0 +1,11 @@
+{
+  "name": "artifactbridge",
+  "version": "0.1.0",
+  "description": "Search team documents, collaborate in review threads, and propose changes for human approval in ArtifactBridge.",
+  "contextFileName": "GEMINI.md",
+  "mcpServers": {
+    "artifactbridge": {
+      "httpUrl": "https://app.artifactbridge.com/mcp"
+    }
+  }
+}

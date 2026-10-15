@@ -82,11 +82,30 @@ codex plugin install artifactbridge-codex
 After install, run `/mcp` in your session to complete the browser OAuth sign-in.
 An ArtifactBridge account is required.
 
+### Gemini CLI
+
+The repository root is also a Gemini CLI extension (`gemini-extension.json`).
+
+```sh
+gemini extensions install https://github.com/omnim-ai/artifactbridge-plugin
+```
+
+In a Gemini CLI session, run `/mcp auth artifactbridge` to complete the
+browser OAuth sign-in.
+
+### Cline
+
+Cline reads `llms-install.md` for the install steps of this remote OAuth
+server.
+
 ## Contents
 
 - `plugin.json`, `mcp.json`, `skills/` — the portable Agent Plugin, with the
   same skills as the Claude Code package and no local runtime dependency.
 - `logo.png` — ArtifactBridge's square icon for the marketplace application.
+- `gemini-extension.json`, `GEMINI.md` — the Gemini CLI extension manifest and
+  its context file.
+- `llms-install.md` — install steps that Cline reads.
 
 - `claude-code/` — the Claude Code plugin: MCP connection plus the
   `artifactbridge`, `import-repo`, `import-obsidian`, and `crawl-and-propose`
