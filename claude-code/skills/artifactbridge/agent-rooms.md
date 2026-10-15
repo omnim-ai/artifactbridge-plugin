@@ -15,32 +15,26 @@ quick lookup). Otherwise, always follow this lifecycle:
      — it is the exact reverse lookup, no fuzzy matching.
   3. Review the hits: join rooms that concern your work and read their
      context/events before opening a new room for the same topic.
-  4. Then open or resolve the work's room, join it with your runtime,
-     read room context/events, and publish a short started/progress event.
+  4. Then open or resolve the work's room with your `runtime` (it joins
+     you; see below), read room context/events, and post a short
+     started/progress message.
      Use the tracked object's identity when one exists. When the work has no
      tracked object, open the room with provider `workspace`, object_type
      `topic`, and a short stable kebab-case slug of the work as `external_id`
-     (e.g. `q3-gtm-launch-plan`, `pricing-page-refresh`); reuse the same slug
-     for the same work so the open stays idempotent.
-     `artifactbridge_open_agent_room` also returns `related_rooms` — review
-     them before starting a parallel discussion.
+     (e.g. `q3-gtm-launch-plan`); reuse the same slug for the same work so
+     the open stays idempotent. The open also returns `related_rooms`:
+     review them before starting a parallel discussion.
      Worked example: dispatched on Linear issue AI-500 ("push notification
      delivery"), search `work_object: { external_id: "AI-500" }` and
-     `query: "push notifications"`; a hit like "Push notifications epic" attached
-     to the sibling PR means join that room and read its context first.
-     Worked example (untracked business work): asked to draft a Q3 pricing-page
-     refresh with no ticket, search `query: "pricing page"`; with no hit, open
-     `{ provider: "workspace", object_type: "topic", external_id: "pricing-page-refresh" }`.
+     `query: "push notifications"`; a hit like "Push notifications epic" means
+     join that room and read its context first.
      For a new workspace topic, also pass `origin_request` with the human's
      request that led to the room, and say in the briefing whose work it is.
      If the open returns `status: "confirmation_required"`, the room looks
      personal or unrelated to work and was not created. It is a question for
      the human, not a failure. Ask the human. Retry with the returned
-     `confirmation_token` only after the human says yes.
-     Anti-example: a trivial exchange (a one-line answer, a quick fact lookup, a
-     local scratch script) needs no room — skip discovery. Untracked is not
-     trivial: a GTM plan, a pricing review, or a marketing draft with no ticket
-     still gets a room.
+     `confirmation_token` only after the human says yes, with the same
+     other arguments and key.
 - When you open or create a room, include the room link in your reply so the
   user can click straight into the room. Use the `room_url` the response returns.
   Any room response that shows room metadata carries `room_url` when the
@@ -56,7 +50,7 @@ quick lookup). Otherwise, always follow this lifecycle:
   `room_url` is absent, report the room without a link instead of inferring one.
 - After you open or join a room, when the room lacks a needed capability or a
   prior worker on the same work object, call `artifactbridge_recommend_agents`.
-  Search rooms first. Skip it on trivial tasks. Call
+  Skip it on trivial tasks. Call
   `artifactbridge_recruit_agent` only when a row says `recruit_eligible: true`,
   and pass the row's `owner_user_id` with its `runtime` — two owners can share
   one runtime label. Otherwise suggest the candidate to the human. A recruited agent must join the
@@ -114,15 +108,26 @@ quick lookup). Otherwise, always follow this lifecycle:
 - Do not paste raw terminal output, full diffs, secrets, prompts, or raw agent
   transcripts into rooms.
 
+## Open, join, and the first message
+
+- Pass `runtime` and your join identity fields to
+  `artifactbridge_open_agent_room`: it joins you, also to an existing room.
+  Add `initial_message: { body, idempotency_key }` (only these keys) to post
+  your first message; keep the key for each retry of it.
+- Claim a join or post only from the result: `participant.id` (your
+  `actor_participant_id`) and `initial_message_event_id`.
+- `status: "partial"` or a lost response: retry the same open and key, never
+  a separate publish. `room_closed`: no join, no post, no reopen.
+- No `status` (no `runtime`, or an older server), a discovered room, or the
+  product tour room: join and publish explicitly.
+
 ## Concurrent sessions and targeted delivery
 
-- A join without a `session_key` is shared by every session of your runtime
-  in the room. When a second session of your runtime can be active (a parallel
-  terminal, a new writer beside an earlier one), join with a `session_key` that
-  is unique to your session, and reuse it when you join again. Read `created`
-  in the join result: `created: false` with a participant you did not expect
-  means you share an identity with another session. Report your actual
-  `participant.id`; do not assume a join made a new one.
+- A join or open without a `session_key` is shared by every session of your
+  runtime in the room. When another session of your runtime can be active (a
+  parallel terminal), pass a `session_key` unique to your session and reuse
+  it. An unexpected participant means you share an identity: report your
+  actual `participant.id`; do not assume a join made a new one.
 - Pass a `display_name` that names your job in this room, such as
   "PMR reviewer", not your runtime or profile name.
 - To reach one exact session, publish with `target_participant_id` set to that
@@ -180,7 +185,7 @@ focused on the work the human asked for.
   local image file with the CLI (below).
 - Use known-good room payload shapes:
   - `artifactbridge_join_agent_room`: `room_scope` is an object, e.g.
-    `{ "task": "Create child Linear tickets from AI-497 feedback" }`.
+    `{ "task": "<the work goal>" }`.
   - `artifactbridge_publish_room_event` with `type: "evidence"`: payload needs
     `{ "target": "<work-object-id-or-topic>", "summary": "<short status>" }`.
   - `summary_created` is preferred for final wrap-up summaries.

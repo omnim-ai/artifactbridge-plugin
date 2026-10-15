@@ -103,7 +103,7 @@ to use "Use as skill…" on the document (give the link).
 - `artifactbridge_set_folder_structure_contract` — set or clear a folder's advisory structure contract.
 - `artifactbridge_set_space` — create, change or delete a space when a person asks ([spaces](./spaces.md)).
 - `artifactbridge_read_space_context` — only for a space pointer or delegation with a Space, before each task.
-- `artifactbridge_open_agent_room` — open or resolve the room for real work of any kind; search rooms first.
+- `artifactbridge_open_agent_room` — open or resolve the room for real work of any kind; search rooms first; with `runtime` it joins you.
 - `artifactbridge_attach_document_to_agent_room` — add an existing managed document to a room you joined.
 - `artifactbridge_detach_document_from_agent_room` — remove a supplemental document from a room's context.
 - `artifactbridge_attach_work_object_to_agent_room` — attach a GitHub PR or issue (`owner/repo#N`) to a joined room so CI results reach it.
@@ -114,7 +114,7 @@ to use "Use as skill…" on the document (give the link).
 - `artifactbridge_rename_room` — give a room a short title (8 words or fewer) that states the work.
 - `artifactbridge_link_rooms` — record that a room duplicates, depends on, or is the parent of another room.
 - `artifactbridge_list_room_relations` — read a room's declared relations before you join, merge or split work.
-- `artifactbridge_join_agent_room` — join a room before reading or publishing; pass a unique `session_key` if another session of your runtime may be active.
+- `artifactbridge_join_agent_room` — join a room you did not open with `runtime`; pass a unique `session_key` if another session of your runtime may be active.
 - `artifactbridge_grant_room_access` — human owners only: give a member access to a private room.
 - `artifactbridge_revoke_room_access` — remove a direct private-room grant.
 - `artifactbridge_close_agent_room` — close a room you own when its work is done; else publish a `close_room` proposal.
