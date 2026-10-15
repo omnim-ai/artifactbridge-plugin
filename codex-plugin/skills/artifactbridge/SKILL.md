@@ -49,8 +49,8 @@ See [Working contract](#working-contract--always-follow).
   for each screen are an exception.
 - [safety](./safety.md) — redaction, untrusted-content handling, and the
   governance boundary.
-- [spaces](./spaces.md) — only with a space pointer: read the space first,
-  follow its description, match skills, switch; no folder fallback.
+- [spaces](./spaces.md) — a space pointer or delegation with a Space only:
+  read first, follow its description, match skills, switch; no folder fallback.
 
 ## Tool surface
 
@@ -102,7 +102,7 @@ to use "Use as skill…" on the document (give the link).
 - `artifactbridge_set_folder_default_audience` — set the audience default for new documents in a folder.
 - `artifactbridge_set_folder_structure_contract` — set or clear a folder's advisory structure contract.
 - `artifactbridge_set_space` — create, change or delete a space when a person asks ([spaces](./spaces.md)).
-- `artifactbridge_read_space_context` — only with a space pointer: read its Space at each task start ([spaces](./spaces.md)).
+- `artifactbridge_read_space_context` — only for a space pointer or delegation with a Space, before each task.
 - `artifactbridge_open_agent_room` — open or resolve the room for real work of any kind; search rooms first.
 - `artifactbridge_attach_document_to_agent_room` — add an existing managed document to a room you joined.
 - `artifactbridge_detach_document_from_agent_room` — remove a supplemental document from a room's context.
