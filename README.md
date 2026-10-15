@@ -1,14 +1,36 @@
 # ArtifactBridge plugins
 
 Official ArtifactBridge plugins for Claude Code, Codex, and clients that support
-the Agent Plugins 1.0.0 standard. ArtifactBridge is a
-governed document layer for AI agents: agents read, comment, ask, and propose;
-humans approve changes. Learn more at
-[artifactbridge.com](https://artifactbridge.com) and
-[artifactbridge.com/docs](https://artifactbridge.com/docs).
+the Agent Plugins 1.0.0 standard. For governed documents in ArtifactBridge,
+agents propose changes and people review them in the browser. Accepted
+managed-document versions retain attribution and history. Working documents
+can follow different write rules. Learn more at
+[artifactbridge.com](https://www.artifactbridge.com/) and the
+[documentation](https://www.artifactbridge.com/docs).
 
 Installing a plugin wires the ArtifactBridge MCP connection (browser OAuth, no
 token paste) and loads the `artifactbridge` skill pack.
+
+## Public setup guides and review evidence
+
+| Task | Public reference |
+| --- | --- |
+| Connect an AI tool | [Connection guide and MCP endpoint](https://www.artifactbridge.com/docs/connect) |
+| Choose where to keep and review AI work | [AI artifact management workflow](https://www.artifactbridge.com/docs/use-cases#ai-artifact-management) |
+| Share team instruction files | [CLAUDE.md and AGENTS.md guide](https://www.artifactbridge.com/docs/share-team-agent-instructions) |
+| Inspect a completed document review | [Public practice result](https://www.artifactbridge.com/docs/share-team-agent-instructions#verified-practice-run) |
+
+The public practice result records an accepted sample policy and a separate
+agent readback. Inspect the [review result JSON](https://www.artifactbridge.com/assets/team-context-review-result.json)
+for its document version, content hash, method, and limits. The
+[reviewed policy download](https://www.artifactbridge.com/assets/team-context-reviewed-policy-v2.md)
+contains the accepted sample text. This check covers one document change. It
+does not prove that later tasks follow the rule.
+
+Document approval does not update repository instruction files. Review changes
+to `CLAUDE.md` and `AGENTS.md` through your repository process. See
+[how approval works](https://www.artifactbridge.com/docs/governance) for the
+separate governed-document and working-document rules.
 
 ## Install
 
@@ -78,10 +100,10 @@ An ArtifactBridge account is required.
 This repository is a read-only publish target, mirrored automatically from the
 ArtifactBridge monorepo. Do not open pull requests here — they cannot be
 merged. Report issues and requests at
-[artifactbridge.com/docs](https://artifactbridge.com/docs) or to your
+[artifactbridge.com/docs](https://www.artifactbridge.com/docs) or to your
 ArtifactBridge workspace contact.
 
 ## Privacy and terms
 
-- Privacy policy: <https://artifactbridge.com/privacy>
-- Terms: <https://artifactbridge.com/terms>
+- Privacy policy: <https://www.artifactbridge.com/privacy>
+- Terms: <https://www.artifactbridge.com/terms>
