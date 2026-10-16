@@ -149,6 +149,7 @@ to use "Use as skill…" on the document (give the link).
 - `artifactbridge_cancel_gateway_delegation` — cancel a delegation you requested or that runs in your room.
 - `artifactbridge_read_room_events` — read a room's log with the smallest read: `latest: true`, `after_event_id`/`cursor`, or `event_id`.
 - `artifactbridge_wait_for_room_events` — wait for new room events instead of polling.
+- `artifactbridge_read_room_wake_statuses` — read the Wake status of requests addressed to you; it changes nothing.
 - `artifactbridge_read_room_context` — catch up on a room: briefing first, then capsules and attachments.
 - `artifactbridge_brief_agent_room` — publish or refresh a room's briefing; write it by [thread-brief](./thread-brief.md).
 - `artifactbridge_search_workspace_members` — find a member's `user_id` by email; never guess a user id.
