@@ -19,8 +19,6 @@ the skill content.
   recipes it links: `logbook.md`, `managed-documents.md`, `human-feedback.md`,
   `safety.md`. The recipes are byte-identical to the Codex pack
   (`codex-plugin/`) so the two stay aligned.
-- `.mcp.example.json` — config snippets, including the CI/headless `afb_`
-  fallback (no live secrets).
 
 The repo root ships `.claude-plugin/marketplace.json` so the plugin is
 installable by name.
@@ -89,21 +87,20 @@ connection.** You still need to wire MCP separately:
 > [vercel-labs/skills](https://github.com/vercel-labs/skills) docs before relying
 > on them; the registry CLI evolves independently of this repo.
 
-## Fallback — CI / headless (`afb_` bearer)
+## CI and headless machines
 
-Where no browser is available (CI, containers), use a workspace API token:
+This plugin uses browser OAuth only. It does not read a token from your
+environment or your files. A machine with no browser, such as CI or a
+container, needs a workspace API token. Create the token in **Settings →
+Connected credentials → API tokens** in the ArtifactBridge web app, and add it
+to that machine's MCP client configuration outside this plugin. Keep the token
+in a secret store. Do not commit it. The
+[connection docs](https://www.artifactbridge.com/docs/connect.html) cover the
+browser OAuth setup.
 
-```bash
-claude mcp add --transport http artifact-bridge https://app.artifactbridge.com/mcp \
-  --header "Authorization: Bearer afb_<token>"
-```
+<!-- Keep env-token setup out of this plugin: the plugin directory holds a
+plugin that reads a credential from the environment for manual review. -->
 
-Equivalently, an env-var-backed entry keeps the token out of the file
-(`bearer_token_env_var = "ARTIFACTBRIDGE_TOKEN"` holding `afb_<token>` at use
-time) — see [`.mcp.example.json`](./.mcp.example.json). Create the `afb_` token
-in **Settings → Connected credentials → API tokens** in the ArtifactBridge web
-app. **Inject it from a secret store — never commit or hard-code it.** This path
-is the headless fallback only; OAuth is primary.
 
 ## Endpoint channels and migration
 
