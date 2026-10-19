@@ -110,9 +110,19 @@ edit a shared client profile or setting to switch spaces.
 `artifactbridge_set_space` creates, changes or deletes a space when a person
 asks.
 
-- **Create** takes only a `name`. It makes a new, empty space that is private
-  to the person. It adds no description and no references; set those with a
-  later update.
+- **Before you create, look for a space that fits.** If the person named a
+  space, or a space pointer is in context, use that space. Create a space
+  only when the person asks for a new one or no space fits. Make one space
+  per ongoing area of work, never one space per task.
+- **Create** needs a `name` and makes a space that is private to the person.
+  In the same call it can set `description`, `add` references and
+  `add_skills`, with the same rules as update. The create is all or nothing:
+  if one reference or skill is refused, no space is made.
+- **A name that is taken** fails with `space_name_conflict`. If you can see
+  that space, the error gives its `space_id`: read it with
+  `artifactbridge_read_space_context` and reuse it, unless the person wants a
+  new space. A retry of a create that already worked gets this error with the
+  space you made.
 - **Update and delete** need the `space_id` and the current revision. Pass
   as `expected_revision` the `space.revision` from your last read of the
   space, or from the answer of your own create or update; otherwise read the

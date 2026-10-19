@@ -101,7 +101,7 @@ to use "Use as skill…" on the document (give the link).
 - `artifactbridge_set_folder_summary` — set or clear a folder's TLDR.
 - `artifactbridge_set_folder_default_audience` — set the audience default for new documents in a folder.
 - `artifactbridge_set_folder_structure_contract` — set or clear a folder's advisory structure contract.
-- `artifactbridge_set_space` — create, change or delete a space when a person asks ([spaces](./spaces.md)).
+- `artifactbridge_set_space` — create, change or delete a space when a person asks; reuse one that fits first ([spaces](./spaces.md)).
 - `artifactbridge_read_space_context` — only for a space pointer or delegation with a Space, before each task.
 - `artifactbridge_open_agent_room` — open or resolve the room for real work of any kind; search rooms first; with `runtime` it joins you.
 - `artifactbridge_attach_document_to_agent_room` — add an existing managed document to a room you joined.
