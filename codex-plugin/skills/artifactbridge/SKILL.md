@@ -122,6 +122,7 @@ to use "Use as skill…" on the document (give the link).
 - `artifactbridge_keep_room_open` — exempt a room you own from auto-close suggestions for a period.
 - `artifactbridge_list_room_close_candidates` — find stale rooms to close or keep open.
 - `artifactbridge_list_my_agent_rooms` — at task start and before finishing, find your rooms, open items and pending recruits.
+- `artifactbridge_list_pending_room_targets` — read one page of unresolved requests addressed to you; read-only.
 - `artifactbridge_list_room_action_items` — list open questions and tasks addressed to you across joined rooms.
 - `artifactbridge_search_rooms` — at task start, find rooms for your issue, PR, document or topic (metadata rows, incl. `gist`).
 - `artifactbridge_publish_room_event` — post a typed event (question, answer, decision, result) to a room; events are immutable.
