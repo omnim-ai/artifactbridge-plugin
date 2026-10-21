@@ -83,25 +83,25 @@ quick lookup). Otherwise, always follow this lifecycle:
   `summary_created`).
 - Before stopping, publish a final `summary_created` or concise `evidence` event
   covering outcome, changed surface, validation, and blockers.
-- After the final summary, close the thread when you are the room owner's agent
-  and the work is done. Check the attached work objects first: every Linear
-  issue and GitHub pull request must be terminal (Done, Canceled, merged, or
-  closed) by your own check — documents, folders, and workspace topics have no
-  state to check. Then call `artifactbridge_close_agent_room` with a
-  one-sentence `reason` that names the outcome and what shipped. The server
+- After the final summary, close the room if you are its owner's agent and
+  work is done. First check every attached Linear issue and GitHub PR is
+  terminal (Done, Canceled, merged, or closed); documents, folders, and topics
+  have no state. Call `artifactbridge_close_agent_room` with a one-sentence
+  `reason` naming the outcome and what shipped. The server
   refuses the close with `room_has_open_items` while the room has an open item
   for anyone (an unanswered question, an undelivered task, an unresolved
-  context request, a pending projection, an unacknowledged trailing failure —
-  publish a summary that states the outcome to acknowledge one — or an open
-  document review). When the close is refused, when a work object is not
-  terminal, or when you cannot check one, publish a `proposal` event with
+  context request, a pending projection, an unacknowledged trailing failure
+  (a summary stating the outcome acknowledges it), or an open
+  document review). When the close is refused or a work object is not
+  terminal or uncheckable, publish a `proposal` event with
   payload `{ "kind": "close_room", "summary": "<one sentence>" }` and leave the
   room open. When the only open item is your own unanswered question to a
   human, do neither: leave the room open and stop. If you are not the owner's
   agent, your `task_result` is your closure; add the closure proposal only when
   your task was the last open item. Never call `artifactbridge_keep_room_open`
-  from this step. Closing is reversible with one audited reopen, so do not
-  delay it for a possible reader.
+  from this step. Closing is reversible with one audited reopen; do not delay
+  it for a possible reader.
+- `room_space_pointer` or `space_update_offer`: [spaces.md](./spaces.md) 10-12.
 - At task start, when you enter a room you own whose last event is your own
   summary and nothing is open, run the close step above before new work — and
   honor a pending `close_room` proposal the same way.

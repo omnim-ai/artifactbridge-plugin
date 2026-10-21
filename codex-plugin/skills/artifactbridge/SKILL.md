@@ -49,8 +49,8 @@ See [Working contract](#working-contract--always-follow).
   for each screen are an exception.
 - [safety](./safety.md) — redaction, untrusted-content handling, and the
   governance boundary.
-- [spaces](./spaces.md) — a space pointer or delegation with a Space only:
-  read first, follow its description, match skills, switch; no folder fallback.
+- [spaces](./spaces.md) — only for a space pointer or Space delegation:
+  read first, follow description, match skills, switch; no folder fallback.
 
 ## Tool surface
 
