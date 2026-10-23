@@ -270,11 +270,10 @@ for the current session only; nothing lands on disk. Prefer
 `artifactbridge_read_skill` for a one-off task; install when the human wants
 the skill available from now on.
 
-**Auth and teardown are human decisions:** never run `artifactbridge login`,
-`artifactbridge logout`, `artifactbridge uninstall`,
-`artifactbridge update auto on|off`,
-`artifactbridge skills sync --auto on|off`, or
-`artifactbridge tray install|uninstall` unless the human explicitly asks — a
+**Auth and teardown are human decisions:** never run these `artifactbridge`
+commands unless the human explicitly asks: `login`, `logout`, `uninstall`,
+`update auto on|off`, `skills sync --auto on|off`, `skills apply-workspace`,
+or `tray install|uninstall`. A
 scheduled background refresh or a resident tray app is a consent decision like
 connecting. `artifactbridge telemetry
 enable|disable|remove` is also a human consent decision because it changes local
