@@ -72,6 +72,17 @@ So this rule is yours to keep:
 - When you must record that private work happened, name the work and link the
   object. Do not restate what the object says.
 
+## Skill safety check
+
+Skill safety checks always apply in every workspace. Every skill change is
+checked before it reaches anyone's tools. Proposal, revision and
+`artifactbridge_read_proposal` results carry `safety_check` (result,
+findings by rule, file and line) and `publication_requirements`. High risk or
+Not fully checked content needs a person's typed reason in the web app, so an
+accept, apply or registration answers `skill_check_needs_human` with the
+proposal's address. Fix the flagged lines, or give the human that link; never
+try to work around the check. "No issues found" is not proof of safety.
+
 ## Keep entries short and factual
 
 Short, factual, link-rich entries are both safer and more useful than verbose
