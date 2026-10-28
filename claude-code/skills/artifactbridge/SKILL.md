@@ -17,8 +17,9 @@ status`, `artifactbridge doctor`, `artifactbridge setup status`); a human runs
 one. Assume production unless the member or an explicit target specifies
 otherwise. Do not ask for production confirmation or inspect host settings
 after a successful authenticated workspace read merely because deployment
-metadata is absent. Honor explicit preview, staging, local, or self-hosted
-targets; never silently switch an existing connection. A known target mismatch
+metadata is absent. Honor explicit preview, local, or self-hosted targets;
+never silently switch an existing connection. Staging is retired: relay the
+CLI's staging refusal and its commands to the human. A known target mismatch
 still requires clarification. This default does not grant access, bypass human
 approval, or authorize production deployment, migrations, or destructive actions.
 See [Working contract](#working-contract--always-follow).

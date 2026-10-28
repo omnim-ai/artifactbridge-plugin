@@ -84,14 +84,18 @@ hard-code it.** This path is the headless fallback only; OAuth is primary.
 
 ## Endpoint channels and migration
 
-Public package installs use `https://app.artifactbridge.com/mcp`. Use
-`artifactbridge env use staging` for an explicit staging development profile
-(`https://staging.artifactbridge.com/mcp`)
-and `artifactbridge env use production` to return; it updates managed local
-client entries together while retaining a separate CLI OAuth session per
-origin. Run `artifactbridge status --json --env` to find mixed endpoints. For
+Public package installs use `https://app.artifactbridge.com/mcp`. The staging
+endpoint (`https://staging.artifactbridge.com/mcp`) is retired. The CLI refuses
+a saved staging profile on this computer and sends nothing. To leave it, run
+`artifactbridge env use production`, or connect to a preview with
+`artifactbridge login --server <preview URL>`. Both open a fresh browser sign-in
+and keep the saved staging profile unchanged. Updates and reinstalls never move
+a pinned install; only an explicit reconnect does.
+`artifactbridge env use <profile>` updates managed local client entries together
+while retaining a separate CLI OAuth session per origin. Run
+`artifactbridge status --json --env` to find mixed endpoints. For
 self-contained side-by-side access, run
-`artifactbridge env attach staging --as artifact-bridge-staging`. For
+`artifactbridge env attach <profile> --as <server name>`. For
 self-hosting, add a named profile to `~/.artifactbridge/environments.json`;
 custom endpoints are never overwritten unless the operator explicitly passes
 `--force`.

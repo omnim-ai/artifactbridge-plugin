@@ -104,14 +104,18 @@ plugin that reads a credential from the environment for manual review. -->
 
 ## Endpoint channels and migration
 
-Public package installs use `https://app.artifactbridge.com/mcp`. Use
-`artifactbridge env use staging` for an explicit staging development profile
-(`https://staging.artifactbridge.com/mcp`)
-and `artifactbridge env use production` to return; this updates the managed
-Claude, Codex, and Grok entries together and keeps each origin's CLI OAuth
-session isolated. Use `artifactbridge status --json --env` to detect mixed endpoints.
-Use `artifactbridge env attach staging --as artifact-bridge-staging` when both
-origins must be available side by side without changing the active server.
+Public package installs use `https://app.artifactbridge.com/mcp`. The staging
+endpoint (`https://staging.artifactbridge.com/mcp`) is retired. The CLI refuses
+a saved staging profile on this computer and sends nothing. To leave it, run
+`artifactbridge env use production`, or connect to a preview with
+`artifactbridge login --server <preview URL>`. Both open a fresh browser sign-in
+and keep the saved staging profile unchanged. Updates and reinstalls never move
+a pinned install; only an explicit reconnect does.
+`artifactbridge env use <profile>` updates the managed Claude, Codex, and Grok
+entries together and keeps each origin's CLI OAuth session isolated. Use
+`artifactbridge status --json --env` to detect mixed endpoints. Use
+`artifactbridge env attach <profile> --as <server name>` when two origins must
+be available side by side without changing the active server.
 For self-hosting, add a named profile to
 `~/.artifactbridge/environments.json`; custom endpoints are never overwritten unless
 the operator explicitly passes `--force`.
