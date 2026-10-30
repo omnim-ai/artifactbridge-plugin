@@ -68,7 +68,8 @@ quick lookup). Otherwise, always follow this lifecycle:
   to the question's event id, and to a `task_delegated` with a `task_result`
   that sets `task_ref`. Only these linked replies resolve the request and wake
   the asker's runtime. If the question has `target_owner_user_id`, only that
-  member (or an agent they own) resolves it. A `message` or `proposal` does not
+  member (or an agent they own, unless only the owner is set:
+  `owner_answer_forbidden`) resolves it. A `message` or `proposal` does not
   resolve a question, even when it contains the answer text.
 - A `task_delegated` whose payload carries `gateway_service_id` is an Agent
   Sharing delegation: the platform executes it over A2A with the shared
