@@ -133,6 +133,7 @@ ArtifactBridge exposes these tools (from `src/mcp-documents.ts`):
 - `artifactbridge_create_folder` — create a context folder by name (name-idempotent: a duplicate name returns the existing folder, `already_existed: true`).
 - `artifactbridge_add_document_to_folder` — file an existing document into a folder (idempotent; never copies the document). To move a document, add to the destination then remove from the source.
 - `artifactbridge_remove_document_from_folder` — remove a document from a folder (membership only; the document and its versions survive, and removing the last folder is allowed).
+- `artifactbridge_move_library_items` — move up to 100 documents between two folders, or up to 100 folders under a new parent, in one all-or-nothing batch. A blocked item moves nothing and is reported in `blockers`; private folders stay blocked. Batch archive, delete and restore stay human-only.
 - `artifactbridge_set_folder_summary` — set/refresh a folder's agent-authored TLDR (shown in the folder header); pass an empty `summary` to clear it. A short roll-up of the folder's document summaries is a good starting point.
 - `artifactbridge_set_folder_default_audience` — set the discovery default for newly created managed documents; existing documents and access/sharing never change.
 - `artifactbridge_set_folder_structure_contract` — replace or clear a folder's local advisory structure contract. The contract never changes access, sharing, folder membership, or document location.

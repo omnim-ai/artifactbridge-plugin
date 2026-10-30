@@ -120,6 +120,20 @@ A document lives in **at most one folder**, so filing is a move, not a copy.
   the document and all its versions survive. Use
   `artifactbridge_remove_document_from_folder` only to leave a document in no
   folder at all; that is allowed.
+- **Batch move** — to move many documents out of one folder, or many folders
+  under a new parent, call `artifactbridge_move_library_items` once instead of
+  a loop. `item_type: "documents"` takes `ids`, `from_folder_id` and
+  `to_folder_id`; `item_type: "folders"` takes `ids` and `to_folder_id` (a
+  folder id, or `null` for the top level). At most 100 ids per call; split a
+  larger set into separate calls. The batch is all-or-nothing: when the result
+  is `moved: false`, nothing moved. Read each blocker's `reason` and `message`,
+  fix the selection, and call again. A private folder as source or destination
+  is always blocked: file each document with
+  `artifactbridge_add_document_to_folder`, which asks the owner to confirm.
+  Verify with `artifactbridge_read_folder_context` on the destination.
+- Batch archive, delete and restore stay human-only: ask a person to do them
+  in the Library. You can archive one document at a time with
+  `artifactbridge_set_document_archived`.
 - Refresh per-doc TLDRs with `artifactbridge_set_document_summary` and titles
   with `artifactbridge_rename_document` (title is metadata — no new version).
 - Never "reorganize" by re-creating documents; that orphans history. Re-file and

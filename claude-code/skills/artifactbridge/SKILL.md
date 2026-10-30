@@ -99,6 +99,7 @@ to use "Use as skill…" on the document (give the link).
 - `artifactbridge_create_folder` — create a folder by name (a duplicate name returns the existing folder).
 - `artifactbridge_add_document_to_folder` — file or move a document into a folder (one folder per document).
 - `artifactbridge_remove_document_from_folder` — leave a document in no folder; to move it, use add instead.
+- `artifactbridge_move_library_items` — move up to 100 documents or folders, all or nothing.
 - `artifactbridge_set_folder_summary` — set or clear a folder's TLDR.
 - `artifactbridge_set_folder_default_audience` — set the audience default for new documents in a folder.
 - `artifactbridge_set_folder_structure_contract` — set or clear a folder's advisory structure contract.
