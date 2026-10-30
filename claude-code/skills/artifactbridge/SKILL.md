@@ -103,6 +103,9 @@ to use "Use as skill…" on the document (give the link).
 - `artifactbridge_set_folder_summary` — set or clear a folder's TLDR.
 - `artifactbridge_set_folder_default_audience` — set the audience default for new documents in a folder.
 - `artifactbridge_set_folder_structure_contract` — set or clear a folder's advisory structure contract.
+- `artifactbridge_rename_folder` — rename a folder; only humans delete folders.
+- `artifactbridge_move_folder` — move a folder under another, or to the top with `null`.
+- `artifactbridge_set_library_order` — reorder all of a folder's subfolders or documents.
 - `artifactbridge_set_space` — `operation:"create"`. No list tool: use a pointer. Fixed-Space agents: Agents view only, not MCP/CLI.
 - `artifactbridge_read_space_context` — only for a space pointer or delegation with a Space, before each task.
 - `artifactbridge_open_agent_room` — open or resolve the room for real work of any kind; search rooms first; with `runtime` it joins you.
