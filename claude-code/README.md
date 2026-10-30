@@ -235,6 +235,7 @@ ArtifactBridge exposes these tools (from `src/mcp-documents.ts`):
 - `artifactbridge_remove_document_source` — remove one source link by its `source_id`. An unknown id is `not_found`. Does not create a version. Member-gated.
 - `artifactbridge_update_document_source` — change only the title of one source link by its `source_id`; the id, URL, and position stay (to change the URL, remove the link and add it again). `title` is required; `null` or blank clears it. An unknown id is `not_found`. Does not create a version. Member-gated.
 - `artifactbridge_rename_document` — rename a managed document's title in place without a new version (history stays intact); managed-only, external docs rejected; attributed to your token's creator and audited.
+- `artifactbridge_set_document_archived` — archive or unarchive a managed or external document you can edit; not delete, anyone who can edit it can unarchive it; archiving a skill's source document disables that skill; nothing is written to the provider; attributed to your token's creator and audited.
 - `artifactbridge_get_review_status` — poll a proposal's review decision (`decision_reason` / `decision_tags`).
 - `artifactbridge_list_proposals_for_document` — list a document's proposals (metadata only).
 - `artifactbridge_read_proposal` — read a proposal's `proposed_md`, `unified_diff`, status, `stale`, version numbers, and `decision_reason`; read-only for both OAuth and API-token callers; body and diff framed as untrusted content.
