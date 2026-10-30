@@ -43,6 +43,26 @@ Folder structure guidance is optional, member-authored advisory data. The neares
 - `artifactbridge_remove_document_from_folder` — unfile a document. It leaves
   the document in no folder, which is allowed.
 
+## Duplicate a document
+
+`artifactbridge_duplicate_document` copies a document you can read into a new
+governed managed document titled "Copy of <title>". You own the copy.
+
+- The copy is version 1 of the source's current version and cites that version.
+- It keeps the format (Markdown, CSV, TSV, or HTML), audience, visibility, and
+  folder. A private source stays private. Image documents are refused with
+  `unsupported_format`.
+- Direct shares, public links, proposals, and skills are not copied. An
+  external document is copied as a snapshot; nothing is written to the
+  provider.
+- Each call creates a new copy. After a timeout, find the copy with
+  `artifactbridge_list_documents` or `artifactbridge_search_documents` before
+  you call again. `conflict` means the source changed: read it again, then
+  retry.
+- Duplication never changes, archives, or deletes the source. Delete stays with
+  humans; archive a copy you do not need with
+  `artifactbridge_set_document_archived`.
+
 ## Link documents with [[wikilinks]]
 
 Reference other workspace documents **inline** in Markdown with Obsidian-style

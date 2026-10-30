@@ -171,6 +171,7 @@ to use "Use as skill…" on the document (give the link).
 - `artifactbridge_update_document_source` — change a source link's title; URL and id stay.
 - `artifactbridge_rename_document` — rename a managed document without a new version.
 - `artifactbridge_set_document_archived` — archive or unarchive a document you can edit.
+- `artifactbridge_duplicate_document` — copy a readable document into its folder; not retry-safe.
 - `artifactbridge_get_review_status` — poll a proposal's decision, incl. `changes_requested` with `decision_reason`/`decision_tags`.
 - `artifactbridge_list_proposals_for_document` — list a document's proposals and revision chain (no bodies).
 - `artifactbridge_read_proposal` — read a proposal's body and diff; for a redline, comment per edit in `redline.edits`.
