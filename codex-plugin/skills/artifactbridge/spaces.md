@@ -6,21 +6,26 @@ block has `"kind": "artifactbridge_space"` and that calls
 shared agent and its brief says that the task comes with a Space or names an
 agent space or a room space (start at section 9), or when a room context read
 returns `room_space_pointer` (section 10), or when a room close returns
-`space_update_offer` (section 11). A plain folder pointer (Copy
-folder context) or an ordinary task does not use it. Without one of these,
-never suggest the space read when it is not in your tool list.
+`space_update_offer` (section 11), or when the person asks you to create or
+manage a Space (section 8). A plain folder pointer (Copy folder context) or an
+ordinary task does not use it.
+
+There is no list-Spaces tool. To reuse an existing Space, use a pointer the
+person gives you. If you cannot identify it, ask for its link or copied
+context. Never invent a Space id.
 
 The pointer is the whole setup. Install nothing and ask for no setup prompt.
 
-## 1. Check that the space read is available
+## 1. Check that the space tools are available
 
-Spaces is turned on per workspace. Where it is off, the tool list has no
-`artifactbridge_read_space_context`.
+The Space tools are available in current ArtifactBridge. An older or
+self-hosted connection can differ.
 
 - **Tool not in your tool list, or the call answers `spaces_unavailable`:**
-  tell the person that Spaces is unavailable, and ask what to read instead.
-  Do not read a folder in place of the space: a space is not a folder, and its
-  id is not a folder id.
+  refresh the connected tool catalog through the host's supported mechanism.
+  If the refusal remains, tell the person that Spaces is unavailable, and ask
+  what to read instead. Do not read a folder in place of the space: a space is
+  not a folder, and its id is not a folder id.
 - **The call answers `space_not_found`:** the space does not exist or you
   cannot open it. A pointer copied before Spaces v2 names an old space that
   no longer exists. Tell the person, ask for a current pointer, and do not
@@ -130,6 +135,22 @@ asks.
   space, or from the answer of your own create or update; otherwise read the
   space first. A stale revision fails with `space_revision_conflict` and
   changes nothing: read again and retry.
+- **Meaning and authority.** A Space is a named selection of Library context.
+  It does not own the referenced documents or grant access to them. Creating
+  a Space does not create an agent or executor. Use the current connection and
+  the person's authorized workspace. OAuth-human and autonomous `afb_`
+  credentials have different authority; a member's token does not grant every
+  web permission. A refusal is not permission to switch credentials, automate
+  the browser, call a private endpoint or use service-role access.
+- **Agents.** To create or edit a fixed-Space agent, direct the person to the
+  rail **Agents** view. This is not a public MCP or CLI action. Gateway
+  discovery and delegation tools use agents already configured; they do not
+  create them. **Settings → Executors** manages execution capacity, not agent
+  identity.
+- **Report** the created or changed ID or link and the effective result. After
+  a create, read the Space back with `artifactbridge_read_space_context`.
+  Distinguish a saved object from a successful later sharing or probe step.
+  Do not claim success when a tool is missing.
 - Deleting a space removes only the space. It never changes the documents or
   folders that the space points at, or their grants.
 
