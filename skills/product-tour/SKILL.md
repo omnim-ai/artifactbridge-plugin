@@ -215,6 +215,7 @@ outranks the line check. One reply ends each turn, within the budget above.
 | Prepare answers a `review` that is `open` or `changes_requested` | Lesson 2 on that review; skip the line check and never propose again | The pending reminder or the revision link |
 | Prepare answers a `review` that is `accepted` or `rejected` | Lesson 2, then Lesson 3 | The Lesson 3 close |
 | Prepare answers a `review` that is `superseded` | Lesson 2's `superseded` step: link its one revision, or stop | That revision's Lesson 2 reply, or a plain stop |
+| Prepare answers a `review` that is `withdrawn` | Lesson 2's `withdrawn` step: say the author withdrew it, and stop | A plain stop |
 | No review, but you hold a `review_request_id` from this attempt (its `proposal_created` was refused or failed) | Lesson 2 on that held proposal; never read and propose again | Where Lesson 2 leads: the pending reminder, the revision link, the close, or a plain stop |
 | No review, no held proposal, and `welcome.template_version` is 2 or higher (Beginner tips) | Lesson 1's tip 1 change: call the tool once and link what it answers; the Notes rows below never apply | The proposal link and Continue, Lesson 2 for a decided change, or the Lesson 3 close when no change is available |
 | No review, no held proposal, and the exact replacement line is already in the Welcome under Notes (or at the member's explicitly selected target) | Lesson 1 read, then record `already_present`; on `applied: true`, Lesson 3 | The Lesson 3 close; on refusal, see Lesson 1 |
@@ -668,6 +669,8 @@ exactly what its `status` says — never guess:
   on any refusal or failure, say plainly that the proposal was replaced
   outside this tour, so the tour cannot record its decision, and stop. Never
   propose again, and follow at most one such link per turn.
+- `withdrawn`: its author withdrew it, so nobody decided it and it changed
+  nothing. Say so plainly and stop. Never propose again for this tour.
 - A base that is no longer current: the Welcome changed since the proposal.
   Read the current head again, report this proposal as it stands, and never
   overwrite another person's changes.
