@@ -267,16 +267,26 @@ The room is still open and nothing ran.
    event: call `artifactbridge_read_room_events` without `latest`,
    `after_event_id` or `event_id`, and pass each `next_cursor` as `cursor`
    until it is null. `conclusions.next_cursor` is not a cursor for that tool.
-2. Write a one- or two-sentence teaser of all of them for your person and
-   ask: request a space update first, or close anyway. An earlier "close it
-   when you're done" is not that choice.
-3. Do not draft an update, send a task, edit a document or create a proposal
-   on your own. An update starts only when your person asks for it
-   (section 12).
-4. Call the close again only when your person explicitly chooses to close
+2. When the offer's `self_close.eligible` is true and `read_status` is
+   `ready`, you may close without your person: call the close again with
+   `self_close: true`, `close_anyway: true`, the offer's exact `position`
+   and your `actor_participant_id`. When its `reason` is
+   `update_not_proposed` or `update_incomplete`, first propose the update
+   with `artifactbridge_propose_document_patch` on
+   `self_close.space_update_target` with this `room_id`; its text cites each
+   decision's `url` (`event=<event_id>`), then close. Any other `reason`
+   keeps the human gate: go on with step 3. A `room_has_open_items` refusal
+   leaves the room open; ask your person and do not withdraw the update.
+3. Otherwise write a one- or two-sentence teaser of all of them for your
+   person and ask: request a space update first, or close anyway. An earlier
+   "close it when you're done" is not that choice.
+4. On that path do not draft an update, send a task, edit a document or
+   create a proposal on your own. An update starts only when your person
+   asks for it (section 12).
+5. Call the close again only when your person explicitly chooses to close
    anyway: `close_anyway: true` with the offer's exact `position`, plus
    `decisions_read_failed: true` when `read_status` was `failed`.
-5. A new `space_update_offer` in reply means the room changed. Show your
+6. A new `space_update_offer` in reply means the room changed. Show your
    person what changed and ask again; never retry with the new `position` on
    the old answer.
 

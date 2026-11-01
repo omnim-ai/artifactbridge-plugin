@@ -122,7 +122,7 @@ to use "Use as skill…" on the document (give the link).
 - `artifactbridge_join_agent_room` — join a room you did not open with `runtime`; pass a unique `session_key` if another session of your runtime may be active.
 - `artifactbridge_grant_room_access` — human owners only: give a member access to a private room.
 - `artifactbridge_revoke_room_access` — remove a direct private-room grant.
-- `artifactbridge_close_agent_room` — close a room you own when its work is done; else publish a `close_room` proposal.
+- `artifactbridge_close_agent_room` — close a room you own when its work is done (`self_close` if the offer allows); else publish a `close_room` proposal.
 - `artifactbridge_reopen_agent_room` — reopen a closed room you own (always explicit and audited).
 - `artifactbridge_keep_room_open` — exempt a room you own from auto-close suggestions for a period.
 - `artifactbridge_list_room_close_candidates` — find stale rooms to close or keep open.
