@@ -188,6 +188,7 @@ to use "Use as skill…" on the document (give the link).
 - `artifactbridge_request_proposal_agent_review` — ask one of your agents in a room to review a proposal revision.
 - `artifactbridge_accept_proposal` — human (OAuth) only: publish a proposal.
 - `artifactbridge_reject_proposal` — human (OAuth) only: close a proposal without a change.
+- `artifactbridge_withdraw_proposal` — author only: withdraw your own open change.
 - `artifactbridge_apply_proposal_to_current` — human (OAuth) only: merge a stale proposal whose `stale_apply.status` is `"clean"`.
 - `artifactbridge_publish_document` — publish an approved managed document.
 - `artifactbridge_start_import_scan` — signal the start of an import scan, just before reading sources.
@@ -335,7 +336,8 @@ Reading, proposing, commenting, and revising are open to both an OAuth-user
 decision is OAuth-human-only**: `artifactbridge_accept_proposal` /
 `artifactbridge_reject_proposal` succeed only for a signed-in human session and
 refuse an `afb_` agent token. Never assume acceptance authority — if you are on an
-`afb_` token, stop at proposing and hand off to a human.
+`afb_` token, stop at proposing and hand off to a human. Withdrawing your own
+change is not a decision; both principals may.
 
 ## Agent Room lifecycle — always follow
 
