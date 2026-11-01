@@ -231,6 +231,10 @@ ArtifactBridge exposes these tools (from `src/mcp-documents.ts`):
 - `artifactbridge_list_workflows` — list the workflows your token's creator owns (id, name, executor, cadence, status, next due time). The discovery read for the external executor: find the `workflow_id` here, then claim it.
 - `artifactbridge_workflow_claim_run` — claim a due run of an external-executor workflow your token's creator owns, so your agent executes it instead of the platform runner. Returns the run lease and the instruction text framed as untrusted data; file the output document yourself (the workflow's folder choice is advisory).
 - `artifactbridge_workflow_finish_run` — record the claimed run's outcome (`succeeded` requires `output_document_id`; `failed`/`blocked` require a short `error_code`; each status carries exactly its own fields). The `attempt` from the claim is the lease fence; `run_lease_lost` means the outcome was not recorded.
+- `artifactbridge_draft_workflow` — save a scheduled instruction as a draft workflow your token's creator owns (inline text or a document; `platform` or `external` executor). It never runs until the owner activates it in Settings > Workflows; no tool can activate.
+- `artifactbridge_update_workflow` — edit that workflow. A rename, a less frequent cadence or clearing the folder keeps an active workflow approved; any other change returns it to draft until the owner activates it again.
+- `artifactbridge_run_workflow_now` — run an active `platform` workflow once now (one open run at most); claim an `external` one with `artifactbridge_workflow_claim_run`.
+- `artifactbridge_pause_workflow` — pause an active workflow; only the owner reactivates it.
 
 **Human feedback**
 

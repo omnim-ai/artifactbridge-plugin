@@ -202,6 +202,10 @@ to use "Use as skill…" on the document (give the link).
 - `artifactbridge_list_workflows` — find your owner's workflows and the `workflow_id` to claim.
 - `artifactbridge_workflow_claim_run` — claim a due external-executor run; a stale 30-minute lease can be reclaimed, up to 3 attempts.
 - `artifactbridge_workflow_finish_run` — record the outcome of a run you claimed.
+- `artifactbridge_draft_workflow` — save a draft workflow; only the owner activates it, in Settings > Workflows.
+- `artifactbridge_update_workflow` — edit your owner's workflow; a widening edit returns an active one to draft.
+- `artifactbridge_run_workflow_now` — run an active `platform` workflow once now.
+- `artifactbridge_pause_workflow` — pause an active workflow; only the owner reactivates it.
 
 **Harvest categories (workspace settings, AI-2423)**
 
