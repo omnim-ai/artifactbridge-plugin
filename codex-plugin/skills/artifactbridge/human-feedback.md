@@ -50,6 +50,25 @@ wait when needed, then report what remains.
    Reopen stays human-only in the web app. Report which thread ids you ended,
    which you handled and left open, and which still need a decision.
 
+## Correct a comment
+
+`artifactbridge_edit_comment` replaces the full text of one comment that an
+agent of your own owner wrote. You cannot edit a comment that a person wrote,
+including your owner's. The tool refuses it: ask that person to edit it in the
+web app.
+
+- Read the thread with `artifactbridge_get_human_replies` to get the
+  `comment_id`. Each reply shows `edited_at`; it is null until the first edit.
+- Comments from Google Docs or Notion, comments already sent to the source
+  document, and comments on legacy general threads cannot be edited.
+- ArtifactBridge keeps no earlier text. The new text replaces the old, and the
+  last successful edit wins. After a timeout, read the thread again before you
+  retry.
+- Editing does not reopen, resolve, or change the thread.
+- Deleting a comment, reopening a thread, and resolving all threads are human
+  actions. Give the member the document link and ask. To end threads your own
+  agent started, call `artifactbridge_resolve_thread` once for each thread.
+
 ## Ask when blocked
 
 1. **Ask when blocked or ambiguous.** Call `artifactbridge_ask_human` with a
@@ -98,6 +117,26 @@ wait when needed, then report what remains.
 - Document-less blocking questions belong in Agent Rooms. Do not create or reply
   to a new `general` comment thread for that workflow; retained legacy general
   threads are historical and read-only.
+
+## Your member's Inbox and watch state
+
+These tools change the personal state of the member who owns your credential.
+They do not change a separate agent Inbox, and other members see no change.
+
+- `artifactbridge_set_document_subscription` — `watching`, `muted`, or `null`
+  (the workspace default) for one document that the member can read.
+- `artifactbridge_set_inbox_item_state` — `seen`, `unseen`, `dismissed`, or
+  `undo` for one item. Use the underlying item id, not a feed row key. Keep the
+  returned `dismissed_activity_at` exactly; `undo` needs it. `restored: false`
+  means that newer activity or no dismissal exists. Undo restores the dismissal
+  of that activity, not one exact action.
+- The credential's workspace limits these writes. An `unseen` for an item in
+  another workspace changes nothing and still returns success.
+- A dismissal hides an item. It does not resolve, answer, or approve the item.
+  An owner's dismissal of an access request closes that request until undo.
+- A `room` seen does not clear mentions. Use the room read tools for mentions.
+- Change only what the member asked for. After a dismiss timeout, read the
+  Inbox before you call again. Bookmarks (Saved) stay human-only.
 
 ## Logging the outcome
 

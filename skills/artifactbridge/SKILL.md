@@ -107,8 +107,10 @@ to use "Use as skill…" on the document (give the link).
 - `artifactbridge_rename_folder` — rename a folder; only humans delete folders.
 - `artifactbridge_move_folder` — move a folder under another, or to the top with `null`.
 - `artifactbridge_set_library_order` — reorder all of a folder's subfolders or documents.
-- `artifactbridge_set_space` — `operation:"create"`. No list tool: use a pointer.
+- `artifactbridge_set_space` — `operation:"create"`. List Spaces first.
 - `artifactbridge_read_space_context` — only for a space pointer or delegation with a Space, before each task.
+- `artifactbridge_list_spaces` — find a Space to reuse before you create one.
+- `artifactbridge_get_space_change_impact` — read-only; check Space users before a delete.
 - `artifactbridge_list_agents` — agents, setup choices.
 - `artifactbridge_create_agent` — OAuth human only.
 - `artifactbridge_update_agent` — OAuth human only.
@@ -183,10 +185,14 @@ to use "Use as skill…" on the document (give the link).
 - `artifactbridge_archive_own_documents_by_tag` — archive up to 100 of your own docs with one exact tag.
 - `artifactbridge_set_document_audience` — human/agent/both; discovery, not access.
 - `artifactbridge_duplicate_document` — copy a readable document into its folder; not retry-safe.
+- `artifactbridge_get_my_account` — read your own profile, color and preferences ([guide](./account-profile.md)).
+- `artifactbridge_update_my_profile` — one change: name, photo, photo Undo, or color; name and photo need `expected_revision`.
+- `artifactbridge_set_my_preferences` — set your theme or mark one coach mark seen.
 - `artifactbridge_get_review_status` — read a proposal decision and revision feedback.
 - `artifactbridge_list_proposals_for_document` — list a document's proposals and revision chain (no bodies).
 - `artifactbridge_read_proposal` — read a proposal's body and diff; for a redline, comment per edit in `redline.edits`.
 - `artifactbridge_create_document_from_docx` — create a managed document from a clean Word file.
+- `artifactbridge_create_document_from_xlsx` — create a CSV document from an Excel file.
 - `artifactbridge_add_document_redline` — add a counterparty's tracked-changes `.docx` as a redline proposal.
 - `artifactbridge_decide_redline_edit` — human (OAuth) only: decide one redline edit; agents comment instead.
 - `artifactbridge_read_redline_reply` — read the reply `.docx` after a human accepts a redline.
@@ -212,6 +218,14 @@ to use "Use as skill…" on the document (give the link).
 - `artifactbridge_run_workflow_now` — run an active `platform` workflow once now.
 - `artifactbridge_pause_workflow` — pause an active workflow; only the owner reactivates it.
 - `artifactbridge_activate_workflow` — a signed-in human activates their own workflow; agents are refused.
+- `artifactbridge_list_companion_conversations` — page your human's companion chats.
+- `artifactbridge_create_companion_conversation` — new companion chat; not retry-safe.
+- `artifactbridge_rename_companion_conversation` — rename a companion chat.
+- `artifactbridge_list_companion_room_bindings` — a chat's Rooms and wake policies.
+- `artifactbridge_set_companion_room_binding` — bind, unbind, or move a Room; wakes start off.
+- `artifactbridge_set_companion_room_wake_policy` — off, or Ask with `confirm_wake` your human chose; Automatic is human-only (web app).
+- `artifactbridge_get_companion_conversation_tool_picks` — read a chat's tool picks.
+- `artifactbridge_set_companion_conversation_tool_picks` — replace a chat's tool picks.
 
 **Harvest categories (workspace settings)**
 
@@ -228,9 +242,12 @@ to use "Use as skill…" on the document (give the link).
 - `artifactbridge_comment_on_proposal` — discuss a proposal in its own thread.
 - `artifactbridge_reply_to_thread` — reply in-thread; link proposal changes with `review_request_id`.
 - `artifactbridge_resolve_thread` — end only a thread your own owner's agent started, with an `outcome`.
+- `artifactbridge_edit_comment` — correct a comment your owner's agents wrote; no history kept.
 - `artifactbridge_list_review_threads` — list open review threads.
 - `artifactbridge_wait_for_updates` — wait for thread activity or proposal events instead of polling.
 - `artifactbridge_get_human_replies` — read human replies to your questions.
+- `artifactbridge_set_document_subscription` — watch, mute, or reset (`null`) a document for your member.
+- `artifactbridge_set_inbox_item_state` — mark your member's Inbox item seen, unseen, dismissed, or undo.
 
 Agents read and reply to managed- and external-document threads. For a
 human's thread, reply with a short addressed summary and leave it open. Humans

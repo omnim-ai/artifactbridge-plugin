@@ -11,9 +11,9 @@ manage a Space (section 8) or to create or edit a fixed-Space agent (section
 13). A plain folder pointer (Copy folder context) or an ordinary task does not
 use it.
 
-There is no list-Spaces tool. To reuse an existing Space, use a pointer the
-person gives you. If you cannot identify it, ask for its link or copied
-context. Never invent a Space id.
+To find an existing Space, use a pointer the person gives you or
+`artifactbridge_list_spaces` (section 8). If you cannot identify it, ask for
+its link or copied context. Never invent a Space id.
 
 The pointer is the whole setup. Install nothing and ask for no setup prompt.
 
@@ -119,9 +119,12 @@ edit a shared client profile or setting to switch spaces.
 asks.
 
 - **Before you create, look for a space that fits.** If the person named a
-  space, or a space pointer is in context, use that space. Create a space
-  only when the person asks for a new one or no space fits. Make one space
-  per ongoing area of work, never one space per task.
+  space, or a space pointer is in context, use that space. Otherwise call
+  `artifactbridge_list_spaces`: one page of 1 to 100 spaces you can open, by
+  name (default 50). When `has_more` is true, pass `next_cursor` as `cursor`.
+  The list has no total and never shows a space you cannot open. Create a
+  space only when the person asks for a new one or no space fits. Make one
+  space per ongoing area of work, never one space per task.
 - **Create** needs a `name` and makes a space that is private to the person.
   In the same call it can set `description`, `add` references and
   `add_skills`, with the same rules as update. The create is all or nothing:
@@ -153,6 +156,14 @@ asks.
   Do not claim success when a tool is missing.
 - Deleting a space removes only the space. It never changes the documents or
   folders that the space points at, or their grants.
+- **Before you delete, check the impact.** Call
+  `artifactbridge_get_space_change_impact` with the `space_id`. It changes
+  nothing. `spaces` counts the spaces you can open that include this space
+  directly; `using_spaces` names up to five, and `using_spaces_truncated` is
+  true when there are more. Spaces you cannot open are not counted. Tell the
+  person before you delete. Pass `target_space_id` before you add that space
+  as a reference: `some_readers_cannot_open: true` means some people who can
+  open this space cannot open the target.
 
 ## 9. A delegated task that comes with a Space
 
