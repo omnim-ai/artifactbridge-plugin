@@ -325,19 +325,20 @@ close offer led to that request. You need to be able to read the room space.
 5. Post the proposal and document links in the room. Call a proposal a
    proposal until a human accepts it. Synced external documents stay read-only.
 
-## 13. Create or edit a fixed-Space agent
+## 13. Create, edit or share a fixed-Space agent
 
-A fixed-Space agent always works in one Space. Create or edit one only when
-your person asks for it.
+A fixed-Space agent always works in one Space. Create, edit or share one only
+when your person asks for it.
 
-- **Who can do it.** Create and update need the OAuth sign-in of a current
-  member. An `afb_` agent token gets `human_agent_configuration_required`:
-  stop and ask your person to make that change in the web **Agents** view or
-  in their own signed-in session. Do not switch credentials, automate the
-  browser or call a private endpoint. ArtifactBridge cannot check that your
-  person is present: a session that uses their OAuth sign-in passes. So never
-  create or edit an agent on your own initiative. The list read works with
-  both credentials.
+- **Who can do it.** Create, update and share need the OAuth sign-in of a
+  current member. An `afb_` agent token gets
+  `human_agent_configuration_required` (share:
+  `human_sharing_required`): stop and ask your person to make that change in
+  the web **Agents** view or in their own signed-in session. Do not switch
+  credentials, automate the browser or call a private endpoint.
+  ArtifactBridge cannot check that your person is present: a session that
+  uses their OAuth sign-in passes. So never create, edit or share an agent on
+  your own initiative. The list read works with both credentials.
 - **Choices.** Call `artifactbridge_list_agents` with
   `include_setup_options: true` (CLI: `artifactbridge agents list
   --setup-options`). `setup_options.spaces` holds the Spaces you can open, and
@@ -359,10 +360,10 @@ your person asks for it.
   `artifactbridge agents create --name NAME --space UUID [--description TEXT]
   [--harness ID]`. The CLI makes the key and saves the request locally before
   it sends it. The new agent is **Only me** when Agent sharing is on;
-  otherwise it is workspace-wide, as in the web app. Who can use it is a
-  separate human change in the web **Agents** view; never create again to
-  share an agent. Creating or editing an agent grants no document, folder,
-  Space, room or workspace access. It does not connect an executor, add
+  otherwise it is workspace-wide, as in the web app. To change who can use
+  it, share it (below); never create again to share an agent. Creating,
+  editing or sharing an agent grants no document, folder, Space, room or
+  workspace access. It does not connect an executor, add
   consent or send a task.
 - **Edit.** `artifactbridge_update_agent` takes the `agent_id` from the list
   or the create result; only the owner can edit (`agent_owner_required`).
@@ -395,6 +396,36 @@ your person asks for it.
   `agent_id` and compare the fields you sent (the CLI does this for you).
   A newer edit can have changed them. Report a difference and ask the person
   to confirm a new edit.
+- **Share.** `artifactbridge_set_agent_sharing` takes `agent_id` and
+  `sharing`: `owner` (Only me), `members` (Selected members) or `workspace`
+  (Everyone in this workspace). Only the owner can share. `member_ids` is the
+  complete new selection, not an addition: read the current one with
+  `artifactbridge_list_agents` and `agent_id` (owner only) and send every
+  member who keeps access. `members` needs `member_ids`; `[]` leaves only the
+  owner. Other modes take no members. Take each ID from
+  `artifactbridge_search_workspace_members` (`user_id`); never use an email
+  or a guessed ID. CLI: `artifactbridge agents share UUID --sharing MODE` with
+  one `--member UUID` per member. Narrowing can stop work that a removed
+  member started.
+- **Share refusals.** `sharing_not_enabled`: a workspace admin must turn on
+  Agent sharing; never try to turn it on. `tray_agent_use_pause_or_remove`:
+  the owner shares a tray agent in their ArtifactBridge app.
+  `member_not_found`: a selected ID is not an active member; search again.
+  `scheduler_busy`: read the sharing, then ask before you send again. A bad
+  ID or more than 500 members gets "Input validation error" with no code;
+  nothing was saved. An older server without the tool: the person uses the
+  web **Agents** view.
+- **Share result.** Report the saved `sharing` and `member_ids`, not the
+  values you sent. `sharing_verification: "unavailable"` means saved but not
+  read back: read the agent by `agent_id`. A saved sharing that differs from
+  your request is a newer choice: ask before you replace it.
+  `cutoff_announcement` is `best_effort` or `unavailable` when work was
+  stopped: a Room can miss its note. Never share again to repeat it.
+- **Lost share response.** Do not send it again. Read the agent by
+  `agent_id` and compare `sharing` and `member_ids` (the CLI does this and
+  reports `current_state`). A match shows only the current state, not which
+  request saved it. A difference, or no `member_ids`, needs the person to
+  confirm a new change.
 
 ## Trust and approval
 

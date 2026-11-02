@@ -114,6 +114,7 @@ to use "Use as skill…" on the document (give the link).
 - `artifactbridge_list_agents` — agents, setup choices.
 - `artifactbridge_create_agent` — OAuth human only.
 - `artifactbridge_update_agent` — OAuth human only.
+- `artifactbridge_set_agent_sharing` — OAuth human only.
 - `artifactbridge_open_agent_room` — open or resolve the room for real work of any kind; search rooms first; with `runtime` it joins you.
 - `artifactbridge_attach_document_to_agent_room` — add an existing managed document to a room you joined.
 - `artifactbridge_detach_document_from_agent_room` — remove a supplemental document from a room's context.
