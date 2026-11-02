@@ -7,8 +7,9 @@ shared agent and its brief says that the task comes with a Space or names an
 agent space or a room space (start at section 9), or when a room context read
 returns `room_space_pointer` (section 10), or when a room close returns
 `space_update_offer` (section 11), or when the person asks you to create or
-manage a Space (section 8). A plain folder pointer (Copy folder context) or an
-ordinary task does not use it.
+manage a Space (section 8) or to create or edit a fixed-Space agent (section
+13). A plain folder pointer (Copy folder context) or an ordinary task does not
+use it.
 
 There is no list-Spaces tool. To reuse an existing Space, use a pointer the
 person gives you. If you cannot identify it, ask for its link or copied
@@ -142,11 +143,10 @@ asks.
   credentials have different authority; a member's token does not grant every
   web permission. A refusal is not permission to switch credentials, automate
   the browser, call a private endpoint or use service-role access.
-- **Agents.** To create or edit a fixed-Space agent, direct the person to the
-  rail **Agents** view. This is not a public MCP or CLI action. Gateway
-  discovery and delegation tools use agents already configured; they do not
-  create them. **Settings → Executors** manages execution capacity, not agent
-  identity.
+- **Agents.** To create or edit a fixed-Space agent, follow section 13.
+  Gateway discovery and delegation tools use agents already configured; they
+  do not create them. **Settings → Executors** manages execution capacity, not
+  agent identity.
 - **Report** the created or changed ID or link and the effective result. After
   a create, read the Space back with `artifactbridge_read_space_context`.
   Distinguish a saved object from a successful later sharing or probe step.
@@ -313,6 +313,77 @@ close offer led to that request. You need to be able to read the room space.
    say that the space reaches the document.
 5. Post the proposal and document links in the room. Call a proposal a
    proposal until a human accepts it. Synced external documents stay read-only.
+
+## 13. Create or edit a fixed-Space agent
+
+A fixed-Space agent always works in one Space. Create or edit one only when
+your person asks for it.
+
+- **Who can do it.** Create and update need the OAuth sign-in of a current
+  member. An `afb_` agent token gets `human_agent_configuration_required`:
+  stop and ask your person to make that change in the web **Agents** view or
+  in their own signed-in session. Do not switch credentials, automate the
+  browser or call a private endpoint. ArtifactBridge cannot check that your
+  person is present: a session that uses their OAuth sign-in passes. So never
+  create or edit an agent on your own initiative. The list read works with
+  both credentials.
+- **Choices.** Call `artifactbridge_list_agents` with
+  `include_setup_options: true` (CLI: `artifactbridge agents list
+  --setup-options`). `setup_options.spaces` holds the Spaces you can open, and
+  `setup_options.harness_options` the harness options. Agents and Spaces page
+  separately: pass `page.next_cursor` as `cursor` (CLI `--cursor`) and
+  `setup_options.space_page.next_cursor` as `space_cursor` (CLI
+  `--space-cursor`). One call returns one page; do not treat it as the full
+  list. Use only a Space `id` from these choices or from the person; never
+  invent one. To check a Space first, read it with
+  `artifactbridge_read_space_context`. Empty choices are an answer: tell the
+  person.
+- **Required harness.** Omit it (CLI: no `--harness`) for no requirement. A
+  harness option is advisory: it does not mean that an executor is online or
+  free now. With a requirement, tasks run only where that harness is
+  connected.
+- **Create.** `artifactbridge_create_agent` takes `name` (1 to 80 characters),
+  `fixed_space_id`, a new UUID `idempotency_key`, and optionally
+  `description` (at most 2000 characters) and `required_harness`. CLI:
+  `artifactbridge agents create --name NAME --space UUID [--description TEXT]
+  [--harness ID]`. The CLI makes the key and saves the request locally before
+  it sends it. The new agent is **Only me** when Agent sharing is on;
+  otherwise it is workspace-wide, as in the web app. Who can use it is a
+  separate human change in the web **Agents** view; never create again to
+  share an agent. Creating or editing an agent grants no document, folder,
+  Space, room or workspace access. It does not connect an executor, add
+  consent or send a task.
+- **Edit.** `artifactbridge_update_agent` takes the `agent_id` from the list
+  or the create result; only the owner can edit (`agent_owner_required`).
+  Send only the fields that change. An omitted field keeps its saved value.
+  `description: ""` clears the description; `required_harness: null` clears
+  the requirement. The Space cannot be cleared: `fixed_space_id: null` gets
+  `fixed_space_clear_not_allowed`. A `null` name or description is refused.
+  CLI: `artifactbridge agents update UUID` with `--name`, `--description ""`,
+  `--space`, `--harness` or `--clear-harness`. An edit never changes status
+  or who can use the agent.
+- **Saved and verified.** The result always has `agent_id`. With
+  `configuration_verification: "verified"`, `agent` is the saved
+  configuration, read back now. With `"unavailable"` (`agent: null`), the
+  change is saved but was not read back: read it with
+  `artifactbridge_list_agents` and `agent_id` (CLI `--agent-id`). Do not
+  report a failure and do not create again. Report the saved values, not the
+  values you sent.
+- **Lost create response.** Keep the `idempotency_key` and the fields before
+  you send. If the call fails or the response is lost, send the same key
+  with the same fields: you get the same agent (`recovery.replayed`,
+  `recovery.retry_safe_until`). CLI: `artifactbridge agents create --recover
+  KEY`, for the same account and workspace, within 24 hours of the first
+  send. `idempotency_conflict` means other fields: send the original fields.
+  After `idempotency_expired`, `idempotency_target_unavailable`, a lost key
+  or a stopped `--recover`, do not retry: list the agents and ask the person
+  to choose an existing agent or approve a new create. Never match by name,
+  and never use a new key on your own. An empty list does not prove that the
+  create failed.
+- **Lost update response.** Do not send the update again. Read the agent by
+  `agent_id` and compare the fields you sent (the CLI does this for you).
+  A newer edit can have changed them. Report a difference and ask the person
+  to confirm a new edit.
 
 ## Trust and approval
 
