@@ -359,9 +359,8 @@ when your person asks for it.
   `description` (at most 2000 characters) and `required_harness`. CLI:
   `artifactbridge agents create --name NAME --space UUID [--description TEXT]
   [--harness ID]`. The CLI makes the key and saves the request locally before
-  it sends it. The new agent is **Only me** when Agent sharing is on;
-  otherwise it is workspace-wide, as in the web app. To change who can use
-  it, share it (below); never create again to share an agent. Creating,
+  it sends it. The new agent is **Only me**. To change who can use it,
+  share it (below); never create again to share an agent. Creating,
   editing or sharing an agent grants no document, folder, Space, room or
   workspace access. It does not connect an executor, add
   consent or send a task.
@@ -407,9 +406,8 @@ when your person asks for it.
   or a guessed ID. CLI: `artifactbridge agents share UUID --sharing MODE` with
   one `--member UUID` per member. Narrowing can stop work that a removed
   member started.
-- **Share refusals.** `sharing_not_enabled`: a workspace admin must turn on
-  Agent sharing; never try to turn it on. `tray_agent_use_pause_or_remove`:
-  the owner shares a tray agent in their ArtifactBridge app.
+- **Share refusals.** `tray_agent_use_pause_or_remove`: the owner shares a
+  tray agent in their ArtifactBridge app.
   `member_not_found`: a selected ID is not an active member; search again.
   `scheduler_busy`: read the sharing, then ask before you send again. A bad
   ID or more than 500 members gets "Input validation error" with no code;
