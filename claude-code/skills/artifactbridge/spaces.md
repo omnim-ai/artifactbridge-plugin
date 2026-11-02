@@ -164,6 +164,13 @@ asks.
   person before you delete. Pass `target_space_id` before you add that space
   as a reference: `some_readers_cannot_open: true` means some people who can
   open this space cannot open the target.
+- **Access.** `artifactbridge_get_space_access` reads a Space's owner and
+  visibility; only the owner sees the grant rows. Space access never grants
+  Library access. The Space owner can reduce access with
+  `artifactbridge_manage_space_access`: revoke one grant, or make the Space
+  private. After an uncertain response, read the access again; nothing is
+  restored automatically. Grants, wider visibility and transfer stay with the
+  person, in the Space Share panel.
 
 ## 9. A delegated task that comes with a Space
 

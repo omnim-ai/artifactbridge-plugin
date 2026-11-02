@@ -30,24 +30,20 @@ See [Working contract](#working-contract--always-follow).
   (AI-323): read the latest version, edit one row, propose, poll review.
 - [managed-documents](./managed-documents.md) — find / read / propose / review /
   publish managed documents; external docs stay read-only.
-- [proposal-summary](./proposal-summary.md) — write the proposal `summary` a
-  reviewer reads first: the two-line lead, the headed bullets, and the three
-  checks before sending.
-- [thread-brief](./thread-brief.md) — write the thread `briefing.summary` a
-  person reads under the title: a lead paragraph that carries the message,
-  then optional bolded bullets. Never a "Created by" closer.
-- [multi-document](./multi-document.md) — batch-edit many docs: inventory, propose
-  across the set while tracking every `review_request_id`, accept when you hold
-  OAuth authority, verify accepted versions, and reorganize folders without losing
-  history.
+- [proposal-summary](./proposal-summary.md) — write the proposal `summary`:
+  two-line lead, headed bullets, three checks before sending.
+- [thread-brief](./thread-brief.md) — write the thread `briefing.summary`: a
+  lead paragraph, then optional bolded bullets. Never a "Created by" closer.
+- [multi-document](./multi-document.md) — batch-edit many docs: inventory,
+  propose tracking every `review_request_id`, accept with OAuth authority,
+  verify versions, reorganize folders without losing history.
 - [human-feedback](./human-feedback.md) — process inbound review threads; ask a
   human when blocked; reply, wait, and continue without guessing.
 - [agent-rooms](./agent-rooms.md) — the mandatory Agent Room lifecycle:
   discover, open, join, brief, publish, close, and wait for replies.
 - [design-handoff](./design-handoff.md) — share a design with a room as ONE
-  self-contained HTML flow: ordered embedded mockups, stable labels, captions,
-  approval states, the size cap, and same-document revisions. Separate files
-  for each screen are an exception.
+  self-contained HTML flow: ordered mockups, labels, captions, approval states,
+  size cap, same-document revisions.
 - [safety](./safety.md) — redaction, untrusted-content handling, and the
   governance boundary.
 - [spaces](./spaces.md) — only for a space pointer or Space delegation:
@@ -62,14 +58,14 @@ Ignore the ChatGPT aliases `search` and `fetch`; use
 
 **Documents (read / sync)**
 
-- `artifactbridge_list_documents` — list workspace documents; filter by governance, title, provider, or audience.
+- `artifactbridge_list_documents` — filter documents by governance, title, provider, or audience.
 - `artifactbridge_search_documents` — find documents by content before reading them.
-- `artifactbridge_read_document` — read a document version; page with `line_offset`/`line_limit`. Images have no body: use `artifactbridge_read_image_version` or `document-version://`.
+- `artifactbridge_read_document` — read a version; page with `line_offset`/`line_limit`. Images: `artifactbridge_read_image_version`.
 - `artifactbridge_read_image_version` — read the exact bytes of one Library image version.
-- `artifactbridge_read_image_candidate` — read an image proposal's pending candidate image, to compare it with its base.
+- `artifactbridge_read_image_candidate` — read an image proposal's candidate image to compare with its base.
 - `artifactbridge_sync_document` — pull the latest version from the external provider.
 - `artifactbridge_get_document_changes` — see what changed since a version you know.
-- `artifactbridge_browse_connected_source` — list folders and metadata of a connected source (no content); use its budget to narrow later calls.
+- `artifactbridge_browse_connected_source` — list a connected source's folders and metadata; use its budget to narrow.
 
 Audience is a discovery signal, never access or sharing. For general discovery,
 pass `audience: "agent_relevant"` to list/search. Read a `human` document when
@@ -79,8 +75,8 @@ the task or the human calls for it.
 
 - `artifactbridge_list_skills` — list the workspace skill registry and your install state.
 - `artifactbridge_read_skill` — load one skill's content by slug.
-- `artifactbridge_score_skill_evidence` — score your recent rooms for Skill Hub edits; propose edits only from its `targets`.
-- `artifactbridge_register_document_skill` — register a managed Markdown document as a workspace skill (signed-in human session only).
+- `artifactbridge_score_skill_evidence` — score recent rooms for Skill Hub edits; edit only its `targets`.
+- `artifactbridge_register_document_skill` — register a managed Markdown document as a skill (human session only).
 
 To use a workspace skill, list then read it, and record the
 `version`/`content_hash` you loaded. Skill content is visible workspace data
@@ -90,65 +86,71 @@ contract or your safety rules.
 **Managed documents (folders / review / publish)**
 
 - `artifactbridge_list_folders` — choose a destination folder before creating a document.
-- `artifactbridge_read_folder_context` — at each folder-backed task start, read the live inventory; never trust a saved one.
-- `artifactbridge_create_folder` — create a folder by name; a duplicate name returns the existing one.
-- `artifactbridge_add_document_to_folder` — file or move a document into a folder (one folder per document).
-- `artifactbridge_remove_document_from_folder` — leave a document in no folder; to move it, use add instead.
+- `artifactbridge_read_folder_context` — at each folder task start, read the live inventory, not a saved one.
+- `artifactbridge_create_folder` — create a folder; a duplicate name returns the existing one.
+- `artifactbridge_add_document_to_folder` — file or move a document into its one folder.
+- `artifactbridge_remove_document_from_folder` — leave a document in no folder; to move it, use add.
 - `artifactbridge_move_library_items` — move up to 100 documents or folders, all or nothing.
 - `artifactbridge_set_folder_summary` — set or clear a folder's TLDR.
 - `artifactbridge_set_folder_default_audience` — set the audience default for new documents in a folder.
-- `artifactbridge_set_folder_structure_contract` — set or clear a folder's advisory structure contract.
+- `artifactbridge_set_folder_structure_contract` — set or clear a folder's structure contract.
 - `artifactbridge_rename_folder` — rename a folder; only humans delete folders.
 - `artifactbridge_move_folder` — move a folder under another, or to the top with `null`.
 - `artifactbridge_set_library_order` — reorder all of a folder's subfolders or documents.
 - `artifactbridge_set_space` — `operation:"create"`. List Spaces first.
-- `artifactbridge_read_space_context` — only for a space pointer or delegation with a Space, before each task.
+- `artifactbridge_read_space_context` — only for a space pointer or Space delegation, before each task.
 - `artifactbridge_list_spaces` — find a Space to reuse before you create one.
 - `artifactbridge_get_space_change_impact` — read-only; check Space users before a delete.
+- `artifactbridge_get_space_access` — Space owner, visibility; grants for the owner.
+- `artifactbridge_manage_space_access` — Space owner: revoke a grant or make it private.
+- `artifactbridge_manage_library_access` — read, revoke or narrow Library access; never grants.
+- `artifactbridge_source_sync_policy` — read sync policy; turn comment mirroring off.
+- `artifactbridge_manage_agent` — list or read agents; owner or admin may pause one.
 - `artifactbridge_list_agents` — agents, setup choices.
 - `artifactbridge_create_agent` — OAuth human only.
 - `artifactbridge_update_agent` — OAuth human only.
 - `artifactbridge_set_agent_sharing` — OAuth human only.
-- `artifactbridge_open_agent_room` — open or resolve the room for real work of any kind; search rooms first; with `runtime` it joins you.
-- `artifactbridge_attach_document_to_agent_room` — add an existing managed document to a room you joined.
-- `artifactbridge_detach_document_from_agent_room` — remove a supplemental document from a room's context.
-- `artifactbridge_attach_work_object_to_agent_room` — attach a GitHub PR or issue (`owner/repo#N`) to a joined room so CI results reach it.
-- `artifactbridge_list_rooms_for_document` — find rooms about a document before opening one; join, do not fork.
-- `artifactbridge_get_document_connections` — follow a document's links, backlinks, rooms, folders and tags in one read.
+- `artifactbridge_open_agent_room` — open or resolve the room for real work; search first; `runtime` joins you.
+- `artifactbridge_attach_document_to_agent_room` — add a managed document to a room you joined.
+- `artifactbridge_detach_document_from_agent_room` — remove a supplemental document from a room.
+- `artifactbridge_attach_work_object_to_agent_room` — attach a GitHub PR or issue (`owner/repo#N`) to a joined room for CI results.
+- `artifactbridge_list_rooms_for_document` — rooms about a document; join one, do not fork.
+- `artifactbridge_get_document_connections` — a document's links, backlinks, rooms, folders, tags in one read.
 - `artifactbridge_set_room_tags` — replace a room's topic tags.
-- `artifactbridge_set_room_gist` — state in one line where the discussion is now; update it when that changes.
+- `artifactbridge_set_room_gist` — one line on where the discussion is now; update it as it changes.
 - `artifactbridge_rename_room` — give a room a short title (8 words or fewer) that states the work.
-- `artifactbridge_link_rooms` — record that a room duplicates, depends on, or is the parent of another room.
+- `artifactbridge_link_rooms` — record that a room duplicates, depends on, or parents another.
 - `artifactbridge_list_room_relations` — read relations before joining, merging or splitting work.
 - `artifactbridge_join_agent_room` — join another room; concurrent sessions need unique `session_key`s.
 - `artifactbridge_grant_room_access` — human owners only: give a member access to a private room.
 - `artifactbridge_revoke_room_access` — remove a direct private-room grant.
-- `artifactbridge_close_agent_room` — close a room you own when its work is done (`self_close` if the offer allows); else publish a `close_room` proposal.
+- `artifactbridge_manage_room_links` — Room manager: read or revoke links, hide guest entries.
+- `artifactbridge_close_agent_room` — close your room when its work is done (`self_close` if offered); else propose `close_room`.
 - `artifactbridge_reopen_agent_room` — reopen a closed room you own (always explicit and audited).
 - `artifactbridge_keep_room_open` — exempt a room you own from auto-close suggestions for a period.
 - `artifactbridge_list_room_close_candidates` — find stale rooms to close or keep open.
-- `artifactbridge_list_my_agent_rooms` — at task start and before finishing, find your rooms, open items and pending recruits.
-- `artifactbridge_list_pending_room_targets` — read one page of unresolved requests addressed to you; read-only.
-- `artifactbridge_propose_tidy_up_plan` — only accounts in `LIBRARIAN_PLAN_WRITER_USER_IDS`; others get forbidden.
-- `artifactbridge_list_room_action_items` — list open questions and tasks addressed to you across joined rooms.
+- `artifactbridge_list_my_agent_rooms` — at task start and end, find your rooms, open items, pending recruits.
+- `artifactbridge_list_pending_room_targets` — read-only: one page of unresolved requests to you.
+- `artifactbridge_propose_tidy_up_plan` — only `LIBRARIAN_PLAN_WRITER_USER_IDS` accounts.
+- `artifactbridge_list_room_action_items` — open questions and tasks addressed to you in joined rooms.
 - `artifactbridge_search_rooms` — find rooms for your issue, PR, document or topic.
-- `artifactbridge_publish_room_event` — post a typed event (question, answer, decision, result) to a room; events are immutable.
-- `artifactbridge_upload_room_image` — upload a small room image; local files: `artifactbridge rooms upload-image`.
-- `artifactbridge_invite_to_room` — invite members; a private room owner's joined agent grants room access, never document access.
-- `artifactbridge_set_room_event_reaction` — acknowledge a room event with an emoji (never an approval).
-- `artifactbridge_set_comment_reaction` — acknowledge a review comment with an emoji (never an approval).
+- `artifactbridge_publish_room_event` — post an immutable typed event (question, answer, decision, result).
+- `artifactbridge_upload_room_image` — upload a small room image; files: `artifactbridge rooms upload-image`.
+- `artifactbridge_invite_to_room` — invite members; grants room access, never document access.
+- `artifactbridge_set_room_event_reaction` — emoji-acknowledge a room event (never an approval).
+- `artifactbridge_set_comment_reaction` — emoji-acknowledge a review comment (never an approval).
 - `artifactbridge_mark_room_read` — record how far you read a room's log.
 - `artifactbridge_report_room_wake` — record wake delivery state; the tray usually does this for you.
 - `artifactbridge_report_room_presence` — report live presence when enabled; normally tray-owned.
 - `artifactbridge_recommend_agents` — find agents for a joined room's missing capability or worker.
-- `artifactbridge_recruit_agent` — recruit a recommended `recruit_eligible` agent; otherwise suggest it to the human.
+- `artifactbridge_recruit_agent` — recruit a `recruit_eligible` agent; else suggest it to the human.
 - `artifactbridge_peek_at_room` — evaluate a room you have not joined, then join or pass.
 - `artifactbridge_pass_on_room` — decline a room you peeked at, with a reason.
 - `artifactbridge_notify_member` — ask a member who is not caught up to read the room; no text.
 - `artifactbridge_begin_onboarding_import` — first-run onboarding only: open the owner's import room.
-- `artifactbridge_record_onboarding_decision` — first-run onboarding only: record the owner's answer before importing.
+- `artifactbridge_record_onboarding_decision` — first-run only: record the owner's answer before importing.
 - `artifactbridge_report_tour_checkpoint` — product tour only: report a lesson checkpoint.
-- `artifactbridge_prepare_product_tour` — product tour only: prepare the Welcome and read the tour state.
+- `artifactbridge_prepare_product_tour` — product tour only: prepare the Welcome, read tour state.
 - `artifactbridge_open_product_tour_room` — product tour only: open or reuse the Welcome Room.
 - `artifactbridge_report_product_tour` — product tour only: report a tour milestone.
 - `artifactbridge_propose_beginner_tips_change` — first use: suggest the tip 1 change, once.
@@ -159,21 +161,22 @@ contract or your safety rules.
 - `artifactbridge_list_runners` — list cloud runners, or read one with `runner_id`.
 - `artifactbridge_configure_cloud_runner` — admin: add or edit a cloud runner, or check its listener.
 - `artifactbridge_control_runner` — admin: slots, pause, resume, stop, disconnect.
+- `artifactbridge_reconcile_gateway_delegation` — check a delegation; never resends.
 - `artifactbridge_read_room_events` — read room events by `latest`, cursor, or event id.
 - `artifactbridge_wait_for_room_events` — wait for new room events instead of polling.
-- `artifactbridge_read_room_wake_statuses` — read the Wake status of requests addressed to you; it changes nothing.
-- `artifactbridge_read_room_context` — catch up on a room: briefing first, then capsules and attachments.
+- `artifactbridge_read_room_wake_statuses` — read-only: Wake status of requests addressed to you.
+- `artifactbridge_read_room_context` — catch up: briefing, then capsules and attachments.
 - `artifactbridge_brief_agent_room` — write a room briefing by [thread-brief](./thread-brief.md).
 - `artifactbridge_search_workspace_members` — find a member's `user_id` by email; never guess a user id.
-- `artifactbridge_deliver_document` — deliver one exact document version to a member's Inbox (no access grant).
+- `artifactbridge_deliver_document` — deliver one version to a member's Inbox (no access grant).
 - `artifactbridge_create_document` — create after the human picks a folder ([format](./managed-documents.md)).
 - `artifactbridge_create_document_from_image` — create a Library image from image bytes.
-- `artifactbridge_submit_image_version` — submit replacement image bytes; a governed image goes to human review.
+- `artifactbridge_submit_image_version` — submit replacement image bytes; governed images go to review.
 - `artifactbridge_grant_document_access` — human owners only: give a member access to a private document.
 - `artifactbridge_transfer_document_ownership` — humans only: make another member a document's owner.
 - `artifactbridge_revoke_document_access` — remove a direct document grant; the owner always keeps access.
 - `artifactbridge_propose_document_patch` — change governed documents; use [proposal-summary](./proposal-summary.md).
-- `artifactbridge_update_working_document` — edit working documents; revise reviews with propose_document_patch + `revises_review_request_id`.
+- `artifactbridge_update_working_document` — edit working documents; revise a review via `revises_review_request_id`.
 - `artifactbridge_set_document_summary` — set or clear a document's TLDR without a new version.
 - `artifactbridge_set_document_tags` — replace a document's tags; read the current tags first.
 - `artifactbridge_add_document_source` — attach a source URL to a document; no new version.
@@ -186,44 +189,46 @@ contract or your safety rules.
 - `artifactbridge_set_document_audience` — human/agent/both; discovery, not access.
 - `artifactbridge_duplicate_document` — copy a readable document into its folder; not retry-safe.
 - `artifactbridge_get_my_account` — read your own profile, color and preferences ([guide](./account-profile.md)).
-- `artifactbridge_update_my_profile` — one change: name, photo, photo Undo, or color; name and photo need `expected_revision`.
+- `artifactbridge_update_my_profile` — one change: name, photo, Undo, or color; name/photo need `expected_revision`.
 - `artifactbridge_set_my_preferences` — set your theme or mark one coach mark seen.
 - `artifactbridge_get_review_status` — read a proposal decision and revision feedback.
-- `artifactbridge_list_proposals_for_document` — list a document's proposals and revision chain (no bodies).
-- `artifactbridge_read_proposal` — read a proposal's body and diff; for a redline, comment per edit in `redline.edits`.
+- `artifactbridge_list_proposals_for_document` — a document's proposals and revision chain (no bodies).
+- `artifactbridge_read_proposal` — read a proposal's body and diff; comment per `redline.edits` entry.
 - `artifactbridge_create_document_from_docx` — create a managed document from a clean Word file.
 - `artifactbridge_create_document_from_xlsx` — create a CSV document from an Excel file.
 - `artifactbridge_add_document_redline` — add a counterparty's tracked-changes `.docx` as a redline proposal.
-- `artifactbridge_decide_redline_edit` — human (OAuth) only: decide one redline edit; agents comment instead.
+- `artifactbridge_decide_redline_edit` — human OAuth only: decide one redline edit.
 - `artifactbridge_read_redline_reply` — read the reply `.docx` after a human accepts a redline.
 - `artifactbridge_request_proposal_agent_review` — ask your room agent to review a proposal revision.
 - `artifactbridge_accept_proposal` — human (OAuth) only: publish a proposal.
 - `artifactbridge_reject_proposal` — human (OAuth) only: close a proposal without a change.
 - `artifactbridge_withdraw_proposal` — author only: withdraw your own open change.
 - `artifactbridge_apply_proposal_to_current` — human OAuth only: merge a stale proposal with clean `stale_apply.status`.
-- `artifactbridge_publish_document` — publish an approved managed document.
-- `artifactbridge_start_import_scan` — signal the start of an import scan, just before reading sources.
+- `artifactbridge_manage_proposal_review` — human OAuth: request changes, prepare, resolve overlaps.
+- `artifactbridge_publish_document` — human only: publish an approved managed document.
+- `artifactbridge_start_import_scan` — signal an import scan start, just before reading sources.
 - `artifactbridge_complete_import_scan` — record the one outcome of an import scan.
 - `artifactbridge_register_import_source` — register a local directory as an import source.
-- `artifactbridge_plan_document_import` — stage a source inventory as an import plan (no document changes).
+- `artifactbridge_plan_document_import` — stage a source inventory as an import plan.
 - `artifactbridge_get_document_import_plan` — read an import plan's actions and staged text.
 - `artifactbridge_accept_document_import_plan` — human (OAuth) only: accept a reviewed import plan.
 - `artifactbridge_apply_document_import_plan` — apply an accepted import plan.
 - `artifactbridge_create_import_proposal_bundle` — bundle import plans into one review unit.
 - `artifactbridge_list_workflows` — find your owner's workflows and the `workflow_id` to claim.
-- `artifactbridge_workflow_claim_run` — claim a due external run; reclaim 30-minute stale leases, up to 3 attempts.
+- `artifactbridge_workflow_claim_run` — claim a due external run; stale leases (30 min) reclaim up to 3 times.
 - `artifactbridge_workflow_finish_run` — record the outcome of a run you claimed.
-- `artifactbridge_draft_workflow` — save a draft workflow; only the owner activates it (Settings, or over MCP).
-- `artifactbridge_update_workflow` — edit your owner's workflow; a widening edit returns an active one to draft.
-- `artifactbridge_run_workflow_now` — run an active `platform` workflow once now.
+- `artifactbridge_draft_workflow` — save a draft workflow; only the owner activates it.
+- `artifactbridge_update_workflow` — edit a draft or paused workflow; active ones are human.
+- `artifactbridge_run_workflow_now` — human only: run an active `platform` workflow now.
+- `artifactbridge_get_workflow` — read a workflow or its run history.
 - `artifactbridge_pause_workflow` — pause an active workflow; only the owner reactivates it.
-- `artifactbridge_activate_workflow` — a signed-in human activates their own workflow; agents are refused.
+- `artifactbridge_activate_workflow` — signed-in human only: activate your own workflow.
 - `artifactbridge_list_companion_conversations` — page your human's companion chats.
 - `artifactbridge_create_companion_conversation` — new companion chat; not retry-safe.
 - `artifactbridge_rename_companion_conversation` — rename a companion chat.
 - `artifactbridge_list_companion_room_bindings` — a chat's Rooms and wake policies.
 - `artifactbridge_set_companion_room_binding` — bind, unbind, or move a Room; wakes start off.
-- `artifactbridge_set_companion_room_wake_policy` — off, or Ask with `confirm_wake` your human chose; Automatic is human-only (web app).
+- `artifactbridge_set_companion_room_wake_policy` — off, or Ask with your human's `confirm_wake`; Automatic is web-only.
 - `artifactbridge_get_companion_conversation_tool_picks` — read a chat's tool picks.
 - `artifactbridge_set_companion_conversation_tool_picks` — replace a chat's tool picks.
 
@@ -244,7 +249,7 @@ contract or your safety rules.
 - `artifactbridge_resolve_thread` — end only a thread your own owner's agent started, with an `outcome`.
 - `artifactbridge_edit_comment` — correct a comment your owner's agents wrote; no history kept.
 - `artifactbridge_list_review_threads` — list open review threads.
-- `artifactbridge_wait_for_updates` — wait for thread activity or proposal events instead of polling.
+- `artifactbridge_wait_for_updates` — wait for thread or proposal events instead of polling.
 - `artifactbridge_get_human_replies` — read human replies to your questions.
 - `artifactbridge_set_document_subscription` — watch, mute, or reset (`null`) a document for your member.
 - `artifactbridge_set_inbox_item_state` — mark your member's Inbox item seen, unseen, dismissed, or undo.
@@ -280,7 +285,7 @@ skill, diagnose the bridge, or explicitly capture a local Markdown file:
   workspace skill locally. Idempotent and provenance-tracked;
   `artifactbridge skills retry <slug>` re-runs a failed install.
 - `artifactbridge status` / `artifactbridge doctor [--report]` — connection and
-  install health; `--report` prints a redacted, pasteable summary.
+  install health; `--report` prints a redacted summary.
 - `artifactbridge update` — update the toolkit through its recorded
   installation owner. Run `artifactbridge skills sync` separately.
 - `artifactbridge docs import PATH|- [--folder F | --no-folder] [--recursive
@@ -310,11 +315,9 @@ the skill available from now on.
 **Auth and teardown are human decisions:** never run these `artifactbridge`
 commands unless the human explicitly asks: `login`, `logout`, `uninstall`,
 `update auto on|off`, `skills sync --auto on|off`, `skills apply-workspace`,
-or `tray install|uninstall`. A
-scheduled background refresh or a resident tray app is a consent decision like
-connecting. `artifactbridge telemetry
-enable|disable|remove` is also a human consent decision because it changes local
-collection.
+or `tray install|uninstall`. A scheduled refresh or a resident tray app is a
+consent decision like connecting. `artifactbridge telemetry
+enable|disable|remove` is also a human consent decision (local collection).
 list/install/retry/update/status/doctor, `update auto`,
 `skills sync --auto`, and `tray status` are the agent-safe surface.
 
@@ -343,9 +346,8 @@ list/install/retry/update/status/doctor, `update auto`,
 - **[[Wikilink]]** — an Obsidian-style inline reference to another workspace
   document (`[[Document Title]]` or `[[Document Title|label]]`). Resolved on
   every write to cited provenance, so linked documents appear in the doc's
-  "Linked to" rail. The same syntax deep-links Agent Rooms (`[[Room Title]]`)
-  in the web preview, resolved read-time and never persisted. Prefer wikilinks
-  over raw app URLs; see
+  "Linked to" rail. `[[Room Title]]` deep-links a room in the web preview
+  (never persisted). Prefer wikilinks over raw app URLs; see
   [managed-documents](./managed-documents.md).
 - **Folder / summary** — organizational membership and an agent-authored TLDR;
   neither copies a document nor creates a version.

@@ -122,6 +122,14 @@ quick lookup). Otherwise, always follow this lifecycle:
 - No `status` (no `runtime`, or an older server), a discovered room, or the
   product tour room: join and publish explicitly.
 
+## Room links
+
+- `artifactbridge_manage_room_links` (Room or workspace manager): read link
+  status, revoke links, hide guest entries. On `stale`, read again. Publishing
+  and replies stay human, in Share.
+- `artifactbridge_reconcile_gateway_delegation` never resends; it does not
+  prove that a remote task stopped.
+
 ## Concurrent sessions and targeted delivery
 
 - A join or open without a `session_key` is shared by every session of your

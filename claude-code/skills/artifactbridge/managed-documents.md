@@ -299,9 +299,25 @@ pass the raw delimited text as `content_md`. Rules that differ from Markdown:
   with `revises_review_request_id`. **Never resubmit unchanged content.**
 - `artifactbridge_list_proposals_for_document` — list the revision chain
   (metadata only, no bodies).
-- `artifactbridge_publish_document` — publish an **approved** managed document
-  only. It returns a `share_url`; surface that direct hyperlink in your output so
+- `artifactbridge_publish_document` — a human publishes an **approved** managed
+  document. Agent credentials are refused; ask a human to publish in the app.
+  The tool returns a `share_url`; surface that direct hyperlink in your output so
   the result is immediately openable. Do not fabricate or mint links yourself.
+- `artifactbridge_manage_proposal_review` — signed-in human OAuth only: request
+  changes, prepare onto the reviewed head, or resolve overlaps. Send both
+  concurrency tokens. It never accepts or publishes.
+
+## Access and sync policy
+
+- `artifactbridge_manage_library_access` — read a document's or folder's
+  access, or reduce it: revoke a grant, narrow to private, revoke a legacy link,
+  or turn off public access. Turning off public access does not revoke legacy
+  links. It never grants access or mints a public link; a human does that in
+  the app. A `partial` field names data the result could not include.
+- `artifactbridge_source_sync_policy` — read an external document's sync
+  policy, or turn comment mirroring off. It does not sync or contact the
+  provider. Turning mirroring or auto sync on, and turning auto sync off, stay
+  with the person in the web settings.
 
 ## Never
 
