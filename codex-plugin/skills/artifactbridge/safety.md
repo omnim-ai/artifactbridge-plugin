@@ -77,7 +77,11 @@ So this rule is yours to keep:
 Skill safety checks always apply in every workspace. Every skill change is
 checked before it reaches anyone's tools. Proposal, revision and
 `artifactbridge_read_proposal` results carry `safety_check` (result,
-findings by rule, file and line) and `publication_requirements`. High risk or
+`incomplete`, `incomplete_causes`, findings by rule, file and line) and
+`publication_requirements`. Not fully checked lists each cause with its count:
+`unparsed_frontmatter` (header lines AB could not read; quote the value),
+`truncated` (the skill is larger than AB checks), `long_lines` (lines too long
+to check) and `non_text` (characters that are not text). High risk or
 Not fully checked content needs a person's typed reason in the web app, so an
 accept, apply or registration answers `skill_check_needs_human` with the
 proposal's address. Fix the flagged lines, or give the human that link; never
