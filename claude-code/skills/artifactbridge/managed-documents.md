@@ -99,6 +99,9 @@ reports that the recipient lacks access, ask a human owner to use
 succeeds. An API-token caller should pass an `idempotency_key` when it can retry
 the same delivery request.
 
+To change a document's owner, a person uses
+`artifactbridge_transfer_document_ownership`; an API token cannot.
+
 ## Create, propose, review, publish
 
 ### Create-only document frontmatter

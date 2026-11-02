@@ -172,6 +172,7 @@ to use "Use as skill…" on the document (give the link).
 - `artifactbridge_create_document_from_image` — create a Library image from image bytes.
 - `artifactbridge_submit_image_version` — submit replacement image bytes; a governed image goes to human review.
 - `artifactbridge_grant_document_access` — human owners only: give a member access to a private document.
+- `artifactbridge_transfer_document_ownership` — humans only: make another member a document's owner.
 - `artifactbridge_revoke_document_access` — remove a direct document grant; the owner always keeps access.
 - `artifactbridge_propose_document_patch` — change governed documents; use [proposal-summary](./proposal-summary.md).
 - `artifactbridge_update_working_document` — edit working documents; revise reviews with propose_document_patch + `revises_review_request_id`.
