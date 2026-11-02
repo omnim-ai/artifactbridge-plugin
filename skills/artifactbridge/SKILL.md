@@ -176,6 +176,7 @@ to use "Use as skill…" on the document (give the link).
 - `artifactbridge_update_document_source` — change a source link's title; URL and id stay.
 - `artifactbridge_rename_document` — rename a managed document without a new version.
 - `artifactbridge_set_document_archived` — archive or unarchive a document you can edit.
+- `artifactbridge_archive_own_documents_by_tag` — archive up to 100 of your own docs with one exact tag.
 - `artifactbridge_set_document_audience` — human/agent/both; discovery, not access.
 - `artifactbridge_duplicate_document` — copy a readable document into its folder; not retry-safe.
 - `artifactbridge_get_review_status` — poll a proposal's decision, incl. `changes_requested` with `decision_reason`/`decision_tags`.
