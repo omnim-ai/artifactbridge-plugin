@@ -370,7 +370,13 @@ when your person asks for it.
   share it (below); never create again to share an agent. Creating,
   editing or sharing an agent grants no document, folder, Space, room or
   workspace access. It does not connect an executor, add
-  consent or send a task.
+  consent or send a task. Optional `tool_subset` (MCP only) limits the
+  tools the agent may use in its own runs: 1 or more names from the agent
+  tool list in the argument description, each once; omit it for every tool.
+  It is saved after the create, and the result has `tool_subset` (the saved
+  list). A retry with the same key saves it again. `tool_subset_not_saved`:
+  the agent was created (its ID is in the message) but may still use every
+  tool; retry with the same key and fields.
 - **Edit.** `artifactbridge_update_agent` takes the `agent_id` from the list
   or the create result; only the owner can edit (`agent_owner_required`).
   Send only the fields that change. An omitted field keeps its saved value.
@@ -379,7 +385,11 @@ when your person asks for it.
   `fixed_space_clear_not_allowed`. A `null` name or description is refused.
   CLI: `artifactbridge agents update UUID` with `--name`, `--description ""`,
   `--space`, `--harness` or `--clear-harness`. An edit never changes status
-  or who can use the agent.
+  or who can use the agent. `tool_subset` (MCP only) replaces the agent's
+  tool list; `tool_subset: null` gives it every tool again. A name outside
+  the list, an empty list or a repeated name gets `tool_subset_invalid` and
+  nothing is saved. `artifactbridge_list_agents` shows the owner the saved
+  `tool_subset` (`null`: every tool).
 - **Saved and verified.** The result always has `agent_id`. With
   `configuration_verification: "verified"`, `agent` is the saved
   configuration, read back now. With `"unavailable"` (`agent: null`), the
