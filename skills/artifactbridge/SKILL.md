@@ -275,9 +275,8 @@ Full arguments, limits and errors are in each tool's description.
 
 ## The `artifactbridge` CLI — self-serve skill installs & diagnostics
 
-Installed machines also carry the `artifactbridge` bridge CLI on PATH (the
-devkit's local bridge). Use it when a human asks you to install a workspace
-skill, diagnose the bridge, or explicitly capture a local Markdown file:
+Installed machines also carry the `artifactbridge` CLI on PATH. Use it to
+install a skill, diagnose the bridge, or capture a local file:
 
 - `artifactbridge skills list` — the workspace skill registry plus your
   per-client install state.
@@ -301,6 +300,7 @@ skill, diagnose the bridge, or explicitly capture a local Markdown file:
 - `artifactbridge update auto` / `artifactbridge skills sync --auto` — inspect
   automatic toolkit-update and skill-refresh consent. One scheduler entry runs
   each job that has consent.
+- `artifactbridge workflows draft|list|run|pause` — workflow tools; no activate.
 - `artifactbridge telemetry status` — inspect the opt-in local relay's bounded
   health projection (queue, upload, drops, and schema compatibility) without
   printing event content or credentials.
