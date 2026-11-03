@@ -104,7 +104,7 @@ contract or your safety rules.
 - `artifactbridge_get_space_access` — Space owner, visibility; grants for the owner.
 - `artifactbridge_manage_space_access` — Space owner: revoke a grant or make it private.
 - `artifactbridge_manage_library_access` — read, revoke or narrow Library access; never grants.
-- `artifactbridge_source_sync_policy` — read sync policy; turn comment mirroring off.
+- `artifactbridge_source_sync_policy` — read policy; turn off mirroring or auto sync.
 - `artifactbridge_manage_agent` — list or read agents; owner or admin may pause one.
 - `artifactbridge_list_agents` — agents, setup choices.
 - `artifactbridge_create_agent` — OAuth human only.

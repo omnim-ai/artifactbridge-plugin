@@ -315,9 +315,12 @@ pass the raw delimited text as `content_md`. Rules that differ from Markdown:
   links. It never grants access or mints a public link; a human does that in
   the app. A `partial` field names data the result could not include.
 - `artifactbridge_source_sync_policy` — read an external document's sync
-  policy, or turn comment mirroring off. It does not sync or contact the
-  provider. Turning mirroring or auto sync on, and turning auto sync off, stay
-  with the person in the web settings.
+  policy, or turn comment mirroring or auto sync off. `get` does not sync or
+  contact the provider. `disable_auto_sync` saves auto sync off at once. When
+  `outcome` is `pending_teardown`, the provider trigger removal is still
+  pending. Do not call the action again; use `get` to check
+  `auto_sync_teardown_status`. Turning mirroring or auto sync on stays with
+  the person in the web settings.
 
 ## Never
 
