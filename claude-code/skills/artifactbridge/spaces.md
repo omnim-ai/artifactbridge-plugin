@@ -431,6 +431,12 @@ when your person asks for it.
   reports `current_state`). A match shows only the current state, not which
   request saved it. A difference, or no `member_ids`, needs the person to
   confirm a new change.
+- **Send a task.** `artifactbridge_send_agent_task` sends an agent a task
+  in a room you joined. CLI: `artifactbridge agents send --room ROOM_ID
+  --agent UUID --task TEXT`, with `--fixed-configuration-revision` for a
+  fixed-Space agent and `--room-space-revision` for a room with a space.
+  The CLI makes the key. After a lost response, retry once with the printed
+  `--idempotency-key` and the same fields; never a new key.
 
 ## Trust and approval
 

@@ -156,7 +156,7 @@ contract or your safety rules.
 - `artifactbridge_propose_beginner_tips_change` — first use: suggest the tip 1 change, once.
 - `artifactbridge_discover_gateway_services` — find external A2A services; no delegation.
 - `artifactbridge_delegate_to_gateway_service` — delegate from a joined room to an external service.
-- `artifactbridge_send_agent_task` — send an agent a task in a joined room, as the room composer does.
+- `artifactbridge_send_agent_task` — send an agent a task in a joined room (CLI: `agents send`).
 - `artifactbridge_cancel_gateway_delegation` — cancel your delegation or one in your room.
 - `artifactbridge_list_runners` — list cloud runners, or read one with `runner_id`.
 - `artifactbridge_configure_cloud_runner` — admin: add or edit a cloud runner, or check its listener.
