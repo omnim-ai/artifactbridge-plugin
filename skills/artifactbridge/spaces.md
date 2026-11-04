@@ -372,7 +372,8 @@ when your person asks for it.
   workspace access. It does not connect an executor, add
   consent or send a task. Optional `tool_subset` (MCP only) limits the
   tools the agent may use in its own runs: 1 or more names from the agent
-  tool list in the argument description, each once; omit it for every tool.
+  tool list in the artifactbridge_create_agent description, each once;
+  omit it for every tool.
   It is saved after the create, and the result has `tool_subset` (the saved
   list). A retry with the same key saves it again. `tool_subset_not_saved`:
   the agent was created (its ID is in the message) but may still use every
