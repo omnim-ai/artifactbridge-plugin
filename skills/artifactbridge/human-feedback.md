@@ -81,6 +81,17 @@ web app.
    `artifactbridge_search_workspace_members` first. The room path returns
    `room_id` and `question_event_id` and is an Agent Room event, not a general
    comment thread.
+   A document ask returns `question_id`, `question_state`, and `routing`. With
+   no `addressee`, only your credential's owner is asked. If that person (or the
+   named addressee) cannot open the document, `routing` is `routing_failed`:
+   the question was not delivered and stays unassigned. No one else is asked.
+   To readdress it once, call `artifactbridge_get_human_replies` with
+   `include_assignment_options: true`, then call
+   `artifactbridge_assign_document_question` with one option's `user_id`, the
+   `question.revision` you read, and a new `operation_id`. On `stale_source`,
+   read the thread again before you decide. A person can hand a question back
+   or decline it; the thread then shows that state. Your own replies never
+   answer the question; only a human reply does.
 2. **Wait for the matching reply.** For a document-linked ask, call
    `artifactbridge_wait_for_updates`; it returns activity metadata only. For an
    Agent Room ask, call `artifactbridge_wait_for_room_events` with the returned
@@ -125,15 +136,39 @@ They do not change a separate agent Inbox, and other members see no change.
 
 - `artifactbridge_set_document_subscription` — `watching`, `muted`, or `null`
   (the workspace default) for one document that the member can read.
-- `artifactbridge_set_inbox_item_state` — `seen`, `unseen`, `dismissed`, or
-  `undo` for one item. Use the underlying item id, not a feed row key. Keep the
-  returned `dismissed_activity_at` exactly; `undo` needs it. `restored: false`
-  means that newer activity or no dismissal exists. Undo restores the dismissal
-  of that activity, not one exact action.
+- `artifactbridge_list_inbox_items` — the member's own Inbox, Needs you first,
+  then Other, as their app shows it. Pass `nextCursor` back unchanged; it works
+  only for your credential, workspace and section. A count is `exact`,
+  `lower_bound`, or `unknown`. `artifactbridge_read_inbox_item` reads one item
+  again by `event_id`, `kind`, and `source_id`. Reads change nothing.
+- Until the Inbox update is active for the deployment, the list, read and
+  respond tools and `artifactbridge_set_inbox_item_state` with `event_id`
+  answer `unavailable`. Try again later; do not use another path.
+- Each listed item has `nextActions`: a tool with its exact arguments, a
+  `source` to finish at that source, or a `human` action to hand to the member
+  in the app Inbox. Use only what `nextActions` offers.
+- `artifactbridge_set_inbox_item_state` with `event_id` — `seen`, `unseen`,
+  `opened`, `dismissed`, or `undo`. Send the item's `expected_state_revision`
+  and a new `operation_id` for each intent; send the same `operation_id` again
+  only to retry that intent. `opened` ends only a Needs you handoff. `undo`
+  needs the returned `dismissal_receipt`. `stale_personal` means read the item
+  again; `source_action_required` means the work is still open at its source.
+- `artifactbridge_respond_to_inbox_request` — `decline` or `hand_back` a
+  document question, or `acknowledge_no_recovery` (end without a fix) for a
+  failed or skipped scheduled run, with the item's
+  `expected_source_revision`. The source checks its own permissions. The result
+  is `changed`, `replayed`, `stale_source`, `unsupported_action`,
+  `human_required` (hand the item to the member), or `unavailable`.
+- `artifactbridge_set_inbox_item_state` without `event_id` — `seen`, `unseen`,
+  `dismissed`, or `undo` for one older item. Use the underlying item id, not a
+  feed row key. Keep the returned `dismissed_activity_at` exactly; `undo` needs
+  it. `restored: false` means that newer activity or no dismissal exists. Undo
+  restores the dismissal of that activity, not one exact action.
 - The credential's workspace limits these writes. An `unseen` for an item in
   another workspace changes nothing and still returns success.
 - A dismissal hides an item. It does not resolve, answer, or approve the item.
-  An owner's dismissal of an access request closes that request until undo.
+  A dismissal of an access request does not close or decline that request.
+  Only the owner can decline it, in the web Inbox.
 - A `room` seen does not clear mentions. Use the room read tools for mentions.
 - Change only what the member asked for. After a dismiss timeout, read the
   Inbox before you call again. Bookmarks (Saved) stay human-only.

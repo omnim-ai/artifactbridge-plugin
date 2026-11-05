@@ -297,8 +297,11 @@ ArtifactBridge exposes these tools (from `src/mcp-documents.ts`):
 - `artifactbridge_list_review_threads` — list open review threads.
 - `artifactbridge_wait_for_updates` — wait for review-thread activity, returning metadata only.
 - `artifactbridge_get_human_replies` — read human replies to your questions.
+- `artifactbridge_assign_document_question` — ask one named person to answer an unassigned or handed-back document question. Only the asking credential or the document owner can do this. Pick a person from the `assignment_options` that `artifactbridge_get_human_replies` returns with `include_assignment_options`.
 - `artifactbridge_set_document_subscription` — set the member's own `watching` or `muted` preference for one readable document, or restore the workspace default with `mode: null`. A missing or unreadable document is `not_found`.
-- `artifactbridge_set_inbox_item_state` — mark one of the member's own Inbox items `seen`, `unseen`, or `dismissed`, or `undo` a dismissal with its exact `dismissed_activity_at`. It resolves, answers, or approves nothing; a `room` seen does not clear mentions. Bookmarks stay human-only.
+- `artifactbridge_set_inbox_item_state` — mark one of the member's own Inbox items `seen`, `unseen`, or `dismissed`, or `undo` a dismissal with its exact `dismissed_activity_at`. With an `event_id` from the list, it also records `opened` and takes the item's `expected_state_revision` and an `operation_id`. It resolves, answers, or approves nothing; a `room` seen does not clear mentions. Bookmarks stay human-only.
+- `artifactbridge_list_inbox_items` / `artifactbridge_read_inbox_item` — read the member's own Inbox, Needs you first; reading changes nothing. Each item lists its `nextActions`.
+- `artifactbridge_respond_to_inbox_request` — decline or hand back a document question, or acknowledge a pending item at its source, with the item's `expected_source_revision`. The source checks its own permissions.
 - `artifactbridge_list_harvest_categories` — list the workspace's harvest categories (member read; the first read seeds five defaults; `include_archived` adds archived rows).
 - `artifactbridge_create_harvest_category` — create one harvest category (owner or admin only; name ≤ 40 characters unique ignoring case, description ≤ 80, at most 12 active).
 - `artifactbridge_update_harvest_category` — rename, describe, archive, or restore one harvest category (owner or admin only; delete is archive-only).
