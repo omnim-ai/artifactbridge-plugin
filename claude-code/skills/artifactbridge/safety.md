@@ -85,7 +85,10 @@ to check) and `non_text` (characters that are not text). High risk or
 Not fully checked content needs a person's typed reason in the web app, so an
 accept, apply or registration answers `skill_check_needs_human` with the
 proposal's address. Fix the flagged lines, or give the human that link; never
-try to work around the check. "No issues found" is not proof of safety.
+try to work around the check. For a new skill that the person adds from their
+computer with **Add to workspace**, the person can also type the reason in the
+desktop app or with `artifactbridge skills add-to-workspace --skill-check-reason -`.
+An agent must not give that reason for the person. "No issues found" is not proof of safety.
 
 ## Keep entries short and factual
 
