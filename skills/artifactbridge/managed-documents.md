@@ -275,6 +275,37 @@ an SSE image result with an explicit response-mode error. Other calls keep the
 receive the full encoded envelope; do not assume that its default limit is
 large enough.
 
+An Image reference is ordinary Markdown, authored under the existing document
+edit or proposal policy; it needs no new runtime, tool, or approval bypass.
+By default, an Image reference is pinned to an exact Image version and stays
+unchanged after image updates:
+
+```md
+![alt](https://<app-origin>/api/workspaces/<workspace-uuid>/documents/<document-uuid>/versions/<version-uuid>/package)
+```
+
+Opt in only when the user wants the newest version. In Insert image, select
+the "Always show the newest version" checkbox; its current reference resolves
+the newest Image version when the document is read:
+
+```md
+![alt](https://<app-origin>/api/workspaces/<workspace-uuid>/documents/<document-uuid>/current/package)
+```
+
+Replace the placeholders with the app origin and identifiers. Use alt text that
+explains the image's purpose to readers who cannot see it. Both forms use the
+same Library image formats and 3 MiB limit described above. Each reader needs
+existing Library image permission; inserting an Image reference grants no access.
+Current references in public shares show alt text only and grant no image access.
+Pinned references in public shares still require the existing human approval.
+
+`artifactbridge_read_document` returns `image_references` descriptors with
+`mode: "current"` for current references. Their `document_version_id` resolves
+at read time and is `null` when the Library image is inaccessible. Pass the
+exact returned `document_version_id`, together with its `document_id`, to
+`artifactbridge_read_image_version`; never guess the head or substitute a later
+version. If the resolved ID is null, do not try an image read.
+
 ## Spreadsheet documents (CSV/TSV)
 
 To give the workspace tabular data, create a **spreadsheet document**: call
