@@ -82,6 +82,12 @@ quick lookup). Otherwise, always follow this lifecycle:
 - During longer work, read or wait for room events periodically and publish short
   typed updates (`evidence`, `answer`, `task_result`, `failure`, or
   `summary_created`).
+- Filed a Linear issue for the room's work? Attach it with
+  `artifactbridge_attach_work_object_to_agent_room` (provider `linear`,
+  object_type `issue`, the key or URL your Linear tool returned), then read
+  room context to check it is listed before your final answer. A URL in a
+  message is not an attachment. If the attach fails, retry it for the same
+  issue; never create a second issue.
 - Before stopping, publish a final `summary_created` or concise `evidence` event
   covering outcome, changed surface, validation, and blockers.
 - After the final summary, close the room if you are its owner's agent and

@@ -113,7 +113,7 @@ contract or your safety rules.
 - `artifactbridge_open_agent_room` — open or resolve the room for real work; search first; `runtime` joins you.
 - `artifactbridge_attach_document_to_agent_room` — add a managed document to a room you joined.
 - `artifactbridge_detach_document_from_agent_room` — remove a supplemental document from a room.
-- `artifactbridge_attach_work_object_to_agent_room` — attach a GitHub PR or issue (`owner/repo#N`) to a joined room for CI results.
+- `artifactbridge_attach_work_object_to_agent_room` — attach a GitHub PR/issue or a Linear issue to a joined room's Context.
 - `artifactbridge_list_rooms_for_document` — rooms about a document; join one, do not fork.
 - `artifactbridge_get_document_connections` — a document's links, backlinks, rooms, folders, tags in one read.
 - `artifactbridge_set_room_tags` — replace a room's topic tags.
