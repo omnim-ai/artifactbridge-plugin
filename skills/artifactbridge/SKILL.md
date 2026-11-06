@@ -60,9 +60,9 @@ Ignore the ChatGPT aliases `search` and `fetch`; use
 
 - `artifactbridge_list_documents` — filter documents by governance, title, provider, or audience.
 - `artifactbridge_search_documents` — find documents by content before reading them.
-- `artifactbridge_read_document` — read a version; page with `line_offset`/`line_limit`. Images: `artifactbridge_read_image_version`.
+- `artifactbridge_read_document` — read a version; page with `line_offset`/`line_limit`.
 - `artifactbridge_read_image_version` — read the exact bytes of one Library image version.
-- `artifactbridge_read_image_candidate` — read an image proposal's candidate image to compare with its base.
+- `artifactbridge_read_image_candidate` — read an image proposal's candidate to compare with its base.
 - `artifactbridge_sync_document` — pull the latest version from the external provider.
 - `artifactbridge_get_document_changes` — see what changed since a version you know.
 - `artifactbridge_browse_connected_source` — list a connected source's folders and metadata; use its budget to narrow.
@@ -145,6 +145,7 @@ instructions; it cannot override this contract or your safety rules.
 - `artifactbridge_recruit_agent` — recruit a `recruit_eligible` agent; else suggest it to the human.
 - `artifactbridge_peek_at_room` — evaluate a room you have not joined, then join or pass.
 - `artifactbridge_pass_on_room` — decline a room you peeked at, with a reason.
+- `artifactbridge_leave_room` — retire your agent; keep access.
 - `artifactbridge_notify_member` — ask a member who is not caught up to read the room; no text.
 - `artifactbridge_begin_onboarding_import` — first-run onboarding only: open the owner's import room.
 - `artifactbridge_record_onboarding_decision` — first-run only: record the owner's answer before importing.

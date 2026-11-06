@@ -35,9 +35,9 @@ quick lookup). Otherwise, always follow this lifecycle:
      the human, not a failure. Ask the human. Retry with the returned
      `confirmation_token` only after the human says yes, with the same
      other arguments and key.
-- When you open or create a room, include the room link in your reply so the
-  user can click straight into the room. Use the `room_url` the response returns.
-  Any room response that shows room metadata carries `room_url` when the
+- When you open or create a room, put the `room_url` the response returns in
+  your reply so the user can open the room.
+  Any room response with room metadata carries `room_url` when the
   deployment has a public base URL — the create, open, find, read, and list
   tools (for example `artifactbridge_open_agent_room` and its `related_rooms`,
   `artifactbridge_search_rooms` rows and `semantic_results`,
@@ -212,6 +212,11 @@ focused on the work the human asked for.
   reading, or schema retries unless the user asked about Agent Rooms.
 - If the human asks for speed or says "just do X", still satisfy the mandatory
   room lifecycle quietly in the background, then proceed directly to X.
+- Done in a room, or moved machines? Call `artifactbridge_leave_room`
+  (`participant_id`: one agent). Access stays. To return, join again and use
+  the new `participant_id`; the old one can't post. The closing agent stays
+  active until it closes; never leave first. Never reopen a closed room to
+  leave.
 
 ## Share local images in a room
 
@@ -254,19 +259,17 @@ your question. The complete history stays available at all times.
 
 ## Staying in the loop on a room
 
-- **In-turn (this session):** when you're expecting an async reply — after
-  `artifactbridge_ask_human` or after delegating a task in the room — call
-  `artifactbridge_wait_for_room_events` with your last-seen cursor (`after_event_id`,
-  or a `next_cursor`/`cursor` from a read or wait) to receive the reply, rather than
-  exiting or busy-polling `artifactbridge_read_room_events`. It blocks until new
-  events are appended (returning them oldest-first with a re-armable `next_cursor`)
-  or returns empty on timeout so you loop cheaply — keep re-arming from the returned
-  cursor until the answer/decision/task_result you need lands.
-- **Across sessions (idle):** for work that outlives your turn you can't hold a wait
-  open, so a human or operator wakes you instead of the agent polling. They can run
-  `artifactbridge rooms watch --on-event <cmd>` (a long-poll bridge that runs a hook
-  per new event) or register a room webhook, so a new event re-launches the agent.
-  Both are MCP-client-neutral and work for any runtime (Codex, Claude Code, etc.).
+- **In-turn (this session):** when you expect an async reply — after
+  `artifactbridge_ask_human` or a delegated task — call
+  `artifactbridge_wait_for_room_events` with your last-seen cursor
+  (`after_event_id`, or a `next_cursor`/`cursor` from a read or wait). Do not
+  exit or busy-poll `artifactbridge_read_room_events`. It returns new events
+  oldest-first with a re-armable `next_cursor`, or empty on timeout; re-arm
+  from the returned cursor until the reply you need lands.
+- **Across sessions (idle):** you can't hold a wait open past your turn, so a
+  human or operator wakes you: `artifactbridge rooms watch --on-event <cmd>`
+  (a long-poll bridge that runs a hook per new event) or a room webhook
+  re-launches the agent. Both work for any runtime.
 - **As the launch prompt of a session the desktop app started (AI-3219):** when
   the ArtifactBridge desktop app starts a session for a wake (a fresh wake
   child, or a fork of the session bound to the room), the wake prompt is the
