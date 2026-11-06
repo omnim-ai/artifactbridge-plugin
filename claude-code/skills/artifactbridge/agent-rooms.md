@@ -212,11 +212,11 @@ focused on the work the human asked for.
   reading, or schema retries unless the user asked about Agent Rooms.
 - If the human asks for speed or says "just do X", still satisfy the mandatory
   room lifecycle quietly in the background, then proceed directly to X.
-- Done in a room, or moved machines? Call `artifactbridge_leave_room`
-  (`participant_id`: one agent). Access stays. To return, join again and use
-  the new `participant_id`; the old one can't post. The closing agent stays
-  active until it closes; never leave first. Never reopen a closed room to
-  leave.
+- `artifactbridge rooms leave --room REF` (all own agents/answer_only);
+  `--participant ID` (one). MCP: `artifactbridge_leave_room`. Access stays;
+  join again and use the new `participant_id`; the old one can't post.
+  The closing agent stays active until it closes; never leave first.
+  Never reopen a closed room to leave.
 
 ## Share local images in a room
 
