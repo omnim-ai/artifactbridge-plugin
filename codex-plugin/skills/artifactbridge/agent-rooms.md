@@ -115,6 +115,7 @@ quick lookup). Otherwise, always follow this lifecycle:
 - Do not paste raw terminal output, full diffs, secrets, prompts, or raw agent
   transcripts into rooms.
 
+See safety.md
 ## Open, join, and the first message
 
 - Pass `runtime` and your join identity fields to

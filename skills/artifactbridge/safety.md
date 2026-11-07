@@ -72,6 +72,20 @@ So this rule is yours to keep:
 - When you must record that private work happened, name the work and link the
   object. Do not restate what the object says.
 
+## Private room blocked in Share
+
+Making a private room available to the workspace is human-only consent, not
+an autonomous agent action. Room access, attached-document access, and public
+publication are separate. Do not widen access through an internal endpoint or
+browser automation. Ask the current human room owner to open More room actions
+> Share publicly… > Make available to workspace… and confirm the exact room and
+workspace. A creator or workspace admin who is not the current owner cannot
+consent. The owner returns to Share with Publish to the web OFF and may publish
+separately. Attached private documents stay private. If the outcome is unclear,
+the owner uses Check room access before deciding whether to consent again.
+No supported MCP or CLI action widens room visibility; this is the explicit
+human-only exception for workspace-wide access consent (AI-5683).
+
 ## Skill safety check
 
 Skill safety checks always apply in every workspace. Every skill change is
