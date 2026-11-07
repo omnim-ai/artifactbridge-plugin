@@ -1,11 +1,10 @@
 # Agent Room lifecycle — always follow
 
-Agent Rooms are mandatory for any real work activity — engineering, business,
-go-to-market, marketing, sales, operations, research, planning, or writing. A
-tracked work object (an ArtifactBridge document, a Linear issue, a GitHub PR)
-keys the room when one exists, but it is not a precondition: untracked work
-gets a room too. Skip a room only for a trivial exchange (a one-line answer, a
-quick lookup). Otherwise, always follow this lifecycle:
+Real work needs an Agent Room: engineering, business, go-to-market,
+marketing, sales, operations, research, planning, or writing. Key it to an
+ArtifactBridge document, Linear issue, or GitHub PR if available; untracked
+work needs one too. Skip only trivial exchanges (one-line answers or quick
+lookups). Follow this lifecycle:
 
 - At task start, run the discovery sequence:
   1. `artifactbridge_list_my_agent_rooms` — rooms you already joined.
@@ -136,6 +135,10 @@ See safety.md
   and replies stay human, in Share.
 - `artifactbridge_reconcile_gateway_delegation` never resends; it does not
   prove that a remote task stopped.
+
+## Shared Rooms from a partner workspace
+
+Read [partner-rooms.md](./partner-rooms.md) before using a shared Room.
 
 ## Concurrent sessions and targeted delivery
 
