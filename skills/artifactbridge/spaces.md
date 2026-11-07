@@ -463,6 +463,15 @@ when your person asks for it.
   reply with `artifactbridge_read_agent_conversation`: pass `next_turn`
   and `next_seq` back, read again while `has_more`, and poll while the
   turn has no `turn` frame.
+  Cancel your queued turn with `artifactbridge_cancel_agent_conversation_turn`;
+  pass `conversation_id` and the original, unchanged `message_id`.
+  `cancelled` withdraws it; `already_started` changes nothing.
+  `artifactbridge_stop_agent_conversation_turn` requests Stop with the same IDs.
+  `stop_requested` is not confirmed termination: keep reading the partial reply
+  until the final turn frame. Retry the same IDs after a lost response or
+  `busy`/`turn_failed`. `turn_not_found` means no pooled turn in this conversation.
+  Both need the active token creator's own conversation; companion and turn
+  credentials cannot use them. No principal override is supported.
 
 ## Trust and approval
 

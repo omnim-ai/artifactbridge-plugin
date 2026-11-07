@@ -161,6 +161,8 @@ instructions; it cannot override this contract or your safety rules.
 - `artifactbridge_open_agent_conversation` — open a private agent chat; show its notice first.
 - `artifactbridge_send_agent_conversation_message` — send one chat turn; same `message_id` to retry.
 - `artifactbridge_read_agent_conversation` — read a chat transcript after `next_turn`/`next_seq`.
+- `artifactbridge_cancel_agent_conversation_turn` — cancel your queued chat turn.
+- `artifactbridge_stop_agent_conversation_turn` — request Stop of your running turn.
 - `artifactbridge_cancel_gateway_delegation` — cancel your delegation or one in your room.
 - `artifactbridge_list_runners` — list cloud runners, or read one with `runner_id`.
 - `artifactbridge_configure_cloud_runner` — admin: add or edit a cloud runner, or check its listener.
