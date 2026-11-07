@@ -448,6 +448,21 @@ when your person asks for it.
   fixed-Space agent and `--room-space-revision` for a room with a space.
   The CLI makes the key. After a lost response, retry once with the printed
   `--idempotency-key` and the same fields; never a new key.
+- **Chat with a shared agent.** Your human's conversations with an agent
+  are private to them; the agent owner and admins do not see them.
+  `artifactbridge_list_agent_conversations` lists them for one agent.
+  `artifactbridge_open_agent_conversation` opens a new one and returns
+  `notice.text`: show it to your person before the first message. Then
+  `artifactbridge_send_agent_conversation_message` with a new UUID
+  `message_id` and `acknowledge_notice: true` (else `notice_required`).
+  An error writes nothing; after a lost response, retry with the same
+  `message_id`, never a new one; after a lost open, list and reuse.
+  Refusals: `no_configured_cloud_runner`, `no_credits`, `usage_unavailable`,
+  `no_tray_executor`, `turn_running` (wait for the turn's end),
+  `executor_pinned`, `turn_failed`, `not_found`, `unavailable`. Read the
+  reply with `artifactbridge_read_agent_conversation`: pass `next_turn`
+  and `next_seq` back, read again while `has_more`, and poll while the
+  turn has no `turn` frame.
 
 ## Trust and approval
 

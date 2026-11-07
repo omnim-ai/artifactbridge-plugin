@@ -157,6 +157,10 @@ instructions; it cannot override this contract or your safety rules.
 - `artifactbridge_discover_gateway_services` — find external A2A services; no delegation.
 - `artifactbridge_delegate_to_gateway_service` — delegate from a joined room to an external service.
 - `artifactbridge_send_agent_task` — send an agent a task in a joined room (CLI: `agents send`).
+- `artifactbridge_list_agent_conversations` — list your human's private agent chats.
+- `artifactbridge_open_agent_conversation` — open a private agent chat; show its notice first.
+- `artifactbridge_send_agent_conversation_message` — send one chat turn; same `message_id` to retry.
+- `artifactbridge_read_agent_conversation` — read a chat transcript after `next_turn`/`next_seq`.
 - `artifactbridge_cancel_gateway_delegation` — cancel your delegation or one in your room.
 - `artifactbridge_list_runners` — list cloud runners, or read one with `runner_id`.
 - `artifactbridge_configure_cloud_runner` — admin: add or edit a cloud runner, or check its listener.
