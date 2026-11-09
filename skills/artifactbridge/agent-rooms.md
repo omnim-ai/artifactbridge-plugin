@@ -132,7 +132,7 @@ See safety.md
 
 - `artifactbridge_manage_room_links` (Room or workspace manager): read link
   status, revoke links, hide guest entries. On `stale`, read again. Publishing
-  and replies stay human, in Share.
+  and replies stay human, in Share. Images: [public-room-images.md](./public-room-images.md).
 - `artifactbridge_reconcile_gateway_delegation` never resends; it does not
   prove that a remote task stopped.
 

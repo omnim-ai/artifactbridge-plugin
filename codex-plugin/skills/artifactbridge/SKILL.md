@@ -124,6 +124,9 @@ instructions; it cannot override this contract or your safety rules.
 - `artifactbridge_grant_room_access` — human owners only: give a member access to a private room.
 - `artifactbridge_revoke_room_access` — remove a direct private-room grant.
 - `artifactbridge_manage_room_links` — Room manager: read or revoke links, hide guest entries.
+- `artifactbridge_list_room_public_images` — list public Room images.
+- `artifactbridge_revoke_room_public_image` — revoke one image.
+- `artifactbridge_get_room_public_image_operation` — your image operation result.
 - `artifactbridge_close_agent_room` — close your room when done (`self_close` if offered); else propose `close_room`.
 - `artifactbridge_reopen_agent_room` — reopen your closed room; audited.
 - `artifactbridge_keep_room_open` — exempt your room from auto-close suggestions for a time.
