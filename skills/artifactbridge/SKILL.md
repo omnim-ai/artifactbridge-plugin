@@ -300,8 +300,9 @@ install a skill, diagnose the bridge, or capture a local file:
   `artifactbridge skills retry <slug>` re-runs a failed install.
 - `artifactbridge status` / `artifactbridge doctor [--report]` — connection and
   install health; `--report` prints a redacted summary.
-- `artifactbridge update` — update via the recorded installation owner (AUR:
-  human only; never makepkg or sudo). Then `artifactbridge skills sync`.
+- `artifactbridge update [status|apply|restart]` — update via its owner (AUR:
+  human only; no makepkg/sudo) or read state; apply/restart only on human
+  request. Then `skills sync`.
 - `artifactbridge docs import PATH|- [--folder F | --no-folder] [--recursive
   [--select Q]] [--json]` — import bounded UTF-8 Markdown through the connected
   MCP session. Use `--no-folder` for an explicitly unfiled document. Stdin
@@ -312,9 +313,8 @@ install a skill, diagnose the bridge, or capture a local file:
 - `artifactbridge rooms upload-image` / `artifactbridge docs upload-image` —
   upload local image files without base64 in your context; see
   [agent-rooms](./agent-rooms.md) and [managed-documents](./managed-documents.md).
-- `artifactbridge update auto` / `artifactbridge skills sync --auto` — inspect
-  automatic toolkit-update and skill-refresh consent. One scheduler entry runs
-  each job that has consent.
+- `artifactbridge update auto` / `skills sync --auto` — inspect auto-update
+  and skill-refresh consent. One scheduler runs each consented job.
 - `artifactbridge workflows draft|list|run|pause` — workflow tools; no activate.
 - `artifactbridge telemetry status` — inspect the opt-in local relay's bounded
   health (queue, upload, drops, and schema compatibility) without
@@ -329,9 +329,9 @@ the skill available from now on.
 
 **Auth and teardown are human decisions:** never run these `artifactbridge`
 commands unless the human explicitly asks: `login`, `logout`, `uninstall`,
-`update auto on|off`, `skills sync --auto on|off`, `skills apply-workspace`,
-or `tray install|uninstall`. A scheduled refresh or a resident tray app is a
-consent decision like connecting. `artifactbridge telemetry
+`update auto|preference on|off`, `skills sync --auto on|off`,
+`skills apply-workspace`, or `tray install|uninstall`. A scheduled refresh or
+a resident tray app is a consent decision like connecting. `artifactbridge telemetry
 enable|disable|remove` is also a human consent decision (local collection).
 list/install/retry/update/status/doctor, `update auto`,
 `skills sync --auto`, and `tray status` are the agent-safe surface.
