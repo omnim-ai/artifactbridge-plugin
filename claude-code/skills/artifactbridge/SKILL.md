@@ -290,7 +290,7 @@ Full arguments, limits and errors are in each tool's description.
 
 ## The `artifactbridge` CLI — self-serve skill installs & diagnostics
 
-Installed machines also carry the `artifactbridge` CLI on PATH. Use it to
+Installed machines carry the `artifactbridge` CLI on PATH. Use it to
 install a skill, diagnose the bridge, or capture a local file:
 
 - `artifactbridge skills list` — the workspace skill registry plus your
@@ -300,8 +300,8 @@ install a skill, diagnose the bridge, or capture a local file:
   `artifactbridge skills retry <slug>` re-runs a failed install.
 - `artifactbridge status` / `artifactbridge doctor [--report]` — connection and
   install health; `--report` prints a redacted summary.
-- `artifactbridge update` — update the toolkit through its recorded
-  installation owner. Run `artifactbridge skills sync` separately.
+- `artifactbridge update` — update via the recorded installation owner (AUR:
+  human only; never makepkg or sudo). Then `artifactbridge skills sync`.
 - `artifactbridge docs import PATH|- [--folder F | --no-folder] [--recursive
   [--select Q]] [--json]` — import bounded UTF-8 Markdown through the connected
   MCP session. Use `--no-folder` for an explicitly unfiled document. Stdin
@@ -317,7 +317,7 @@ install a skill, diagnose the bridge, or capture a local file:
   each job that has consent.
 - `artifactbridge workflows draft|list|run|pause` — workflow tools; no activate.
 - `artifactbridge telemetry status` — inspect the opt-in local relay's bounded
-  health projection (queue, upload, drops, and schema compatibility) without
+  health (queue, upload, drops, and schema compatibility) without
   printing event content or credentials.
 
 **Installed vs session-only loading:** `artifactbridge skills install` makes a
