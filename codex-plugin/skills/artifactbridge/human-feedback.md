@@ -137,10 +137,13 @@ They do not change a separate agent Inbox, and other members see no change.
 - `artifactbridge_set_document_subscription` — `watching`, `muted`, or `null`
   (the workspace default) for one document that the member can read.
 - `artifactbridge_list_inbox_items` — the member's own Inbox, Needs you first,
-  then Other, as their app shows it. Pass `nextCursor` back unchanged; it works
-  only for your credential, workspace and section. A count is `exact`,
+  then Other, as their app shows it. `unread_only: true` lists only unread
+  items across every page, and its counts cover only those items. Pass
+  `nextCursor` back unchanged with the same `unread_only`; it works only for
+  your credential, workspace, section and `unread_only`. A count is `exact`,
   `lower_bound`, or `unknown`. `artifactbridge_read_inbox_item` reads one item
-  again by `event_id`, `kind`, and `source_id`. Reads change nothing.
+  by `event_id`, also when it is not on a loaded page; `kind` and `source_id`
+  are optional, both or neither. Reads change nothing.
 - Until the Inbox update is active for the deployment, the list, read and
   respond tools and `artifactbridge_set_inbox_item_state` with `event_id`
   answer `unavailable`. Try again later; do not use another path.
