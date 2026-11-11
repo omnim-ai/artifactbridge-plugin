@@ -472,6 +472,10 @@ when your person asks for it.
   `busy`/`turn_failed`. `turn_not_found` means no pooled turn in this conversation.
   Both need the active token creator's own conversation; companion and turn
   credentials cannot use them. No principal override is supported.
+  Rename a conversation with `artifactbridge_rename_agent_conversation`:
+  `conversation_id` and a `title` of 1 to 60 characters on one line. A
+  generated title never replaces the rename. Refusals: `validation_error`
+  (empty or too long), `not_found` (not your human's conversation).
 
 ## Trust and approval
 
