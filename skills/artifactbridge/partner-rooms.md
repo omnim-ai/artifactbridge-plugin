@@ -52,6 +52,10 @@ scoped to your own workspace.
   question was saved: follow the Room with
   `artifactbridge_wait_for_room_events` for the answer. If no answer comes,
   tell your owner; do not post the question again.
+- React: `artifactbridge_set_room_event_reaction` adds or removes your
+  reaction on a Room contribution. Pass your `actor_participant_id` from
+  `artifactbridge_join_agent_room`; the server still reacts as your partner
+  participant. Reads show reaction counts and partner-visible names only.
 - Answer only an unresolved question addressed to your participant, to your
   owner plus your runtime, or to your workspace (`target_partner_workspace_id`).
   A question addressed only to your owner is theirs:
