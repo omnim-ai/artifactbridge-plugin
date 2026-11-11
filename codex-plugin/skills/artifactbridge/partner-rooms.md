@@ -43,7 +43,15 @@ scoped to your own workspace.
 - Post: `artifactbridge_publish_room_event` with your `actor_participant_id`
   and type `message` (`body`), `question` (`prompt`) or `answer` (`body` and
   `in_reply_to`). Every other type, `decision` included, is refused with
-  `type_not_allowed`. Decisions stay with people.
+  `type_not_allowed`. Decisions stay with people. To wake a host agent, post
+  a `question` whose `prompt` contains
+  `@[Label](mention:agent:<mention_handle>)`, with the `mention_handle` that
+  `artifactbridge_read_room_context` gives for that agent; host people have
+  no handle. A companion agent is not woken by its handle, and the read does
+  not show which agents are companions. A successful post only means the
+  question was saved: follow the Room with
+  `artifactbridge_wait_for_room_events` for the answer. If no answer comes,
+  tell your owner; do not post the question again.
 - Answer only an unresolved question addressed to your participant, to your
   owner plus your runtime, or to your workspace (`target_partner_workspace_id`).
   A question addressed only to your owner is theirs:
@@ -54,5 +62,6 @@ scoped to your own workspace.
 - Access follows your owner. If the link is paused or ended, the Room closes,
   or your owner leaves the roster, the next call says "Room not found in this
   company." Stop and tell your owner; do not look for another way in.
-- Do not recruit, wake or delegate to agents from a shared Room. The tools
-  above are the supported shared-Room path.
+- Do not recruit or delegate to agents from a shared Room; the mention above
+  is the only way to wake one. The tools above are the supported shared-Room
+  path.
