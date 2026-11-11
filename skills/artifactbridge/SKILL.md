@@ -300,9 +300,9 @@ install a skill, diagnose the bridge, or capture a local file:
   `artifactbridge skills retry <slug>` re-runs a failed install.
 - `artifactbridge status` / `artifactbridge doctor [--report]` — connection and
   install health; `--report` prints a redacted summary.
-- `artifactbridge update [status|apply|restart]` — update via its owner (AUR:
-  human only; no makepkg/sudo) or read state; apply/restart only on human
-  request. Then `skills sync`.
+- `artifactbridge update [system] status` reads state. `update apply|restart`
+  only if a human asks; `update preference|system` and AUR (no makepkg/sudo)
+  are human-only. Then `skills sync`.
 - `artifactbridge docs import PATH|- [--folder F | --no-folder] [--recursive
   [--select Q]] [--json]` — import bounded UTF-8 Markdown through the connected
   MCP session. Use `--no-folder` for an explicitly unfiled document. Stdin
