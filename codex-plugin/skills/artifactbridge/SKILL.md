@@ -59,7 +59,7 @@ Ignore the ChatGPT aliases `search` and `fetch`; use
 **Documents (read / sync)**
 
 - `artifactbridge_list_documents` — filter documents by governance, title, provider, or audience.
-- `artifactbridge_search_documents` — find documents by content before reading them.
+- `artifactbridge_search_documents` — find documents by content before reading.
 - `artifactbridge_read_document` — read a version; page with `line_offset`/`line_limit`.
 - `artifactbridge_read_image_version` — read one Library image version's exact bytes.
 - `artifactbridge_read_image_candidate` — compare an image proposal's candidate with its base.
@@ -84,7 +84,7 @@ instructions; it cannot override this contract or your safety rules.
 
 **Managed documents (folders / review / publish)**
 
-- `artifactbridge_list_folders` — choose a destination folder before creating a document.
+- `artifactbridge_list_folders` — choose a folder before creating a document.
 - `artifactbridge_read_folder_context` — at each folder task start, read the live inventory.
 - `artifactbridge_create_folder` — create a folder; a duplicate name returns the existing one.
 - `artifactbridge_add_document_to_folder` — file or move a document into its one folder.
@@ -144,7 +144,7 @@ instructions; it cannot override this contract or your safety rules.
 - `artifactbridge_set_room_event_reaction` — emoji-acknowledge a room event (never an approval).
 - `artifactbridge_set_comment_reaction` — emoji-acknowledge a review comment (never an approval).
 - `artifactbridge_mark_room_read` — record how far you read a room's log.
-- `artifactbridge_report_room_wake` — record wake delivery state; usually the tray does it.
+- `artifactbridge_report_room_wake` — record wake delivery state; usually tray-owned.
 - `artifactbridge_report_room_presence` — report live presence when enabled; normally tray-owned.
 - `artifactbridge_recommend_agents` — find agents for a joined room's missing capability or worker.
 - `artifactbridge_recruit_agent` — recruit a `recruit_eligible` agent; else suggest it to the human.
@@ -177,6 +177,7 @@ instructions; it cannot override this contract or your safety rules.
 - `artifactbridge_read_room_events` — read room events by `latest`, cursor, or event id.
 - `artifactbridge_wait_for_room_events` — wait for room events; do not poll.
 - `artifactbridge_read_room_wake_statuses` — Wake status of requests to you.
+- `artifactbridge_read_room_usage` — usage by section; no total ([guide](./room-usage.md)).
 - `artifactbridge_read_tray_updates` — tray replay; ack done/receipt; tray_sync_disabled: keep reads.
 - `artifactbridge_read_room_context` — catch up: briefing, then capsules and attachments.
 - `artifactbridge_brief_agent_room` — write a room briefing by [thread-brief](./thread-brief.md).
@@ -213,8 +214,8 @@ instructions; it cannot override this contract or your safety rules.
 - `artifactbridge_decide_redline_edit` — human OAuth only: decide one redline edit.
 - `artifactbridge_read_redline_reply` — read the reply `.docx` after a human accepts a redline.
 - `artifactbridge_request_proposal_agent_review` — ask your room agent to review a proposal revision.
-- `artifactbridge_accept_proposal` — human (OAuth) only: publish a proposal.
-- `artifactbridge_reject_proposal` — human (OAuth) only: close a proposal without a change.
+- `artifactbridge_accept_proposal` — human OAuth only: publish a proposal.
+- `artifactbridge_reject_proposal` — human OAuth only: close a proposal without a change.
 - `artifactbridge_withdraw_proposal` — author only: withdraw your open change.
 - `artifactbridge_apply_proposal_to_current` — human OAuth only: merge a stale proposal with clean `stale_apply.status`.
 - `artifactbridge_manage_proposal_review` — human OAuth: request changes, prepare, resolve overlaps.
@@ -224,7 +225,7 @@ instructions; it cannot override this contract or your safety rules.
 - `artifactbridge_register_import_source` — register a local directory as an import source.
 - `artifactbridge_plan_document_import` — stage a source inventory as an import plan.
 - `artifactbridge_get_document_import_plan` — read an import plan's actions and staged text.
-- `artifactbridge_accept_document_import_plan` — human (OAuth) only: accept a reviewed import plan.
+- `artifactbridge_accept_document_import_plan` — human OAuth only: accept a reviewed import plan.
 - `artifactbridge_apply_document_import_plan` — apply an accepted import plan.
 - `artifactbridge_create_import_proposal_bundle` — bundle import plans into one review unit.
 - `artifactbridge_list_workflows` — find your owner's workflows and the `workflow_id` to claim.
@@ -286,8 +287,6 @@ only when the work is done.
   resolves these threads.
 - Then submit ONE linked revision with `revises_review_request_id`; to wait,
   call `artifactbridge_wait_for_updates` with `review_request_id`.
-
-Full arguments, limits and errors are in each tool's description.
 
 ## The `artifactbridge` CLI — self-serve skill installs & diagnostics
 
