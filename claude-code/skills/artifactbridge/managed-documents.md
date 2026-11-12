@@ -178,6 +178,22 @@ working-update tools reject only a leading block that declares an
   `[[wikilinks]]` in the proposed Markdown become cited provenance on the
   accepted version.
 
+### New version from the CLI
+
+`artifactbridge docs update ID --expected-version VERSION_ID --file PATH|-
+[--summary TEXT] [--json]` sends a complete Markdown body for a managed
+Markdown document. It reads the document first. If the current
+`document_version_id` is not `VERSION_ID`, it exits 4 with `tool_code:
+"conflict"` and `current_version_id`, and writes nothing. A working document
+gets a new version through `artifactbridge_update_working_document`
+(`outcome: "updated"` and `document_version_id`). A governed document gets a
+proposal through `artifactbridge_propose_document_patch` (`outcome:
+"proposal_opened"` and `review_request_id`); the version exists only after a
+human accepts it. The output has `review_mode` and `content_hash`, the SHA-256
+of the body sent. `artifactbridge docs import --visibility private|workspace`
+sets the visibility of one imported document with the same rules as
+`visibility` above.
+
 ## Library images
 
 Library image versions keep the original PNG, JPEG, WebP, or GIF bytes. They do

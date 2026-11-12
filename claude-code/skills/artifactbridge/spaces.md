@@ -139,6 +139,14 @@ asks.
   space, or from the answer of your own create or update; otherwise read the
   space first. A stale revision fails with `space_revision_conflict` and
   changes nothing: read again and retry.
+- **CLI.** `artifactbridge spaces read SPACE_ID [--json]` calls
+  `artifactbridge_read_space_context`; `space.revision` is the revision.
+  `artifactbridge spaces update SPACE_ID --expected-revision REVISION` with
+  `--description TEXT`, `--add-skill SLUG`, `--add KIND:ID` or `--remove
+  KIND:ID` (`KIND` is `space`, `folder` or `document`) calls
+  `artifactbridge_set_space` with `operation: "update"`. A stale revision
+  exits 4 with `space_revision_conflict`. The CLI does not create or delete
+  spaces.
 - **Meaning and authority.** A Space is a named selection of Library context.
   It does not own the referenced documents or grant access to them. Creating
   a Space does not create an agent or executor. Use the current connection and
