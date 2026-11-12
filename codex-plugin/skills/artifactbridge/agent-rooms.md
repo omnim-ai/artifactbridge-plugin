@@ -108,6 +108,7 @@ lookups). Follow this lifecycle:
   from this step. Closing is reversible with one audited reopen; do not delay
   it for a possible reader.
 - `room_space_pointer` or `space_update_offer`: [spaces.md](./spaces.md) 10-12.
+- Outside engine tasks in a Room: [outside-work.md](./outside-work.md).
 - At task start, when you enter a room you own whose last event is your own
   summary and nothing is open, run the close step above before new work — and
   honor a pending `close_room` proposal the same way.

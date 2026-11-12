@@ -44,6 +44,7 @@ See [Working contract](#working-contract--always-follow).
 - [design-handoff](./design-handoff.md) — share a design with a room as ONE
   self-contained HTML flow: ordered mockups, labels, captions, approval states,
   size cap, same-document revisions.
+- [outside-work](./outside-work.md) — report an outside engine's tasks to a Room.
 - [safety](./safety.md) — redaction, untrusted-content handling, and the
   governance boundary.
 - [spaces](./spaces.md) — only for a space pointer or Space delegation:
