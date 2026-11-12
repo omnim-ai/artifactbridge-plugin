@@ -28,6 +28,21 @@ example, only the profiles a member selected report, only usage after consent
 counts, and work outside Hermes coding is not included. Say that the figures
 are partial when you report them.
 
+## Known gaps
+
+`hermes.knownGapSetupCount` is the number of setups that reported a time when
+they could not report usage. `hermes.knownGaps` has at most two groups: setups
+whose latest gap has a reported end, and setups whose latest gap has none.
+Each group gives `setupCount` and the `startedAt` and `endedAt` of its latest
+gap. Report the groups. Do not name members or setups.
+
+- `[]` and `0` mean that no setup reported a gap in the last 90 days.
+- `null` with `known_gaps_unavailable` in `hermes.limitations` means unknown,
+  not zero.
+- `endedAt: null` means that no end was reported. It does not mean that the
+  setup still cannot report. The summary does not give the current state.
+- `delayedSetupCount` is always `null`. Do not estimate delays.
+
 ## No Hermes reports
 
 When `hermes.status` is `no_reports`:
