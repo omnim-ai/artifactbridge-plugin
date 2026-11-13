@@ -488,6 +488,37 @@ when your person asks for it.
   `conversation_id` and a `title` of 1 to 60 characters on one line. A
   generated title never replaces the rename. Refusals: `validation_error`
   (empty or too long), `not_found` (not your human's conversation).
+- **Chat with the workspace coordinator.** `artifactbridge_list_agents`
+  returns a `coordinator` entry only when the workspace has a qualified
+  coordinator; no entry means none is available. Its conversations are shared:
+  every active member can list, read, continue, stop and rename them, and
+  `started_by` names the member who opened each one. Payment is
+  `operator_paid`: it uses no ArtifactBridge credits.
+  Open with `artifactbridge_open_agent_conversation` and a new UUID
+  `creation_request_id`; after a lost reply, open again with the same one, or
+  list with `creation_request_id` to find it. Never match by title.
+  List 50 at a time: pass `next_cursor` back as `cursor` while `has_more`.
+  Show `notice.text` to your person before the first message, then send with
+  `acknowledge_notice: true` and `notice_version` set to `notice.version`.
+  `stale_notice`: read the conversation, show the new notice and send again.
+  `turn_running`: another member's turn is unfinished; wait.
+  `coordinator_unavailable`: the coordinator did not get the message; try
+  later with the same `message_id`, or report the `support` contact. A read
+  returns `current_turn` with its `sender`, `state` and `copy`, and
+  `can_send`. Show `copy` as written. Stop and
+  Cancel return `turn.state`; `stop_unconfirmed` means the coordinator may
+  still be running. Recovery has two kinds. `interrupted_acknowledged`: the
+  coordinator restarted and lost the reply; ArtifactBridge settled it, the
+  message was not retried, and anyone can send a new message. A turn with
+  `handoff` (`interrupted_unknown`, `affinity_lost`) is blocked until the
+  operator acts: give your person the support contact or open a new
+  conversation. To check again on `admission_unknown`, send the same
+  `message_id` with the same text and notice fields, never a new ID: the
+  original ID returns its turn and cannot start a second one.
+  `space_access` in the entry: the coordinator reads its Space with its own
+  access, so its answers can show documents your person cannot open.
+  A member of another workspace, a removed member, and a token with no
+  creator get `not_found` or `forbidden` and read nothing.
 
 ## Trust and approval
 
