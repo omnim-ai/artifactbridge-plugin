@@ -317,9 +317,8 @@ install a skill, diagnose the bridge, or capture a local file:
 - `artifactbridge update auto` / `skills sync --auto` — inspect auto-update
   and skill-refresh consent. One scheduler runs each consented job.
 - `artifactbridge workflows draft|list|run|pause` — workflow tools; no activate.
-- `artifactbridge telemetry status` — inspect the opt-in local relay's bounded
-  health (queue, upload, drops, and schema compatibility) without
-  printing event content or credentials.
+- `artifactbridge telemetry status` — inspect the opt-in local relay's
+  health without event content or credentials. Hermes: [room-usage](./room-usage.md).
 
 **Installed vs session-only loading:** `artifactbridge skills install` makes a
 skill persistent and auto-discovered in future sessions (native skill dirs,
@@ -333,7 +332,7 @@ commands unless the human explicitly asks: `login`, `logout`, `uninstall`,
 `update auto|preference on|off`, `skills sync --auto on|off`,
 `skills apply-workspace`, or `tray install|uninstall`. A scheduled refresh or
 a resident tray app is a consent decision like connecting. `artifactbridge telemetry
-enable|disable|remove` is also a human consent decision (local collection).
+enable|disable|remove|hermes restart` is also a human consent decision.
 list/install/retry/update/status/doctor, `update auto`,
 `skills sync --auto`, and `tray status` are the agent-safe surface.
 

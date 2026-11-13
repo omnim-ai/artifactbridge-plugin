@@ -58,3 +58,31 @@ When `hermes.status` is `no_reports`:
 
 - `not_found`: you cannot read this Room.
 - `unavailable`: the read failed. Try again later. Do not report zero usage.
+
+## Local Hermes reporting
+
+These commands read the reporting setup on this computer. They do not read
+usage or change anything:
+
+- `artifactbridge telemetry status --json` gives `cliVersion`, `authority`
+  (`kind` is `human`, `agent`, `signed_out` or `unknown`) and a `hermes`
+  block: `state`, `consentRevision`, `profiles`, `workspaceId`,
+  `lastCollectedAt`, `lastReportAt`, `queueDepth`, `serverRevokePending` and
+  `service.lastError`. `workspaceName` is always `null`.
+- `artifactbridge telemetry hermes profiles --json` lists the Hermes profiles
+  on this computer. When `supported` is `false`, `supportReason` tells why.
+
+A person decides these. Do not run them for the person:
+
+- `artifactbridge telemetry enable --clients hermes` turns reporting on or
+  renews it.
+- `artifactbridge telemetry hermes restart` starts the reporting service
+  again under the current consent. It does not renew expired consent.
+- `artifactbridge telemetry disable` turns reporting off on this computer
+  first. When `serverRevokePending` is `true`, the person runs it again later
+  to retry the saved revocations.
+- `artifactbridge telemetry remove` removes the local setup.
+
+With an agent credential, these commands stop with exit 3 and
+`human_consent_required`, and change nothing. Give the person the
+`recovery.command` from the answer, then stop.
