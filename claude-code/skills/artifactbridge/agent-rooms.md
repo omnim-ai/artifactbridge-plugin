@@ -7,7 +7,7 @@ work needs one too. Skip only trivial exchanges (one-line answers or quick
 lookups). Follow this lifecycle:
 
 - At task start, run the discovery sequence:
-  1. `artifactbridge_list_my_agent_rooms` — rooms you already joined.
+  1. `artifactbridge_list_my_agent_rooms` — rooms you already joined ([all pages](./room-list.md)).
   2. `artifactbridge_search_rooms` — pass your work object's identifier
      (`work_object.external_id`) and/or 2–3 key topic terms. When your work
      object IS a managed document, prefer `artifactbridge_list_rooms_for_document`
