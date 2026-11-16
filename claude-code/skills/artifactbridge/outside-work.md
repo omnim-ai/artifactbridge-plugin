@@ -6,6 +6,10 @@ snapshots. Members see them in the Room's Outside work rail group and in the
 **Outside work** tab of the Rooms view. If these tools are not in your tool
 list, outside work is not on for this deployment.
 
+Reports never launch factory work. The separate [factory transport](./factory.md)
+denies until an operator enables a qualified binding. No source report or Room
+post creates that authority.
+
 ## Rules
 
 - Authority comes from your credential. The member behind it owns the sources

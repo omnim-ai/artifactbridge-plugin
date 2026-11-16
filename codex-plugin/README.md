@@ -316,6 +316,14 @@ ArtifactBridge exposes these tools (from `src/mcp-documents.ts`):
 - `artifactbridge_manage_proposal_review` — signed-in human OAuth only: request changes, prepare onto the reviewed head, or resolve its overlaps. Both concurrency tokens are required. It never accepts or publishes.
 - `artifactbridge_source_sync_policy` — read an external document's sync policy, or turn outbound comment mirroring off. It does not sync or contact the provider; turning mirroring or auto sync on stays in the web settings.
 - `artifactbridge_manage_room_links` — Room creator or owner, or workspace owner or admin: read masked link status, revoke a public or reply link, hide a reply link's guest entries, or hide one public event. You never receive link tokens; publishing and enabling replies stay with the human in Share.
+
+**Factory bridge (disabled until a binding is enabled and qualified)**
+
+- `artifactbridge_list_factory_actions` — discover actions for the bound source.
+- `artifactbridge_request_factory_action` — capture start, guidance, stop, retry, or read-only inspect.
+- `artifactbridge_read_factory_request` — recover the caller's exact request receipt.
+- `artifactbridge_exchange_factory_bridge` — source owner only: pull up to 20 requests or acknowledge a bounded batch.
+
 ## Governance types
 
 - **`external`** — provider-imported documents (Google Docs, Notion). Read-only;
