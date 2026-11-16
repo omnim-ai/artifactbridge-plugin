@@ -2,7 +2,8 @@
 
 Use this when work runs in an outside engine (a task board, a CI system, a
 scheduler) and the members of an Agent Room must see its state. You report
-snapshots; the Room's Work tab shows them. If these tools are not in your tool
+snapshots. Members see them in the Room's Outside work rail group and in the
+**Outside work** tab of the Rooms view. If these tools are not in your tool
 list, outside work is not on for this deployment.
 
 ## Rules
@@ -52,6 +53,12 @@ A write returns a receipt: `disposition`, `record_id`, `revision`,
 `received_at` and `app_url`. `applied` saved your snapshot. `duplicate` means
 the same revision and snapshot were already saved. `stale` means a higher
 revision is saved; `revision` is the saved one.
+
+Give members the `app_url` as it is; do not build links. A task's `app_url`
+opens it in the Outside work tab, for example
+`https://app.artifactbridge.com/?view=rooms&tab=work&task=<task id>`. A
+`native_execution` link opens the ArtifactBridge task in its Room, for example
+`https://app.artifactbridge.com/?view=room&id=<room id>&ws=<workspace id>&delegation=<delegation id>`.
 
 ## Retry after a lost response
 
