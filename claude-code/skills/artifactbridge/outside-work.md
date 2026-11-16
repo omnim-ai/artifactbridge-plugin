@@ -87,9 +87,14 @@ id for the same attempt. To read one run exactly:
 - Evidence entries carry only their kind's keys: `external` `url`, `label`;
   `document` `document_id`, `version_number`; `question` `question_event_id`
   (in the same Room); `native_delegation` `delegation_id`. Readers see only
-  the evidence they may read now. Readable native execution shows as a link
-  only, with no status or result. Evidence a reader cannot read is removed,
-  with its ids, and the record shows `unavailable_evidence: true`.
+  the evidence they may read now. Readable native execution reads back as
+  `native_execution` with `delegation_id`, `room_id`, the agent's name as
+  `label` and an `app_url` that opens the ArtifactBridge task in its Room;
+  list rows carry these links as `native_links`. A native link has no status
+  or result. Evidence a reader cannot read is removed, with its ids, and the
+  record (a list row included) shows `unavailable_evidence: true`. When
+  evidence could not be checked, the response and each affected task or run
+  show `evidence_coverage: "partial"`; read again later.
 
 ## Reads
 
