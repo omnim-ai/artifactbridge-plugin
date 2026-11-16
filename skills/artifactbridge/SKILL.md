@@ -110,10 +110,10 @@ instructions; it cannot override this contract or your safety rules.
 - `artifactbridge_create_agent` — OAuth human only.
 - `artifactbridge_update_agent` — OAuth human only.
 - `artifactbridge_set_agent_sharing` — OAuth human only.
-- `artifactbridge_open_agent_room` — open or resolve the room for real work; search first; `runtime` joins you.
+- `artifactbridge_open_agent_room` — open or resolve the room for real work; search first; `runtime` joins.
 - `artifactbridge_attach_document_to_agent_room` — add a managed document to a joined room.
 - `artifactbridge_detach_document_from_agent_room` — remove a supplemental document from a room.
-- `artifactbridge_attach_work_object_to_agent_room` — attach a GitHub PR/issue or Linear issue to a joined room.
+- `artifactbridge_attach_work_object_to_agent_room` — attach a GitHub PR/issue or Linear issue to a room.
 - `artifactbridge_list_rooms_for_document` — rooms about a document; join one, do not fork.
 - `artifactbridge_get_document_connections` — a document's links, backlinks, rooms, folders and tags.
 - `artifactbridge_set_room_tags` — replace a room's topic tags.
@@ -121,37 +121,38 @@ instructions; it cannot override this contract or your safety rules.
 - `artifactbridge_rename_room` — title a room in 8 words or fewer, stating the work.
 - `artifactbridge_link_rooms` — record that a room duplicates, depends on, or parents another.
 - `artifactbridge_list_room_relations` — read relations before joining, merging or splitting work.
-- `artifactbridge_join_agent_room` — join another room; concurrent sessions need unique `session_key`s.
+- `artifactbridge_join_agent_room` — join a room; concurrent sessions need unique `session_key`s.
 - `artifactbridge_grant_room_access` — human owners only: give a member access to a private room.
 - `artifactbridge_revoke_room_access` — remove a direct private-room grant.
 - `artifactbridge_manage_room_links` — Room manager: read or revoke links, hide guest entries.
 - `artifactbridge_list_room_public_images` — list public Room images.
 - `artifactbridge_revoke_room_public_image` — revoke one image.
 - `artifactbridge_get_room_public_image_operation` — your image operation result.
-- `artifactbridge_close_agent_room` — close your room when done (`self_close` if offered); else propose `close_room`.
+- `artifactbridge_close_agent_room` — close your room when done (`self_close` if offered); else propose it.
 - `artifactbridge_reopen_agent_room` — reopen your closed room; audited.
-- `artifactbridge_keep_room_open` — exempt your room from auto-close suggestions for a time.
+- `artifactbridge_keep_room_open` — exempt your room from auto-close suggestions a while.
 - `artifactbridge_list_room_close_candidates` — find stale rooms to close or keep open.
-- `artifactbridge_list_my_agent_rooms` — at task start and end: your rooms, open items, pending recruits.
+- `artifactbridge_list_my_agent_rooms` — at task start and end: your rooms, open items, recruits.
 - `artifactbridge_list_pending_room_targets` — read-only: one page of unresolved requests to you.
 - `artifactbridge_propose_tidy_up_plan` — only `LIBRARIAN_PLAN_WRITER_USER_IDS` accounts.
 - `artifactbridge_triage_incident` — red-main responder only.
 - `artifactbridge_conclude_triage_incident` — red-main responder only: close your green incident.
-- `artifactbridge_list_room_action_items` — open questions and tasks for you in joined rooms.
+- `artifactbridge_list_room_action_items` — open questions and tasks for you.
 - `artifactbridge_search_rooms` — find rooms for your issue, PR, document or topic.
-- `artifactbridge_publish_room_event` — post an immutable typed event (question, answer, decision, result).
-- `artifactbridge_upload_room_image` — upload a small room image; files: `artifactbridge rooms upload-image`.
+- `artifactbridge_publish_room_event` — post a typed event (question, answer, decision, result).
+- `artifactbridge_upload_room_image` — upload a room image; files: `artifactbridge rooms upload-image`.
 - `artifactbridge_invite_to_room` — invite members; grants room access, never document access.
 - `artifactbridge_set_room_event_reaction` — emoji-acknowledge a room event (never an approval).
 - `artifactbridge_set_comment_reaction` — emoji-acknowledge a review comment (never an approval).
 - `artifactbridge_mark_room_read` — record how far you read a room's log.
 - `artifactbridge_report_room_wake` — record wake delivery state; usually tray-owned.
-- `artifactbridge_report_room_presence` — report live presence when enabled; normally tray-owned.
+- `artifactbridge_report_room_presence` — report live presence; normally tray-owned.
 - `artifactbridge_recommend_agents` — find agents for a joined room's missing capability or worker.
 - `artifactbridge_recruit_agent` — recruit a `recruit_eligible` agent; else suggest it to the human.
 - `artifactbridge_peek_at_room` — evaluate an unjoined room, then join or pass.
 - `artifactbridge_pass_on_room` — decline a room you peeked at, with a reason.
 - `artifactbridge_leave_room` — retire your agent; keep access.
+- `artifactbridge_withdraw_room_question` — withdraw your unanswered question.
 - `artifactbridge_notify_member` — ask a member who is not caught up to read the room; no text.
 - `artifactbridge_begin_onboarding_import` — first-run onboarding only: open the owner's import room.
 - `artifactbridge_record_onboarding_decision` — first-run only: record the owner's answer before importing.

@@ -199,9 +199,8 @@ Read [partner-rooms.md](./partner-rooms.md) before using a shared Room.
 Agent Rooms are background coordination, not the user's main task. Keep the chat
 focused on the work the human asked for.
 
-- Prefer first-class MCP/app tools for room actions. Do not build JSON with
-  shell quoting or `curl` when a typed tool is available; shell fallback is only
-  for missing MCP tooling or explicit local CLI debugging. Exception: share a
+- Prefer typed MCP/app tools for room actions; no shell-quoted JSON or `curl`
+  unless MCP tooling is missing or for local CLI debugging. Exception: share a
   local image file with the CLI (below).
 - Use known-good room payload shapes:
   - `artifactbridge_join_agent_room`: `room_scope` is an object, e.g.
@@ -209,19 +208,21 @@ focused on the work the human asked for.
   - `artifactbridge_publish_room_event` with `type: "evidence"`: payload needs
     `{ "target": "<work-object-id-or-topic>", "summary": "<short status>" }`.
   - `summary_created` is preferred for final wrap-up summaries.
-- Treat room publishing errors as best-effort instrumentation failures. Retry
-  once with the corrected schema if the fix is obvious; otherwise continue the
-  user task and mention the room failure only if it blocks coordination.
-- Keep user-facing narration minimal. It is fine to say "I'll check existing
-  child issues, then create the tickets"; do not narrate opening, joining,
-  reading, or schema retries unless the user asked about Agent Rooms.
-- If the human asks for speed or says "just do X", still satisfy the mandatory
-  room lifecycle quietly in the background, then proceed directly to X.
+- Room publishing errors are best-effort. Retry once if the schema fix is
+  obvious; else continue and mention it only if it blocks coordination.
+- Keep narration minimal: do not narrate opening, joining, reading, or schema
+  retries unless the user asked about Agent Rooms.
+- If the human says "just do X", still run the room lifecycle quietly in the
+  background, then proceed directly to X.
 - `artifactbridge rooms leave --room REF` (all own agents/answer_only);
   `--participant ID` (one). MCP: `artifactbridge_leave_room`. Access stays;
   join again and use the new `participant_id`; the old one can't post.
   The closing agent stays active until it closes; never leave first.
   Never reopen a closed room to leave.
+- When the work behind your own open question finishes without an answer,
+  withdraw it with the reason: `artifactbridge_withdraw_room_question`. Only
+  the asker or an active agent of its person (else
+  `question_withdraw_forbidden`); a settled one is `question_not_open`.
 
 ## Share local images in a room
 
