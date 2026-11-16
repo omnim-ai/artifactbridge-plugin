@@ -95,7 +95,8 @@ id for the same attempt. To read one run exactly:
 
 - `artifactbridge_list_outside_tasks`: tasks in Rooms you can read now, newest
   report first. Filter by `source_id`, `room_id` and `groups`. `facet`
-  `rooms` or `sources` lists those values for filters.
+  `rooms` or `sources` lists those values for filters. Each task names its
+  home Room as `room` `{id, title, closed}`.
 - `artifactbridge_read_outside_task`: one task with its runs, newest first,
   or exactly one run by `outside_run_id`.
 - `artifactbridge_list_outside_sources`: sources of tasks you can read
