@@ -509,7 +509,17 @@ when your person asks for it.
   `coordinator_unavailable`: the coordinator did not get the message; try
   later with the same `message_id`, or report the `support` contact. A read
   returns `current_turn` with its `sender`, `state` and `copy`, and
-  `can_send`. Show `copy` as written. Stop and
+  `can_send`. Show `copy` as written. To read the latest turns first, pass
+  `history: "recent"` without `after_turn` or `after_seq`. A window holds up
+  to 10 turns, newest first; in each turn the message, its parts in order,
+  then its end. While `history.window_complete` is false, pass
+  `history.next_cursor` back as `cursor` for the rest of the window. Then,
+  while `history.has_older`, pass `history.older_cursor` as `cursor` for the
+  next older window. A window keeps the turns and parts it had when it
+  opened, so retry a failed page with the same cursor. The read has no total
+  count. `current_turn` and `can_send` are current on every page. A cursor
+  works only for this conversation and only with `history: "recent"`;
+  another one is `validation_error`. Stop and
   Cancel return `turn.state`; `stop_unconfirmed` means the coordinator may
   still be running. Recovery has two kinds. `interrupted_acknowledged`: the
   coordinator restarted and lost the reply; ArtifactBridge settled it, the
