@@ -467,6 +467,10 @@ when your person asks for it.
   `notice.text`: show it to your person before the first message. Then
   `artifactbridge_send_agent_conversation_message` with a new UUID
   `message_id` and `acknowledge_notice: true` (else `notice_required`).
+  Count `text.trim().length` in JavaScript before sending: 1–20,000 UTF-16
+  units, also for the shared coordinator. An emoji can use two units.
+  Shorten an oversized message before opening a new conversation or sending;
+  `bad_request` accepts no turn. Keep the person's original draft editable.
   An error writes nothing; after a lost response, retry with the same
   `message_id`, never a new one; after a lost open, list and reuse.
   Refusals: `no_configured_cloud_runner`, `no_credits`, `usage_unavailable`,
