@@ -533,6 +533,19 @@ when your person asks for it.
   access, so its answers can show documents your person cannot open.
   A member of another workspace, a removed member, and a token with no
   creator get `not_found` or `forbidden` and read nothing.
+- **Coordinator instruction content versus authority.** Expanded actions stay
+  unavailable until operator qualification. When enabled, use the classified
+  content commands for governing instructions, skill primary/modules and Space
+  references: read the current document/Space revision, edit working content or
+  propose governed changes, then report the returned version or pending proposal
+  and its coordinator/conversation attribution. Content edits need no graph
+  requalification. Read back an uncertain effect before retrying. Skill
+  registration, human approvals and consent remain human-only; content permission
+  does not permit a compiler, safety scan or installer. Enforced tool policy,
+  classification/subset, connection, binding, credentials, service settings
+  (including its configured Space pointer), and host/profile configuration remain
+  operator-controlled. Hand those changes to the operator; do not attempt them
+  through content or another credential. A denial grants no fallback authority.
 
 ## Trust and approval
 
