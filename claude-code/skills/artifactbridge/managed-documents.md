@@ -43,6 +43,32 @@ Folder structure guidance is optional, member-authored advisory data. The neares
 - `artifactbridge_remove_document_from_folder` — unfile a document. It leaves
   the document in no folder, which is allowed.
 
+### Workspace coordinator: Library and Space operations (prerelease)
+
+Expanded coordinator actions remain unavailable until the combined qualification
+and activation. A normal MCP credential does not enable them. In a qualified
+installation, use the existing folder, Library access and Space tools; there is
+no separate settings proxy. The starting Space is context, not an access ceiling.
+
+The coordinator can edit its own instruction and skill documents and its
+starting Space like other content. Its policy, connection, credentials and tool
+classification stay operator-controlled. Owner-only access reduction and human
+approval/consent gates still apply. Space updates need the current
+`expected_revision`; after a conflict, read again and reconcile rather than
+overwrite. Space deletion is not allowed.
+
+`artifactbridge_archive_own_documents_by_tag` selects at most 100 documents with
+one exact tag that this coordinator created, not every document by its credential
+issuer. Archive retains history. Call again while `more_remaining` is true.
+Broad or bulk scope not already defined needs the person's confirmation first.
+
+Verified receipts include `artifactbridge.coordinator_origin` in MCP `_meta`,
+with the coordinator and source conversation, never an inferred requester.
+`result_unverified` means the result is withheld and a change may have committed.
+Read the target before retrying; do not blindly repeat creates or other
+non-idempotent actions. Use folder context and Space reads to verify changes.
+
+
 ## Duplicate a document
 
 `artifactbridge_duplicate_document` copies a document you can read into a new
