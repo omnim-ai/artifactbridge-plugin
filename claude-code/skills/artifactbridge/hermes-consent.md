@@ -49,9 +49,15 @@ recovery command instead of replacing the authority.
 - `workspace_changed`, `consent_changed` or `profiles_changed`: refresh the
   relevant reads. A person must confirm the new snapshot. Do not replay stale
   selections or accept suggested roles as confirmation.
-- `provisioning_outcome_unknown`: the remote grant may exist. Do not replay
-  enable. Refresh status and ask the person to reconcile the grant. A known
-  remote grant with failed local persistence also requires reconciliation.
+- `provisioning_outcome_unknown`: the remote grant may exist. Read status. If
+  Hermes is not On, the person runs
+  `artifactbridge telemetry enable --clients hermes` again.
+  `local_state_unavailable` after a remote grant: read status. If status
+  works, note its `clients`; the person runs
+  `artifactbridge telemetry disable --json`, then
+  `artifactbridge telemetry enable --clients <those clients>,hermes`. If
+  status also returns `local_state_unavailable`, the local reporting files
+  cannot be read; the person makes them readable first.
 - A saved grant with `service_start_failed`: read status. A person can run
   `artifactbridge telemetry hermes restart --json` under valid, unexpired
   consent. Restart changes no grant, revision or mapping. A saved start error
