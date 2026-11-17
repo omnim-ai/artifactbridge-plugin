@@ -528,7 +528,10 @@ when your person asks for it.
   opened, so retry a failed page with the same cursor. The read has no total
   count. `current_turn` and `can_send` are current on every page. A cursor
   works only for this conversation and only with `history: "recent"`;
-  another one is `validation_error`. Stop and
+  another one is `validation_error`. To check the state without the
+  transcript, read with `view: "state"` alone: the same fields and
+  `coverage` (`through_turn`, `through_seq`, `terminal_outcome` of the latest
+  accepted turn; null before any turn), no frames. Stop and
   Cancel return `turn.state`; `stop_unconfirmed` means the coordinator may
   still be running. Recovery has two kinds. `interrupted_acknowledged`: the
   coordinator restarted and lost the reply; ArtifactBridge settled it, the
