@@ -502,6 +502,15 @@ when your person asks for it.
   `creation_request_id`; after a lost reply, open again with the same one, or
   list with `creation_request_id` to find it. Never match by title.
   List 50 at a time: pass `next_cursor` back as `cursor` while `has_more`.
+  To filter loaded conversation titles, pass the coordinator's `agent_id` to
+  `artifactbridge_list_agent_conversations` and filter only the returned `title`
+  fields locally: NFD normalization, remove Unicode combining marks, then
+  locale-aware lowercase and substring matching with the same locale for both.
+  Keep loaded pages and `conversation_id` selection when filtering or renaming.
+  For an explicit page request, pass `next_cursor` as `cursor`; filtering alone
+  does not request pages. An empty match set is not exhaustive while `has_more`
+  is true. On a failed page read, retain loaded rows and retry the same cursor.
+  Filtering needs no transcript read and grants no new access.
   Show `notice.text` to your person before the first message, then send with
   `acknowledge_notice: true` and `notice_version` set to `notice.version`.
   `stale_notice`: read the conversation, show the new notice and send again.
