@@ -1,9 +1,9 @@
 # Factory transport
 
-The factory surface is disabled until an operator enables a qualified internal
-binding. There is no self-enrollment tool or UI. Do not try to enable it with a
-source report or a Room post. All four tools deny absent, disabled or unqualified
-bindings. The coordinator remains denied in this unit.
+The factory surface is disabled until an operator turns factory transport on
+for the workspace. There is no self-enrollment tool or UI. Do not try to turn it
+on with a source report or a Room post. All four tools deny every request while
+transport is off or not set up. The coordinator cannot use these tools yet.
 
 1. Discover with `artifactbridge_list_factory_actions`, using your own supported
    member credential and current workspace. If denied, hand setup to the operator.
