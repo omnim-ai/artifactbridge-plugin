@@ -319,7 +319,7 @@ install a skill, diagnose the bridge, or capture a local file:
   and skill-refresh consent. One scheduler runs each consented job.
 - `artifactbridge workflows draft|list|run|pause` — workflow tools; no activate.
 - `artifactbridge telemetry status` — inspect the opt-in local relay's
-  health without event content or credentials. Hermes: [room-usage](./room-usage.md).
+  health without event content or credentials. Hermes: [consent](./hermes-consent.md).
 
 **Installed vs session-only loading:** `artifactbridge skills install` makes a
 skill persistent and auto-discovered in future sessions (native skill dirs,
