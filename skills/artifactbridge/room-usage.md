@@ -104,7 +104,10 @@ A person decides these. Do not run them for the person:
   Consent expires after 30 days, and reporting pauses until the person renews.
   Hermes keeps working. Usage from the paused time is not reported later.
 - `artifactbridge telemetry hermes restart` starts the reporting service
-  again under the current consent. It does not renew expired consent.
+  again under the current consent. It does not renew expired consent. When
+  `service.manager` is `external`, the person's supervisor runs
+  `artifactbridge telemetry relay run`, and restart only returns that
+  command with `service_managed_externally`.
 - `artifactbridge telemetry disable` turns reporting off on this computer
   first. When `serverRevokePending` is `true`, the person runs it again later
   to retry the saved revocations.
