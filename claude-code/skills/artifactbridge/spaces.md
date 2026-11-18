@@ -580,8 +580,17 @@ when your person asks for it.
   conversation. To check again on `admission_unknown`, send the same
   `message_id` with the same text and notice fields, never a new ID: the
   original ID returns its turn and cannot start a second one.
-  `space_access` in the entry: the coordinator reads its Space with its own
-  access, so its answers can show documents your person cannot open.
+  `space_access` in the entry states the coordinator's authority: once the
+  operator turns on actions, it reads and changes workspace content and
+  settings, including access settings, with admin-level access, also content
+  your person cannot open. It cannot delete data, remove members, start
+  agents or workers, manage agents, runners or workflows, or give approvals
+  that need a person. Its changes name Workspace coordinator and the
+  conversation, not the member who asked. A new `notice.version` needs a new
+  acknowledgment from every member, also one who acknowledged an earlier
+  version; reading does not acknowledge it. A confirmed Stop ends the
+  response only: changes already made stay, and requested actions may still
+  finish. Read the target before you retry.
   A member of another workspace, a removed member, and a token with no
   creator get `not_found` or `forbidden` and read nothing.
 - **Coordinator instruction content versus authority.** Expanded actions stay
