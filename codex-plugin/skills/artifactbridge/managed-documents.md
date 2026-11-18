@@ -64,6 +64,8 @@ Broad or bulk scope not already defined needs the person's confirmation first.
 
 Verified receipts include `artifactbridge.coordinator_origin` in MCP `_meta`,
 with the coordinator and source conversation, never an inferred requester.
+In `artifactbridge_read_document`, a `history[]` version the coordinator wrote
+has `actor: {kind: "workspace_coordinator", conversation_id}`.
 `result_unverified` means the result is withheld and a change may have committed.
 Read the target before retrying; do not blindly repeat creates or other
 non-idempotent actions. Use folder context and Space reads to verify changes.
@@ -185,7 +187,8 @@ working-update tools reject only a leading block that declares an
   use `visibility: "workspace"` to widen an ambiguous or private-folder create.
   Private creation fails closed when the workspace private-object feature is
   disabled. OAuth callers retain the explicit human choice and workspace
-  default.
+  default. A workspace coordinator create with no folder is workspace-visible
+  unless it passes `visibility: "private"`; folder rules stay the same.
 - `artifactbridge_register_document_skill` — register a managed Markdown
   document as a workspace skill. When the human asks you to bring in a file
   whose name or title contains "skill" (any case), create the document, then
