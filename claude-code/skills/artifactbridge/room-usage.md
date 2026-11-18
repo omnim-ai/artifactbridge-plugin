@@ -92,7 +92,9 @@ reporting on:
 
 - `artifactbridge telemetry bind --client hermes --profile NAME --session ID --room REF --json`
   binds one session of a selected profile to a Room. Bind before the session
-  uses a model; usage from before the binding is not reported.
+  uses a model. A session with no usage yet counts from zero; a session with
+  usage counts from the next reading. The check cannot see a model call that
+  is already running, so its usage can still be counted.
   `binding_conflict` means that the session already has another Room. Start a
   new session for this Room.
 
