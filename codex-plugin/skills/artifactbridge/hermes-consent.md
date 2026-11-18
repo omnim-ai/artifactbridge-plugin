@@ -118,11 +118,20 @@ recovery command instead of replacing the authority.
   relay holds the setup's owner lock. Give the person the command; do not
   start a relay or edit a supervisor yourself. After a renewal the relay
   exits; the supervisor starts it again. The person registers the entry. A
-  supervisord example:
-  `[program:artifactbridge-relay]`, `command=/home/me/.local/bin/artifactbridge telemetry relay run`,
-  `user=me`, `environment=HOME="/home/me"`, `autorestart=unexpected`,
-  `exitcodes=0`. With runit or Docker, run the same command in the foreground
-  as the same user with the same `HOME`, and restart it only on failure.
+  supervisord example for the user `me`:
+
+  ```ini
+  [program:artifactbridge-relay]
+  command=/home/me/.local/bin/artifactbridge telemetry relay run
+  user=me
+  environment=HOME="/home/me"
+  autorestart=unexpected
+  exitcodes=0
+  ```
+
+  With runit or Docker, run the same command in the foreground as the same
+  user with the same `HOME`, and restart it only on failure.
+  `artifactbridge help telemetry relay run` prints runit and Docker examples.
 - `service_manager_conflict` (exit 2): the setup uses another service manager.
   The person runs `telemetry disable`, removes the old service or supervisor
   entry, checks that the relay stopped, then enables with the new
