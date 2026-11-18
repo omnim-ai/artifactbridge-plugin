@@ -46,6 +46,12 @@ transport is off or not set up. The coordinator cannot use these tools yet.
    some were left out. A null question link means it is not published or not
    visible; never guess the newest question. Without `ab-e.1`, actions, new
    requests and pulls are denied; existing receipts still read.
+6. With `ab-e.1`, a `start` into its closed Room is saved as `not_submitted`
+   with `capture_refusal: {"code": "room_closed"}`. Nothing reached the
+   factory and nothing will. The request ID is used up: a replay returns the
+   same receipt, also after a reopen. After an authorized reopen, send a new
+   request ID. Other operations into a closed Room fail with `room_closed`
+   and save nothing.
 
 ## Questions and answers
 
@@ -73,8 +79,9 @@ Unconfirmed delivery requires reconciliation, never a new answer identity.
 names. Every member who can read the conversation gets them. The prose
 fields are framed as untrusted content. Fields from a Room or work record you
 cannot see are null: `reason`, `engine_disposition`, choice keys, `room`,
-`question`, `task` and `attempt_number`/`current_attempt_number`. Kept outputs
-and question links follow the same filtering as direct receipts.
+`question`, `task`, `capture_refusal` and
+`attempt_number`/`current_attempt_number`. Kept outputs and question links
+follow the same filtering as direct receipts.
 A null field is not a failure; do not invent it.
 `operation: "inspect"` is a status read, not a command. The read never resends
 a request or starts a turn. To act on a receipt, use the request tools with
@@ -100,6 +107,7 @@ Per-item outcomes include applied, duplicate, stale, conflict and refused.
 Equal revision with changed content conflicts. Keep failed rows for reconciliation;
 a batch is not an all-items success receipt. Closed Rooms pause delivery until
 an authorized reopen. Reporting failure is not execution failure.
+A pull never returns a `not_submitted` request, and its ack is refused.
 Acknowledgment outcomes also return `correction_question_id` when present,
 including on an exact acknowledgment replay. Retain it with the engine receipt.
 
