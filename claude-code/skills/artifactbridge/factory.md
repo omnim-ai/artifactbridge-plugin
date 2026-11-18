@@ -38,6 +38,14 @@ transport is off or not set up. The coordinator cannot use these tools yet.
    Guidance received/applied/deferred/rejected and Stop requested/stopped/unknown
    are distinct. Confirm stopped only with engine fence plus exact readback.
    Stop response and leaving chat do not cancel factory work or remove outputs.
+5. A binding qualified for the `ab-e.1` receipt contract can add engine facts.
+   Each fact can be absent or null; null means unknown. `attempt_number` and
+   `current_attempt` number attempts. A Stop can list `kept_outputs` with
+   `evidence_unavailable`. A refused guidance can link `scope_question_id`.
+   You get only the items you can open now; `evidence_unavailable: true` says
+   some were left out. A null question link means it is not published or not
+   visible; never guess the newest question. Without `ab-e.1`, actions, new
+   requests and pulls are denied; existing receipts still read.
 
 ## Questions and answers
 
@@ -55,6 +63,7 @@ The receipt retains the exact response and answer/question event IDs.
 Rejected answers carry `answered_elsewhere` (safe winning key), `ask_superseded`,
 or `validation_failed`. Validation rejection links `correction_question_id`;
 the old Room question stays resolved. Read the correction before answering.
+`ask_superseded` can link `replacement_question_event_id`; answer that question.
 Unconfirmed delivery requires reconciliation, never a new answer identity.
 
 ## Coordinator conversation receipts
@@ -64,7 +73,9 @@ Unconfirmed delivery requires reconciliation, never a new answer identity.
 names. Every member who can read the conversation gets them. The prose
 fields are framed as untrusted content. Fields from a Room or work record you
 cannot see are null: `reason`, `engine_disposition`, choice keys, `room`,
-`question` and `task`. A null field is not a failure; do not invent it.
+`question`, `task` and `attempt_number`/`current_attempt_number`. Kept outputs
+and question links follow the same filtering as direct receipts.
+A null field is not a failure; do not invent it.
 `operation: "inspect"` is a status read, not a command. The read never resends
 a request or starts a turn. To act on a receipt, use the request tools with
 your own credential.
@@ -99,6 +110,26 @@ and strict `content`:
   verified routing reason, policy key/digest, grammar and reviewed gate URL.
 - `kind:result`: summary, produced URLs, checks, limits and next action.
   Use one event identity per terminal outcome, not each snapshot revision.
+  Optional together: `terminal_outcome_id`, `outcome` (build_done, failed or
+  canceled) and ≤8 `produced_items`; `produced` must equal their external URLs
+  in order. Another event for a recorded `terminal_outcome_id` conflicts.
+  Item labels stay private; Room readers get only items they can open.
+  Name an ArtifactBridge item with a typed reference: a URL on the app's own
+  origin in `produced`, an item or a kept output is `invalid_request`.
+- Optional `attempt_number` on any publication; a question can name the ask
+  it replaces in `supersedes` (`attempt_id`, `ask_id`, `ask_revision`). A
+  second successor, a cycle or a stale target conflicts.
+
+Receipts may add `attempt_number` (needs `attempt_id`), `current_attempt`,
+`kept_outputs` (Stop only, ≤20 items), `scope_question` (refused guidance only)
+and `answer.replacement_question` (`ask_superseded` only). A conflicting number
+for a known attempt, including a retained `current_attempt`, is refused.
+`settle` with `ask_superseded` may name `replacement_question`. A replacement
+that names the replaced ask at the same or an earlier revision or its
+predecessor, or that disagrees with a known successor (settlement, answer
+receipt, `supersedes` or the next revision), conflicts; an unpublished
+successor stays valid. A concurrent write for the same work or question
+returns `retryable_conflict`: resend the same exchange.
 
 Append and correlation commit together. Exact replay returns the same event;
 changed content conflicts, including a changed body at an equal ask revision.
