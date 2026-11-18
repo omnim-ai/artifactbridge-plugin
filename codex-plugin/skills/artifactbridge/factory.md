@@ -69,6 +69,9 @@ The receipt retains the exact response and answer/question event IDs.
 Rejected answers carry `answered_elsewhere` (safe winning key), `ask_superseded`,
 or `validation_failed`. Validation rejection links `correction_question_id`;
 the old Room question stays resolved. Read the correction before answering.
+The link is null while you cannot read that question.
+A factory question read from its Room adds `factory.attempt_number` and
+`factory.task` (`id`, `title` of its work record); null means unknown.
 `ask_superseded` can link `replacement_question_event_id`; answer that question.
 Unconfirmed delivery requires reconciliation, never a new answer identity.
 
