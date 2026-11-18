@@ -21,6 +21,54 @@ Paths and profile labels stay local. Do not copy them into Room usage reports.
 A null time is unknown. Hermes acknowledgement time is separate from the
 legacy relay's upload time and remains visible after disable.
 
+## Workstream registration
+
+An authorized coordinator or integration sets the Room of a Hermes Kanban
+workstream once, when the initiative starts. A workstream is one tenant on one
+board in one Kanban database. Registration records intent only. It does not
+turn reporting on, select profiles, confirm roles, bind a session or change
+consent.
+
+- Read first: `artifactbridge telemetry hermes workstreams list --json`. It
+  reads only local files. Each entry has `workstream` (`board`, `kanbanDb`,
+  `tenant`), `registration` (`live` or `removed`), `roomId`, `revision`,
+  `memberId`, `workspaceId` and `state`. A removed entry keeps its owner and
+  revision; its `roomId` and `state` are null. A removed entry is not active.
+- Set: `artifactbridge telemetry hermes workstreams set --board BOARD
+  --kanban-db PATH --tenant TENANT --room UUID --expected-revision N --json`.
+  Give the exact board slug, the canonical absolute path of the Kanban
+  database file, the exact tenant and the lowercase Room UUID. Do not search a
+  home folder for a board; ask the person which board the initiative uses. The
+  CLI does not repair or normalize a value. Use `--expected-revision 0` only
+  for a workstream that never had a Room, and the listed revision for a
+  change. Your credential must be able to read the Room. Then list again and
+  check the key, Room and revision. A set saves intent only: automatic
+  reporting is not active.
+- Remove: `artifactbridge telemetry hermes workstreams remove --board BOARD
+  --kanban-db PATH --tenant TENANT --expected-revision N --json`. Only the
+  member and workspace that set it can remove it. Sessions that started
+  earlier keep their Room. The removal keeps its `revision` and its owner. To
+  set a Room again, the same member and workspace use that revision, not 0.
+- `stale_revision` (exit 1): list again and use the current revision. For a
+  removed workstream, use its listed revision; the message also names it.
+  `selected_token_unavailable` (exit 2): your selected token variable is not
+  set or is empty, so nothing was sent and the saved sign-in was not used;
+  set the variable, then try again.
+  `workstream_owned_elsewhere` (exit 3): another member or workspace set it;
+  do not remove it. `room_access_denied` (exit 3): use a Room that you can
+  read. `kanban_db_not_found` or `kanban_db_not_canonical` (exit 2): give the
+  real canonical path. `not_signed_in` (exit 2): ask the person to sign in.
+  `agent_account_unavailable` (exit 2): your agent runtime has no signed-in
+  account, so nothing was sent; follow the message, then try again.
+  `account_check_unavailable` or `ledger_unavailable` (exit 1): nothing
+  changed; try again once.
+- `state` is `waiting_for_consent` until a person turns Hermes reporting on,
+  `workspace_mismatch` when reporting goes to another workspace, and
+  `kanban_db_missing` or `kanban_db_replaced` when the database file is gone
+  or is another file; set it again for a replaced file. Automatic card binding
+  is not available yet: the best state is `census_pending`, never `active`.
+  Do not tell anyone that card usage reports.
+
 ## Human consent boundary
 
 A person runs `artifactbridge telemetry enable --clients hermes` to choose
