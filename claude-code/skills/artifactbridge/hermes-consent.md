@@ -24,10 +24,9 @@ legacy relay's upload time and remains visible after disable.
 ## Workstream registration
 
 An authorized coordinator or integration sets the Room of a Hermes Kanban
-workstream once, when the initiative starts. A workstream is one tenant on one
-board in one Kanban database. Registration records intent only. It does not
-turn reporting on, select profiles, confirm roles, bind a session or change
-consent.
+workstream once, when the work is set up. A workstream is one tenant on one
+board in one Kanban database. Setting a Room does not turn reporting on,
+select profiles, confirm roles, bind a session or change consent.
 
 - Read first: `artifactbridge telemetry hermes workstreams list --json`. It
   reads only local files. Each entry has `workstream` (`board`, `kanbanDb`,
@@ -38,12 +37,12 @@ consent.
   --kanban-db PATH --tenant TENANT --room UUID --expected-revision N --json`.
   Give the exact board slug, the canonical absolute path of the Kanban
   database file, the exact tenant and the lowercase Room UUID. Do not search a
-  home folder for a board; ask the person which board the initiative uses. The
+  home folder for a board; ask the person which board the work uses. The
   CLI does not repair or normalize a value. Use `--expected-revision 0` only
   for a workstream that never had a Room, and the listed revision for a
   change. Your credential must be able to read the Room. Then list again and
-  check the key, Room and revision. A set saves intent only: automatic
-  reporting is not active.
+  check the key, Room and revision. Setting a Room does not turn on reporting
+  yet: automatic card binding is not available.
 - Remove: `artifactbridge telemetry hermes workstreams remove --board BOARD
   --kanban-db PATH --tenant TENANT --expected-revision N --json`. Only the
   member and workspace that set it can remove it. Sessions that started
@@ -63,10 +62,14 @@ consent.
   `account_check_unavailable` or `ledger_unavailable` (exit 1): nothing
   changed; try again once.
 - `state` is `waiting_for_consent` until a person turns Hermes reporting on,
-  `workspace_mismatch` when reporting goes to another workspace, and
-  `kanban_db_missing` or `kanban_db_replaced` when the database file is gone
-  or is another file; set it again for a replaced file. Automatic card binding
-  is not available yet: the best state is `census_pending`, never `active`.
+  `workspace_mismatch` when reporting goes to another workspace,
+  `kanban_db_missing` when the database path cannot be read or is not a file,
+  and `kanban_db_replaced` when the path names another file than the one set
+  or goes through a link; for either, set the Room for the database's current
+  canonical path. Automatic card binding is not available yet: the best state
+  is `census_pending`, never `active`. `census_pending` means the database,
+  consent and workspace checks pass and the workstream waits for automatic
+  card binding.
   Do not tell anyone that card usage reports.
 
 ## Human consent boundary
