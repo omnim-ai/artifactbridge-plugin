@@ -71,6 +71,12 @@ select profiles, confirm roles, bind a session or change consent.
   consent and workspace checks pass and the workstream waits for automatic
   card binding.
   Do not tell anyone that card usage reports.
+- `artifactbridge telemetry hermes bind-open --request-stdin --json` is
+  reserved for a later Hermes plugin. In this version it always fails with
+  `automatic_binding_not_ready` (exit 2) before it reads, binds or records
+  anything. Do not call it to bind a session and do not retry it. To report a
+  session, bind it with `artifactbridge telemetry bind` as
+  [Room usage](./room-usage.md) describes.
 
 ## Human consent boundary
 
