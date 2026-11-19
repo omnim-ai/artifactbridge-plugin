@@ -94,12 +94,28 @@ and explicit roles. Renew resubmits the complete mapping. Change profiles
 replaces the Hermes set and preserves other selected clients. Changes affect
 new eligible sessions, not historical usage.
 
-Agents do not submit consent, even when they can access unmarked human OAuth.
-The same bytes under that OAuth cannot distinguish a script from a desktop
-confirmation. `confirmed: true` is acknowledgement, not an authority token.
-Marked agent OAuth and selected agent tokens receive exit 3 and
-`human_consent_required` before mutation or refresh. Relay the CLI's human
-recovery command instead of replacing the authority.
+Agents do not submit consent, even when they can access a person's sign-in.
+`confirmed: true` is acknowledgement, not an authority token. A command that
+an agent started (a Claude Code, Codex, Grok, Hermes or OpenCode marker or
+parent process, or a desktop wake session) receives exit 3 and
+`human_consent_required` before stdin, refresh or any change, whatever
+credential it selects. A selected agent token or agent-marked OAuth grant gets
+the same refusal. The CLI never falls back from it to the person's sign-in.
+Relay the CLI's recovery command to the person and stop. Do not clear agent
+markers, start the command another way, run login or retry. The person runs
+it from an independently opened terminal on the host, or from ArtifactBridge
+opened normally from the OS. A sign-in saved by `login --agent` is still the
+person's own sign-in for this. `not_signed_in` that names
+`artifactbridge telemetry status --json` means the sign-in could not be
+confirmed; the person checks status, and a new sign-in is not the recovery.
+The same applies to repair. Local Off (disable and remove) is different: a
+person may run it with their own sign-in or with no sign-in at all, also after
+logout. There, an agent credential or a sign-in that cannot be confirmed gets
+`human_consent_required` (exit 3) and nothing changes. A local Off whose server
+revocation stays pending exits 0; reporting stays off without a sign-in. In `telemetry status --json`,
+`authority.kind` names the selected credential and `authority.agentStarted`
+is `true` when an agent started the command; then every consent control is
+refused. This check prevents mistakes. It does not prove that a person is present.
 
 ## Recovery
 
