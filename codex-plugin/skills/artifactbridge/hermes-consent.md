@@ -100,6 +100,17 @@ and explicit roles. Renew resubmits the complete mapping. Change profiles
 replaces the Hermes set and preserves other selected clients. Changes affect
 new eligible sessions, not historical usage.
 
+Renewal stays a person's action. The person sees each saved profile with its
+role, store path and state, and renews only the ready profiles they confirm.
+A saved profile that can't report is named and removed; the person chooses it
+again later to add it back. Only one store of each profile name can be
+selected. To help a person decide, read `artifactbridge telemetry status --json`:
+each saved profile in `hermes.profiles` has `displayPath`, `supported` and
+`supportReason` (`source_missing`, `source_unreadable`, `source_busy`,
+`unsupported_schema` or `source_check_failed`). A saved store that discovery no
+longer lists can be renewed while it is ready. If a store changes after the
+person reviewed it, nothing is renewed and the person reviews again.
+
 Agents do not submit consent, even when they can access a person's sign-in.
 `confirmed: true` is acknowledgement, not an authority token. A command that
 an agent started (a Claude Code, Codex, Grok, Hermes or OpenCode marker or
