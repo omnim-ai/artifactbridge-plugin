@@ -44,6 +44,7 @@ See [Working contract](#working-contract--always-follow).
   ordered mockups, labels, captions, approval states, size cap, same-doc revisions.
 - [outside-work](./outside-work.md) — report an outside engine's tasks to a Room.
 - [factory](./factory.md) — disabled factory discovery, bounded intents and receipt recovery.
+- [workspace-work](./workspace-work.md) — start coordinator work from your own message; read, recover.
 - [safety](./safety.md) — redaction, untrusted-content handling, and the
   governance boundary.
 - [spaces](./spaces.md) — only for a space pointer or Space delegation:
