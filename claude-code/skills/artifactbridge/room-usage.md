@@ -84,6 +84,9 @@ usage or change anything:
   block: `state`, `consentRevision`, `profiles`, `workspaceId`,
   `lastCollectedAt`, `lastReportAt`, `queueDepth`, `serverRevokePending` and
   `service.lastError`. `workspaceName` is always `null`.
+  The top level adds `ingestCredentialConfigured` and
+  `oldCredentialCleanup` (`pendingCount`, `invalidIdCount`, `entries`); see
+  [consent and recovery](./hermes-consent.md).
 - `artifactbridge telemetry hermes profiles --json` lists the Hermes profiles
   on this computer. When `supported` is `false`, `supportReason` tells why.
 

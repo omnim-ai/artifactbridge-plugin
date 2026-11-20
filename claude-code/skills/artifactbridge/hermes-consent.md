@@ -13,6 +13,12 @@ is not proof that a Room has received usage.
   selected profiles, revision, acknowledged usage time, queue and service
   evidence. It does not refresh credentials, migrate state or retry revocation.
   `local_state_unavailable` means the read failed, not Off or zero usage.
+- `oldCredentialCleanup` in status counts replaced credentials:
+  `pendingCount` wait to be revoked and the next `telemetry disable` retries
+  them; `invalidIdCount` can't finish because the saved ID is invalid. An
+  invalid ID is never sent and does not mean that current reporting failed.
+  There is no clear, forget or repair command for it; report the count and
+  stop.
 - Compatible local status has `hermesDesktopApi: 1`, `ownerProtocol: 1` and
   `hermes.protocol: 1`. Do not infer compatibility from a version string.
   Unknown or missing contracts require an update or a fresh successful read.
