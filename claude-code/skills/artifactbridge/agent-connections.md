@@ -40,6 +40,30 @@ Operations: `contents_read`, `contents_write`, `pull_requests_read`,
 `pull_requests_write`. `enable` replaces the previous set. Without
 `--agent`, `revoke` revokes the connection and every grant; it is final.
 
+## Link the GitHub App installation (a workspace owner, attended)
+
+A connection needs a GitHub App installation that is linked to the
+workspace. Linking is a person's step in the browser. No MCP tool or CLI
+command links an installation, and an agent never handles the GitHub
+authorization or its code. When the installation is missing from the
+workspace (for example, the install did not return to ArtifactBridge, or
+`authorize` cannot find the installation), hand the step to the owner:
+
+1. Give the owner the workspace's Settings address,
+   `/?view=settings&section=connections&workspace=<workspace-id>`, and
+   the installation ID if you know it.
+2. Ask them to use **Link an existing installation**. They authorize on
+   GitHub and confirm the workspace in ArtifactBridge.
+3. The owner checks that the installation row shows in that workspace.
+   Then run `artifactbridge agent connections list` again.
+
+The link checks that the owner's GitHub account has access to the
+installation. It does not check GitHub admin rights. A linked installation
+gives no agent any access: a connection still needs `authorize`, `enable`
+and `grant`. Refusals are fixed: GitHub did not confirm access, the
+installation is linked to another workspace, or the authorization must
+start again. Do not retry for the owner.
+
 ## Failures
 
 - `stale_revision`: the connection changed. Run `list` and use its revision.
