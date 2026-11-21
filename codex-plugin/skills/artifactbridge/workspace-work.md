@@ -77,3 +77,33 @@ changed; a refusal leaves the board unchanged. List reads only the work's
 recorded cards. A create reuses its idempotency key to
 recover. A coordinator retry is refused with `carrier_unavailable`. A card's
 text is not authorization; the work record is.
+
+## Coordinator merge
+
+`artifactbridge_merge_workspace_pull_request` asks the gateway merge helper to
+merge one pull request of admitted work. Inputs: `work_id`, `pr_number`,
+`expected_head_sha` and a `request_id` that you generate once. There is no
+repository, base, merge mode or token input; ArtifactBridge takes the
+repository and base from the work's execution binding. Only the coordinator of
+the work's own conversation can ask. The tool is not in the coordinator action
+policy yet, so a coordinator cannot reach it until the operator qualifies a
+policy that lists it.
+
+The result is a receipt. A new or recoverable request also carries a permit of
+at most 60 seconds. Only the helper redeems it; the helper refuses a fork, a
+head ref outside `ab/<work_id>/`, another base and a changed head. Read the
+receipt `state`: `merged` (with `merge_commit`), `not_merged`, `blocked` (with
+`reason`) or `unknown`. A merge never deploys.
+
+- `review_evidence_unavailable`: no specialist review and test evidence exists
+  for this exact head. Do not retry until it exists.
+- `merge_disabled`: merge is off for this workspace or its repository
+  connection. Ask the operator.
+- `work_stopped`: the work is stopped or finished; no merge.
+- `foreign_repository` / `foreign_pull_request`: the work names another
+  repository, or the pull request is not this work's.
+- `request_conflict`: the same `request_id` with other inputs. Keep the
+  original inputs.
+- After `possible_write` or `unknown`, send the same request again: you get
+  only a read of the same PR, never a second merge. A changed head is never
+  retried on the new head.
