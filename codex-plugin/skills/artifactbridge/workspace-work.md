@@ -64,11 +64,15 @@ A coordinator credential cannot use this tool.
   cancel. The same `request_id` returns the same receipt and asks again, so
   repeat it after a lost answer. A changed `stop_revision` refuses
   `revision_conflict`: inspect again and decide.
-- `state` after a Stop is `stop_requested` or `stop_unconfirmed`. Neither is
-  a cancellation certificate. `stop_unconfirmed` means that some attempt may
-  still run: its send is unknown, its task is live, or its cancel was not
-  confirmed (a timeout is not a confirmation). Completed work stays
-  completed, and its results stay.
+- `state` after a Stop is `stop_requested`, `stop_unconfirmed` or
+  `stopped`. Only `stopped` is a certificate: no new task, start, model call,
+  tool call or egress of the work can begin, and every attempt is done
+  (refused, never sent, completed, failed, or cancelled with a confirmed
+  cancel). `stop_unconfirmed` means that some attempt may still run: its
+  task is live, or its cancel was not confirmed (a timeout is not a
+  confirmation). Inspect again later to see `stopped`. Completed work stays
+  completed, and its results stay. A task of stopped work ends failed
+  `work_stopped`.
 - `retry` is for the work's requester only. It needs a `request_id`, a new
   accepted coordinator `message_id` of yours in the work's conversation (one
   retry per message), the `card_id` and the failed `attempt`. It adds the
