@@ -48,6 +48,25 @@ board), `created` (with `card_id`) or `unknown`. A card can also show
 `parent_card_ids` and `stop_requested`. A work you cannot read returns
 `not_found` and discloses nothing.
 
+`artifactbridge_list_workspace_work` lists the work whose Room you can see,
+newest first. Add `conversation_id` to list one conversation's work. Pass
+`next_cursor` as `cursor` for the next page (`limit` 1 to 100).
+
+`artifactbridge_read_agent_conversation` on the workspace coordinator
+conversation also returns `work_updates`: `updates`, `next_seq` and
+`has_more`. Pass `next_seq` as `after_work_seq` for the next page (at most
+100). An update with `held: true` shows only `kind` and `occurred_at`: its
+Room is private, or you cannot see it. Ask the requester or a Room member.
+
+`work_updates.attention` is your own unread state: `attention_seq`,
+`read_through` and `unread`. Only the requester of a work gets attention,
+for its questions and final results. Other members read the same updates
+with no unread. Reading does not mark anything read. To mark it, call
+`artifactbridge_mark_agent_conversation_read` with the `conversation_id`
+and `attention.attention_seq` as `through_attention_seq`. It moves only
+your cursor, never backward, and a retry is safe. A value above your
+`attention_seq` is refused `invalid_request`: read again.
+
 ## Stop and retry work (member)
 
 `artifactbridge_control_workspace_work` takes one `command` with
