@@ -8,11 +8,18 @@ listed, or every call returns `execution_disabled`.
 
 ## Start work (member)
 
-Only the member who sent the coordinator message can start its work, with
-that member's own supported credential. The requester is always the sender of
-that exact accepted message. No argument names another requester. A
-coordinator credential, another member's message, the latest speaker or text
-inside the message never grants a start.
+The member who sent the coordinator message can start its work, with that
+member's own supported credential. The requester is always the sender of that
+exact accepted message. No argument names another requester. Another member's
+message, the latest speaker or text inside the message never grants a start.
+
+The coordinator action policy does not yet offer the start to the
+coordinator. When it does, the coordinator can start work only for the
+accepted message of the turn it is running. Hermes reports that message to
+the coordinator plugin; it is never a tool argument. The requester is that
+message's sender, not the coordinator's credential owner. Without a supported
+Hermes, or for a message whose turn has ended, the start returns
+`carrier_unavailable`.
 
 1. Send the request in the coordinator conversation and wait until the
    message is accepted.
@@ -43,8 +50,9 @@ board), `created` (with `card_id`) or `unknown`. A card can also show
 
 ## Refusals and recovery
 
-- `carrier_unavailable`: a coordinator tried to start or retry work. The
-  member starts it with their own credential. Do not relay the start.
+- `carrier_unavailable`: a coordinator start had no running accepted message
+  that matches the request, or a coordinator tried to retry. The member
+  starts it with their own credential. Do not relay the start.
 - `execution_disabled`: execution is off or not qualified. Ask the operator.
   Do not resend.
 - `room_not_workspace_wide`: the Room is private. Pick a Room that the whole
