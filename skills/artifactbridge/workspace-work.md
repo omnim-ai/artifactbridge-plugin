@@ -48,6 +48,37 @@ board), `created` (with `card_id`) or `unknown`. A card can also show
 `parent_card_ids` and `stop_requested`. A work you cannot read returns
 `not_found` and discloses nothing.
 
+## Stop and retry work (member)
+
+`artifactbridge_control_workspace_work` takes one `command` with
+`"version": 1` and the `work_id`. Any active member who can see the work's
+Room can use `inspect` and `stop`; you do not have to be the requester.
+A coordinator credential cannot use this tool.
+
+- `inspect` returns `status`, `state`, `stop_revision` and every attempt of
+  every card, each with `delegation_state`, `cancel_outcome` and
+  `remote_may_still_run`.
+- `stop` needs a `request_id` that you make once and the `stop_revision`
+  that you read, as `expected_revision`. The Stop is saved before any task
+  is asked to cancel. Then only this work's own live tasks are asked to
+  cancel. The same `request_id` returns the same receipt and asks again, so
+  repeat it after a lost answer. A changed `stop_revision` refuses
+  `revision_conflict`: inspect again and decide.
+- `state` after a Stop is `stop_requested` or `stop_unconfirmed`. Neither is
+  a cancellation certificate. `stop_unconfirmed` means that some attempt may
+  still run: its send is unknown, its task is live, or its cancel was not
+  confirmed (a timeout is not a confirmation). Completed work stays
+  completed, and its results stay.
+- `retry` is for the work's requester only. It needs a `request_id`, a new
+  accepted coordinator `message_id` of yours in the work's conversation (one
+  retry per message), the `card_id` and the failed `attempt`. It adds the
+  next attempt as a separate, visible attempt with its own task. Only the
+  latest attempt of a card can be retried, after it failed or was cancelled.
+
+After a Stop, the coordinator's `workspace_card_cleanup` archives the
+stopped cards on its board that have not started. Use the ordinary
+delegation cancel only for a task that you requested or a Room that you own.
+
 ## Refusals and recovery
 
 - `carrier_unavailable`: a coordinator start had no running accepted message
@@ -63,6 +94,10 @@ board), `created` (with `card_id`) or `unknown`. A card can also show
 - `retryable_conflict`: another start of the same message is in progress.
   Retry with the same `request_id`.
 - `invalid_request`: fix the input; nothing was saved.
+- `unsupported_version`: send `"version": 1`; nothing was saved.
+- `revision_conflict`: the work's `stop_revision` changed. Inspect again.
+- `attempt_not_failed`: retry only the latest attempt, after it failed or
+  was cancelled.
 
 ## Coordinator cards
 
