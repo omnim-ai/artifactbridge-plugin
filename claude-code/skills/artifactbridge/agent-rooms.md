@@ -179,6 +179,8 @@ Read [partner-rooms.md](./partner-rooms.md) before using a shared Room.
     and say which path delivered the message.
   - `undeliverable` with reason `wake_undelivered`: the supervisor gave up.
     Detail `unbound_session`: no local session is bound to the participant.
+    A participant last joined via another machine's Tray is skipped
+    here as `other_machine`; rejoin from a machine to move it.
     `session_ended`, `self_wake` and `already_in_room` apply only to a
     cross-room request sent before the server refused them: the addressed
     session of another room ended, is your own session, or already joined
