@@ -407,11 +407,13 @@ when your person asks for it.
 - **Required harness.** Omit it (CLI: no `--harness`) for no requirement. A
   harness option is advisory: it does not mean that an executor is online or
   free now. With a requirement, tasks run only where that harness is
-  connected. `ab_container` is the ArtifactBridge container and `ab_coding`
-  the Coding container. Each appears in the harness options only after a
-  workspace admin registers it and adds it to the pool (Settings >
-  Executors). Registration and pool consent are human-only: an agent never
-  registers or consents, and tells its person when the option is missing.
+  connected. `ab_container` is the ArtifactBridge container. It appears in the
+  harness options only after a workspace admin registers it and adds it to
+  the pool (Settings > Executors). Registration and pool consent are
+  human-only: an agent never registers or consents, and tells its person when
+  the option is missing. `ab_coding` (the retired Coding container) is never
+  offered, and a new pin to it is refused with `harness_unavailable`; an
+  agent already pinned to it keeps the pin, which can be cleared.
 - **Create.** `artifactbridge_create_agent` takes `name` (1 to 80 characters),
   `fixed_space_id`, a new UUID `idempotency_key`, and optionally
   `description` (at most 2000 characters) and `required_harness`. CLI:
