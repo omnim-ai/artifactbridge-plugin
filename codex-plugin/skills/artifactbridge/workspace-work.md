@@ -163,13 +163,18 @@ head ref outside `ab/<work_id>/`, another base and a changed head. Read the
 receipt `state`: `merged` (with `merge_commit`), `not_merged`, `blocked` (with
 `reason`) or `unknown`. A merge never deploys.
 
-- `review_evidence_unavailable`: no specialist review and test evidence exists
-  for this exact head. Do not retry until it exists.
+- `review_evidence_unavailable`: no accepted specialist review exists for this
+  exact pull request and head, or the operator has not qualified protection of
+  the repository and base. Do not retry until both exist.
 - `merge_disabled`: merge is off for this workspace or its repository
   connection. Ask the operator.
 - `work_stopped`: the work is stopped or finished; no merge.
 - `foreign_repository` / `foreign_pull_request`: the work names another
-  repository, or the pull request is not this work's.
+  repository, or the pull request is not the target of this work's assigned
+  review outcome.
+- A receipt `blocked` with `checks_not_passed`: the required checks of this
+  exact head have not passed. Wait for the checks, then ask a member as for
+  any blocked merge.
 - `request_conflict`: the same `request_id` with other inputs, or another
   `request_id` while this pull request has an active merge request. Keep the
   original `request_id` and inputs.
@@ -178,4 +183,6 @@ receipt `state`: `merged` (with `merge_commit`), `not_merged`, `blocked` (with
   conversation; a card update or an operator fix alone is not enough.
 - After `possible_write` or `unknown`, send the same request again: you get
   only a read of the same PR, never a second merge. A changed head is never
-  retried on the new head.
+  retried on the new head. An `unknown` outcome posts one operator handoff in
+  the work Room; tell the member an operator must confirm the merge outcome,
+  and do not ask for a new merge.
