@@ -67,6 +67,12 @@ and `attention.attention_seq` as `through_attention_seq`. It moves only
 your cursor, never backward, and a retry is safe. A value above your
 `attention_seq` is refused `invalid_request`: read again.
 
+`work_updates.start_refusals` lists your own starts that were refused
+because their Room is private (`room_not_workspace_wide`). Each entry has
+`message_id`, `code` and `occurred_at`. Nothing was started. Other members
+do not see your refusals. To start the work, choose a Room that the whole
+workspace can see and start again with a new accepted message.
+
 ## Stop and retry work (member)
 
 `artifactbridge_control_workspace_work` takes one `command` with
