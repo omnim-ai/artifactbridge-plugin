@@ -90,8 +90,12 @@ A coordinator credential cannot use this tool.
   cancel). `stop_unconfirmed` means that some attempt may still run: its
   task is live, or its cancel was not confirmed (a timeout is not a
   confirmation). Inspect again later to see `stopped`. Completed work stays
-  completed, and its results stay. A task of stopped work ends failed
-  `work_stopped`.
+  completed, and its results stay: a Stop of completed work returns
+  `outcome: "completed_first"` and cancels nothing. A Stop of work that is
+  already `stopped` returns its existing certificate. A task of stopped work
+  ends failed `work_stopped`.
+- A control of work whose Room is no longer visible to the whole workspace
+  returns only `{"held": true}` and changes nothing.
 - `retry` is for the work's requester only. It needs a `request_id`, a new
   accepted coordinator `message_id` of yours in the work's conversation (one
   retry per message), the `card_id` and the failed `attempt`. It adds the
