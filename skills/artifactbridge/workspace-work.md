@@ -164,8 +164,12 @@ receipt `state`: `merged` (with `merge_commit`), `not_merged`, `blocked` (with
 - `work_stopped`: the work is stopped or finished; no merge.
 - `foreign_repository` / `foreign_pull_request`: the work names another
   repository, or the pull request is not this work's.
-- `request_conflict`: the same `request_id` with other inputs. Keep the
-  original inputs.
+- `request_conflict`: the same `request_id` with other inputs, or another
+  `request_id` while this pull request has an active merge request. Keep the
+  original `request_id` and inputs.
+- `carrier_unavailable`: the last merge of this pull request was blocked or
+  not merged. A new request needs a new message from a member in this
+  conversation; a card update or an operator fix alone is not enough.
 - After `possible_write` or `unknown`, send the same request again: you get
   only a read of the same PR, never a second merge. A changed head is never
   retried on the new head.
