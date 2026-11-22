@@ -186,3 +186,37 @@ receipt `state`: `merged` (with `merge_commit`), `not_merged`, `blocked` (with
   retried on the new head. An `unknown` outcome posts one operator handoff in
   the work Room; tell the member an operator must confirm the merge outcome,
   and do not ask for a new merge.
+
+## Coordinator finalize
+
+`artifactbridge_finalize_workspace_work` asks ArtifactBridge to certify
+admitted work completed. The coordinator plugin calls it as
+`workspace_finalize_work`. Inputs: `version` 1, `work_id`, a `request_id`
+that you generate once, the `expected_stop_revision` that you last read and
+the `outcome_review_id` of the accepted outcome review. There is no status,
+actor, repository or evidence input. Only the coordinator of the work's own
+conversation can ask, during a member's message or this work's own card
+update. The tool is not in the coordinator action policy yet, so a
+coordinator cannot reach it until the operator qualifies a policy that lists
+it. A member cannot finalize work; a member reads or stops it.
+
+ArtifactBridge certifies only when every fact holds: an accepted review of
+every current outcome assignment, the exact retained document version, or
+for a pull request the merge at the reviewed head into the approved base and
+passed required checks of that head, and no open card effect, merge or human
+action. The result is the certificate and the work with `status`
+`completed`. A Stop always wins: completed work cannot be stopped, and a
+Stop records `completed_first`.
+
+- `outcome_not_ready`: an effect, merge or native human action is still open.
+  Nothing was certified; the work stays admitted and can be stopped. Wait for
+  it, then send again.
+- `outcome_evidence_unavailable`: the review is not an accepted review of
+  this work, or its target or evidence does not match. Do not retry until it
+  exists.
+- `revision_conflict`: the `stop_revision` changed. Read the work again.
+- `work_not_admitted`: the work is stopped or already finished.
+- `request_conflict`: this work already has a certificate from another
+  `request_id` or other inputs. Read the work.
+- After a lost answer, send the same request again: you get the same
+  certificate.
