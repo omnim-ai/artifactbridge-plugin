@@ -67,6 +67,14 @@ and `attention.attention_seq` as `through_attention_seq`. It moves only
 your cursor, never backward, and a retry is safe. A value above your
 `attention_seq` is refused `invalid_request`: read again.
 
+A receipt `question` with `kind: "human_only"` waits for a person to accept
+a proposal in the app. Its `native_handoff_url` opens that proposal. There
+is no Room answer, and an agent or coordinator credential cannot accept it.
+Ask a member to accept or reject it at that URL. If you cannot see the
+proposal, `question` is null. `status` becomes `answered` with the reviewer
+and time after the acceptance, or `canceled` after a rejection, a newer
+revision or a Stop. An acceptance does not start or retry anything.
+
 `work_updates.start_refusals` lists your own starts that were refused
 because their Room is private (`room_not_workspace_wide`). Each entry has
 `message_id`, `code` and `occurred_at`. Nothing was started. Other members
