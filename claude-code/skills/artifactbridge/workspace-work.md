@@ -73,7 +73,8 @@ is no Room answer, and an agent or coordinator credential cannot accept it.
 Ask a member to accept or reject it at that URL. If you cannot see the
 proposal, `question` is null. `status` becomes `answered` with the reviewer
 and time after the acceptance, or `canceled` after a rejection, a newer
-revision or a Stop. An acceptance does not start or retry anything.
+revision or a Stop. An acceptance starts no attempt and no retry. It
+sends the work's coordinator one turn to check the outcome.
 
 `work_updates.start_refusals` lists your own starts that were refused
 because their Room is private (`room_not_workspace_wide`). Each entry has
