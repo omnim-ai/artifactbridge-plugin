@@ -13,9 +13,10 @@ member's own supported credential. The requester is always the sender of that
 exact accepted message. No argument names another requester. Another member's
 message, the latest speaker or text inside the message never grants a start.
 
-The coordinator action policy does not yet offer the start to the
-coordinator. When it does, the coordinator can start work only for the
-accepted message of the turn it is running. Hermes reports that message to
+The coordinator action policy offers the start to the coordinator. An
+installation registered with an older policy revision is refused with
+`actions_not_enabled`; the operator registers the qualified revision. The
+coordinator can start work only for the accepted message of the turn it is running. Hermes reports that message to
 the coordinator plugin; it is never a tool argument. The requester is that
 message's sender, not the coordinator's credential owner. Without a supported
 Hermes, or for a message whose turn has ended, the start returns
@@ -162,9 +163,9 @@ merge one pull request of admitted work. Inputs: `work_id`, `pr_number`,
 `expected_head_sha` and a `request_id` that you generate once. There is no
 repository, base, merge mode or token input; ArtifactBridge takes the
 repository and base from the work's execution binding. Only the coordinator of
-the work's own conversation can ask. The tool is not in the coordinator action
-policy yet, so a coordinator cannot reach it until the operator qualifies a
-policy that lists it.
+the work's own conversation can ask. The coordinator action policy lists it
+for the plugin only: the plugin's `workspace_merge_pull_request` sends it, and
+the model never calls it directly.
 
 The result is a receipt. A new or recoverable request also carries a permit of
 at most 60 seconds. Only the helper redeems it; the helper refuses a fork, a
@@ -205,9 +206,8 @@ that you generate once, the `expected_stop_revision` that you last read and
 the `outcome_review_id` of the accepted outcome review. There is no status,
 actor, repository or evidence input. Only the coordinator of the work's own
 conversation can ask, during a member's message or this work's own card
-update. The tool is not in the coordinator action policy yet, so a
-coordinator cannot reach it until the operator qualifies a policy that lists
-it. A member cannot finalize work; a member reads or stops it.
+update. The coordinator action policy lists it for the plugin only; the model
+never calls it directly. A member cannot finalize work; a member reads or stops it.
 
 ArtifactBridge certifies only when every fact holds: an accepted review of
 every current outcome assignment, the exact retained document version, or
