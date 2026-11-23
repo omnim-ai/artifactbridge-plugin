@@ -16,11 +16,19 @@ message, the latest speaker or text inside the message never grants a start.
 The coordinator action policy offers the start to the coordinator. An
 installation registered with an older policy revision is refused with
 `actions_not_enabled`; the operator registers the qualified revision. The
-coordinator can start work only for the accepted message of the turn it is running. Hermes reports that message to
-the coordinator plugin; it is never a tool argument. The requester is that
-message's sender, not the coordinator's credential owner. Without a supported
-Hermes, or for a message whose turn has ended, the start returns
-`carrier_unavailable`.
+coordinator can start work only for the accepted message of the turn it is
+running. Hermes reports that message to the coordinator plugin; it is never a
+tool argument. The requester is that message's sender, not the coordinator's
+credential owner. Without a supported Hermes, or for a message whose turn has
+ended, the start returns `carrier_unavailable`.
+
+For a coordinator start, select a workspace-visible work Room first. If the
+requested or existing Room is private, refuse the start, never broaden the
+private Room's access, and obtain a workspace-visible Room before starting
+again from a new accepted member message (a settled turn cannot be reused).
+Workspace work does not use the separate legacy factory transport: do not call
+legacy factory discovery or factory action tools in this flow
+(`factory_disabled`).
 
 1. Send the request in the coordinator conversation and wait until the
    message is accepted.
@@ -129,8 +137,12 @@ delegation cancel only for a task that you requested or a Room that you own.
   starts it with their own credential. Do not relay the start.
 - `execution_disabled`: execution is off or not qualified. Ask the operator.
   Do not resend.
-- `room_not_workspace_wide`: the Room is private. Pick a Room that the whole
-  workspace sees; a private Room is never broadened.
+- `room_not_workspace_wide`: the Room is private and nothing was started. Pick
+  a Room that the whole workspace sees; never broaden a private Room's access,
+  and start again with a new accepted member message.
+- `factory_disabled`: belongs to the separate legacy factory transport, not
+  workspace work. Do not call legacy factory discovery or request tools in this
+  flow.
 - `card_denied`: the board or agent is not admitted for this work.
 - `work_not_admitted`: the work is stopped or finished; no new card.
 - `not_found`: no such work, message, conversation or Room for you.
