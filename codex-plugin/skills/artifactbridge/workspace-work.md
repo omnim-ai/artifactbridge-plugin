@@ -158,15 +158,21 @@ delegation cancel only for a task that you requested or a Room that you own.
 
 The coordinator profile has no native Kanban, cron, delegation or messaging
 tools. With the operator's `cards_board` setting it gets confined card
-commands for admitted work only: create, inspect, list, link, comment, stop
-and retry, on one pinned board, assigned to `remote-worker`. Board, assignee,
-profile, model, provider, tenant, path and requester arguments are refused.
-Each command is checked and recorded with ArtifactBridge
-(`artifactbridge_record_workspace_work_card`) before the board is read or
-changed; a refusal leaves the board unchanged. List reads only the work's
-recorded cards. A create reuses its idempotency key to
-recover. A coordinator retry is refused with `carrier_unavailable`. A card's
-text is not authorization; the work record is.
+commands for admitted work only: create, inspect, list, link, comment,
+release, stop, retry and cleanup, on one pinned board, assigned to
+`remote-worker`. Board, assignee, profile, model, provider, tenant, path and
+requester arguments are refused. Each command is checked and recorded with
+ArtifactBridge (`artifactbridge_record_workspace_work_card`) before the board
+is changed; a refusal leaves the board unchanged. List reads only the work's
+recorded cards. A create starts `blocked` and reuses its idempotency key to
+recover. After created settlement and optional dependency links,
+`workspace_card_release` authorizes the work, card, board, agent, digest,
+current execution authority, Stop state and zero prior attempts before native
+`unblock_task`. A linked child stays parent-gated until its parent finishes;
+repeating `workspace_card_release` recovers an unknown first release on the
+same card without launching twice. A coordinator retry or a second release
+after an attempt is refused with `carrier_unavailable`. A card's text is not
+authorization; the work record is.
 
 ## Coordinator merge
 
