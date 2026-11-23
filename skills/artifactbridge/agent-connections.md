@@ -12,7 +12,8 @@ When the workspace has agent connections turned on,
 `connection_id`, and optionally `agent_id` to check that agent's grant. The
 result has the provider, the repository (fixed ID and current owner/name),
 the allowed operations, the revision, the health (`ready`, `disabled`,
-`revoked`, `installation_unavailable`) and `agent_granted`. It never has a
+`revoked`, `installation_unavailable`), `agent_granted` and `agent_operations`
+(the agent's grant ceiling, or `null` when ungranted, omitted or legacy). It never has a
 credential, an installation ID or a token. A foreign, missing or hidden
 connection or agent answers `connection_not_found` and discloses nothing.
 
@@ -32,13 +33,16 @@ the owner or admin:
 artifactbridge agent connections list [--workspace SELECTOR]
 artifactbridge agent connections authorize --installation ID --repository-id ID --name OWNER/NAME
 artifactbridge agent connections enable CONNECTION --installation ID --repository-id ID --revision N --operation OP ...
-artifactbridge agent connections grant CONNECTION --installation ID --repository-id ID --agent UUID
+artifactbridge agent connections grant CONNECTION --installation ID --repository-id ID --agent UUID [--operation OP ...]
 artifactbridge agent connections revoke CONNECTION --installation ID --repository-id ID [--agent UUID]
 ```
 
 Operations: `contents_read`, `contents_write`, `pull_requests_read`,
-`pull_requests_write`. `enable` replaces the previous set. Without
-`--agent`, `revoke` revokes the connection and every grant; it is final.
+`pull_requests_write`. `enable` replaces the previous set. `grant` with
+`--operation` caps that agent's grant (and updates an existing ceiling without
+widening already-admitted attempts); omitting `--operation` keeps legacy
+connection-wide grant behavior without widening an existing restricted grant.
+Without `--agent`, `revoke` revokes the connection and every grant; it is final.
 
 ## Link the GitHub App installation (a workspace owner, attended)
 
