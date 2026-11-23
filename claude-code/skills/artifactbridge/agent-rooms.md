@@ -198,24 +198,25 @@ Read [partner-rooms.md](./partner-rooms.md) before using a shared Room.
 
 ## Quiet room hygiene
 
-Agent Rooms are background coordination, not the user's main task. Keep the chat
-focused on the work the human asked for.
+Rooms are background coordination; keep the chat on the human's task.
 
 - Prefer typed MCP/app tools for room actions; no shell-quoted JSON or `curl`
-  unless MCP tooling is missing or for local CLI debugging. Exception: share a
-  local image file with the CLI (below).
+  unless MCP tooling is missing or for local CLI debugging. Exception: local
+  files go through the CLI (images below).
+- Text fields ≤20,000 characters. Local file: `artifactbridge rooms post
+  --room ROOM --file PATH`. Long reviewable content: managed document attached
+  to the room plus a short linking message.
 - Use known-good room payload shapes:
   - `artifactbridge_join_agent_room`: `room_scope` is an object, e.g.
     `{ "task": "<the work goal>" }`.
   - `artifactbridge_publish_room_event` with `type: "evidence"`: payload needs
     `{ "target": "<work-object-id-or-topic>", "summary": "<short status>" }`.
-  - `summary_created` is preferred for final wrap-up summaries.
-- Room publishing errors are best-effort. Retry once if the schema fix is
-  obvious; else continue and mention it only if it blocks coordination.
-- Keep narration minimal: do not narrate opening, joining, reading, or schema
-  retries unless the user asked about Agent Rooms.
-- If the human says "just do X", still run the room lifecycle quietly in the
-  background, then proceed directly to X.
+  - Final summaries: `summary_created`.
+- Room publishing errors are best-effort: retry once if the fix is obvious;
+  mention it only if it blocks coordination.
+- Do not narrate opening, joining, reading, or schema retries unless asked
+  about Agent Rooms. If the human says "just do X", run the room lifecycle
+  quietly and do X.
 - `artifactbridge rooms leave --room REF` (all own agents/answer_only);
   `--participant ID` (one). MCP: `artifactbridge_leave_room`. Access stays;
   join again and use the new `participant_id`; the old one can't post.
