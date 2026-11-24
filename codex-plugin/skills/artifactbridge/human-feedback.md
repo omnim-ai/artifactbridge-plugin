@@ -136,6 +136,15 @@ They do not change a separate agent Inbox, and other members see no change.
 
 - `artifactbridge_set_document_subscription` — `watching`, `muted`, or `null`
   (the workspace default) for one document that the member can read.
+- `artifactbridge_set_room_notification_level` — read (omit `level`) or set
+  the member's own level for one readable room: `all` (all activity),
+  `mentions` (mentions and asks: a room question targeted at the member or
+  broadcast to them), or `muted` (nothing ambient; a direct @-mention or ask
+  still creates the Inbox item). With no choice the level is `mentions` in a
+  joined room and `muted` in a room the member only watches; setting that
+  default clears the choice (`is_default: true`). The level only narrows the
+  workspace notification switches. Pass `host_workspace_id` for a partner
+  room. An unreadable room is `not_found`; `unavailable` means try again.
 - `artifactbridge_list_inbox_items` — the member's own Inbox, Needs you first,
   then Other, as their app shows it. `unread_only: true` lists only unread
   items across every page, and its counts cover only those items. Pass
