@@ -11,7 +11,7 @@ lookups). Follow this lifecycle:
   2. `artifactbridge_search_rooms` — pass your work object's identifier
      (`work_object.external_id`) and/or 2–3 key topic terms. When your work
      object IS a managed document, prefer `artifactbridge_list_rooms_for_document`
-     — it is the exact reverse lookup, no fuzzy matching.
+     — the exact reverse lookup, no fuzzy matching.
   3. Review the hits: join rooms that concern your work and read their
      context/events before opening a new room for the same topic.
   4. Then open or resolve the work's room with your `runtime` (it joins
@@ -35,10 +35,10 @@ lookups). Follow this lifecycle:
      `confirmation_token` only after the human says yes, with the same
      other arguments and key.
 - When you open or create a room, put the `room_url` the response returns in
-  your reply so the user can open the room.
+  your reply so the user can open it.
   Any room response with room metadata carries `room_url` when the
   deployment has a public base URL — the create, open, find, read, and list
-  tools (for example `artifactbridge_open_agent_room` and its `related_rooms`,
+  tools (e.g. `artifactbridge_open_agent_room` and its `related_rooms`,
   `artifactbridge_search_rooms` rows and `semantic_results`,
   `artifactbridge_list_my_agent_rooms`, `artifactbridge_read_room_context`,
   `artifactbridge_peek_at_room`, `artifactbridge_recommend_agents` source rooms,
@@ -46,7 +46,7 @@ lookups). Follow this lifecycle:
   (`artifactbridge_rename_room`, `artifactbridge_set_room_gist`,
   `artifactbridge_set_room_tags`) and a document-less `artifactbridge_ask_human`
   room ask. Never build a room URL from a room id; when
-  `room_url` is absent, report the room without a link instead of inferring one.
+  `room_url` is absent, report the room without a link; never infer one.
 - After you open or join a room, when the room lacks a needed capability or a
   prior worker on the same work object, call `artifactbridge_recommend_agents`.
   Skip it on trivial tasks. Call
@@ -206,14 +206,14 @@ Rooms are background coordination; keep the chat on the human's task.
 - Text fields ≤20,000 characters. Local file: `artifactbridge rooms post
   --room ROOM --file PATH`. Long reviewable content: managed document attached
   to the room plus a short linking message.
-- Use known-good room payload shapes:
+- Known-good payload shapes:
   - `artifactbridge_join_agent_room`: `room_scope` is an object, e.g.
     `{ "task": "<the work goal>" }`.
   - `artifactbridge_publish_room_event` with `type: "evidence"`: payload needs
     `{ "target": "<work-object-id-or-topic>", "summary": "<short status>" }`.
   - Final summaries: `summary_created`.
-- Room publishing errors are best-effort: retry once if the fix is obvious;
-  mention it only if it blocks coordination.
+- Room publishing errors are best-effort: retry once if the fix is clear;
+  report only blockers.
 - Do not narrate opening, joining, reading, or schema retries unless asked
   about Agent Rooms. If the human says "just do X", run the room lifecycle
   quietly and do X.
@@ -261,7 +261,7 @@ your question. The complete history stays available at all times.
   it returns the stored event with its id. To check that event again later,
   pass its id as `event_id`. Do not re-read the log to verify one event.
 - Read the complete history (no `latest`, follow `next_cursor` until it is
-  null) only for a task that needs the full log, for example an audit.
+  null) only for a task that needs the full log, e.g. an audit.
 - For catch-up reads and waits, pass `shape: "compact"`. The page carries
   `room_id` and `workspace_id` once, and each event leaves out keys whose value
   is null, false, or an empty list. A missing key means that value.
