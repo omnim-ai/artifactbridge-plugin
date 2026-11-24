@@ -145,6 +145,8 @@ They do not change a separate agent Inbox, and other members see no change.
   default clears the choice (`is_default: true`). The level only narrows the
   workspace notification switches. Pass `host_workspace_id` for a partner
   room. An unreadable room is `not_found`; `unavailable` means try again.
+  CLI: `artifactbridge rooms notification-level --room REF [--level LEVEL]`;
+  a shared-room link sends its `ws=` workspace and `host=` host.
 - `artifactbridge_list_inbox_items` — the member's own Inbox, Needs you first,
   then Other, as their app shows it. `unread_only: true` lists only unread
   items across every page, and its counts cover only those items. Pass
