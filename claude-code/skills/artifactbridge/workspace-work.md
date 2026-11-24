@@ -22,10 +22,14 @@ tool argument. The requester is that message's sender, not the coordinator's
 credential owner. Without a supported Hermes, or for a message whose turn has
 ended, the start returns `carrier_unavailable`.
 
-For a coordinator start, select a workspace-visible work Room first. If the
-requested or existing Room is private, refuse the start, never broaden the
-private Room's access, and obtain a workspace-visible Room before starting
-again from a new accepted member message (a settled turn cannot be reused).
+For a coordinator start, select a workspace-visible work Room first. When no
+existing workspace-visible Room fits, a workspace coordinator calling
+`artifactbridge_open_agent_room` opens a new Room with workspace visibility by
+default (explicit `visibility: "private"` stays private; existing Rooms are
+never broadened). If the requested or existing Room is private, refuse the
+start, never broaden the private Room's access, and obtain a workspace-visible
+Room before starting again from a new accepted member message (a settled turn
+cannot be reused).
 Workspace work does not use the separate legacy factory transport: do not call
 legacy factory discovery or factory action tools in this flow
 (`factory_disabled`).
